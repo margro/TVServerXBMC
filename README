@@ -1,0 +1,5 @@
+This TVServer plugin (or standalone tool for debugging purposes) is the server side for both the MediaPortal PVR clients and the python "TVServer" video plugin. This version is an extended and improved version of the existing MediaPortal TV Server plugin "TVServerXBMC" (by EvilDude/Prashant) from the MediaPortal mp-plugins repository.
+
+Main changes:
+more commands added, needed for the PVR addon;
+bugfixes
