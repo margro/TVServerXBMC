@@ -1,0 +1,45 @@
+1.1.0.100:
+- Add GetDriveSpace command (for recordings)
+- [Schedule] Extend schedule API
+
+1.1.0.95:
+- Fix for empty channel lists when one or more channels are deleted but still mapped to a group in the database (Thanks matejdro)
+- Be more verbose on errors/exceptions
+- Stop when the port is already in use
+
+1.1.0.90:
+- Speedup TimeshiftChannel (no need to stop an existing timeshift, saves 2 sec)
+- New command GetRecordingInfo for MediaPortal TSReader (RTSP)
+
+1.1.0.75:
+- Fixed: Return the correct TVServerXBMC version number when running as plugin under the TV Server
+
+1.1.0.70:
+- Better handling of multiple timeshifts from different users
+- Give the Python TVServer plugin always the same user name to be able to stop the timeshifts
+  (Watching different channels from multiple python clients, is therefore not yet supported)
+- Stop active timeshifts at client connection close for telnet and PVR clients
+- Add new commands: GetUserName, SetUserName
+
+1.0.9.58:
+- Add more TVServer log calls for DLL debugging purposes
+
+1.0.7.44:
+- Use different usernames for different connections to prevent stopping timeshifts when 2 clients are watching the same stream
+
+1.0.7.24:
+- Allow multiple connections
+- GetVersion now return the TVServer version
+- resolve hostnames for recording stream URLs
+- Fix date/time formatting for schedules
+- more status info during startup
+
+1.0.7.0:
+- Added new commands: IsRecording/StopRecording
+- Return more info about schedules
+
+1.0.6.0:
+- Different date/time formatting to make the date/time fields locale/culture independent.
+
+1.0.5.0: 
+- Fix IPv6 name resolving. Should be always IPv4 now.
