@@ -1,15 +1,15 @@
-TVServerXBMC v1.1.0.x - Source package
+TVServerXBMC v1.1.3.x - Source package
 MediaPortal TVServer plugin for XBMC
 _______________________________________________________________________________
 Original Author: EvilDude/Prashant 2008-2009
 http://forum.team-mediaportal.com/mediaportal-1-talk-45/xbmc-python-script-36590/
 
 Improvements & XBMC PVR-Addon extensions:
-Marcel Groothuis, 2010
+Marcel Groothuis, 2010-2011
 http://www.scintilla.utwente.nl/~marcelg/xbmc
 _______________________________________________________________________________
 
-Tested against MediaPortal 1.1.0-1.1.2 (TV Server 1.1.0-1.1.2)
+Tested against MediaPortal 1.1.0-1.1.3 (TV Server 1.1.0-1.1.3)
 
 This version is compatible with the python "TVServer" Video plugin for XBMC 9.11
 and the "MediaPortal" PVR addon for the pvrtesting2 branch of XBMC.
