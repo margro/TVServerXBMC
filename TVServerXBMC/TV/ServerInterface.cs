@@ -699,13 +699,17 @@ namespace MPTvClient
                                 if (chan == null) continue;
 
                                 string tvchannel;
-                                int ext_id = 0;
+                                int channelNumber = 0;
 
-                                //The external id can be a string, which XBMC does not understand, so
-                                //we ignore it for now...
-                                //if (chan.ExternalId.Length > 0) {
-                                //    ext_id = Int32.Parse(chan.ExternalId);
-                                //}
+                                //Determine the channel number given by the provider using this channel's tuning details
+                                IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+
+                                foreach (TuningDetail tuningdetail in tuningdetails)
+                                {
+                                    //For now, just take the first one:
+                                    channelNumber = tuningdetail.ChannelNumber;
+                                    break;
+                                }
 
                                 //XBMC side:
                                 //uid, number, name, callsign, iconpath, isencrypted,
@@ -715,7 +719,7 @@ namespace MPTvClient
                                 //[0] = channel uid
                                 //[1] = channel number
                                 //[2] = channel name
-                                tvchannel = chan.IdChannel + "|" + ext_id + "|" + chan.DisplayName + "|";
+                                tvchannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
                                 //[3] = isencrypted
                                 tvchannel += (chan.FreeToAir ? "0" : "1");
 
@@ -842,12 +846,22 @@ namespace MPTvClient
                                 if (chan == null) continue;
 
                                 string radiochannel;
-                                int ext_id = 0;
+                                int channelNumber = 0;
+
+                                //Determine the channel number given by the provider using this channel's tuning details
+                                IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+
+                                foreach (TuningDetail tuningdetail in tuningdetails)
+                                {
+                                    //For now, just take the first one:
+                                    channelNumber = tuningdetail.ChannelNumber;
+                                    break;
+                                }
 
                                 //[0] = channel uid
                                 //[1] = channel number
                                 //[2] = channel name
-                                radiochannel = chan.IdChannel + "|" + ext_id + "|" + chan.DisplayName + "|";
+                                radiochannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
                                 //[3] = isencrypted
                                 radiochannel += (chan.FreeToAir ? "0" : "1");
                                 //[4] = iswebstream
