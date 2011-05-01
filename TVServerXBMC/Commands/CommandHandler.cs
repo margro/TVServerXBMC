@@ -25,7 +25,7 @@ namespace TVServerXBMC.Commands
             }
         }
 
-        public abstract void handleCommand(String command, String[] arguments, ref TvControl.User me);
+        public abstract void handleCommand(String command, String[] arguments, ref TvControl.IUser me);
         public abstract String getCommandToHandle();
     }
 }

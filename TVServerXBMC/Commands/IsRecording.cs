@@ -15,7 +15,7 @@ namespace TVServerXBMC.Commands
         /*
          * No arguments needed
          */
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
             bool result = TVServerConnection.IsRecording();
             Console.WriteLine("IsRecording result: " + result.ToString());

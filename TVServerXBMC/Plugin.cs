@@ -7,11 +7,70 @@ using TvLibrary.Log;
 
 namespace TVServerXBMC
 {
-    public class XbmcServer : ITvServerPlugin
+    public class TVServerXBMC : ITvServerPlugin
     {
+        #region variables
         Thread listenThread;
         int serverPort = 9596;
         bool connected = false;
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// returns the name of the plugin
+        /// </summary>
+        public string Name
+        {
+            get { return "TVServerXBMC"; }
+        }
+
+        /// <summary>
+        /// returns the version of the plugin
+        /// </summary>
+        public string Version
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+
+        }
+
+        /// <summary>
+        /// returns the author of the plugin
+        /// </summary>
+        public string Author
+        {
+            get { return "margro, Prashant V"; }
+        }
+
+        /// <summary>
+        /// returns if the plugin should only run on the master server
+        /// or also on slave servers
+        /// </summary>
+        public bool MasterOnly
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// returns the setup sections for display in SetupTv
+        /// </summary>
+        public SetupTv.SectionSettings Setup
+        {
+            get { return null; }
+        }
+
+        // properties below are TVServerXBMC specific
+        public bool Connected
+        {
+            get
+            {
+                return connected;
+            }
+        }
 
         public int Port
         {
@@ -19,30 +78,20 @@ namespace TVServerXBMC
             set { serverPort = value; }
         }
 
-        public string Author
-        {
-            get { return "margro, Prashant V"; }
-        }
+        #endregion
 
-        public bool MasterOnly
-        {
-            get { return true; }
-        }
+        #region public methods
 
-        public string Name
-        {
-            get { return "TVServerXBMC"; }
-        }
-
-        public SetupTv.SectionSettings Setup
-        {
-            get { return null; }
-        }
-
+        /// <summary>
+        /// Starts the plugin
+        /// </summary>
         public void Start(TvControl.IController controller)
         {
             // set up our remote control interface
-            try {
+            Log.WriteFile("plugin: TVServerXBMC started");
+
+            try
+            {
                 connected = TVServerConnection.Init(controller);
                 if (connected)
                 {
@@ -82,9 +131,11 @@ namespace TVServerXBMC
             }
         }
 
+        /// <summary>
+        /// Stops the plugin
+        /// </summary>
         public void Stop()
         {
-            Log.Info("TVServerXBMC: Stop()");
             if (listenThread != null)
             {
                 Log.Debug("TVServerXBMC: Listenthread is aborting");
@@ -93,24 +144,10 @@ namespace TVServerXBMC
             }
             if (connected)
               TVServerConnection.CloseAll();
+
+            Log.WriteFile("plugin: TVServerXBMC stopped");
         }
 
-        public string Version
-        {
-            get
-            {
-                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-
-        }
-
-        public bool Connected
-        {
-            get
-            {
-                return connected;
-            }
-        }
+        #endregion methods
     }
-
 }

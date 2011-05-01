@@ -32,7 +32,7 @@ namespace TVServerXBMC
         private Mutex cmdMutex;
         private int clientnr = 0;
         private string username;
-        private TvControl.User me;
+        private TvControl.IUser me;
         private ClientType clientType = ClientType.unknown;
         //private Dictionary<String, TvControl.User> userlist;
 

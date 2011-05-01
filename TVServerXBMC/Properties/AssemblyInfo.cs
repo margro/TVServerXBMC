@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using MediaPortal.Common.Utils;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -10,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TVServerXBMC")]
-[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010")]
+[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +30,10 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.3.102")]
-[assembly: AssemblyFileVersion("1.1.3.102")]
+[assembly: AssemblyVersion("1.1.7.103")]
+[assembly: AssemblyFileVersion("1.1.7.103")]
+
+// Set usage and compatibility information
+[assembly: CompatibleVersion("1.1.7.0", "1.1.6.27644")]
+[assembly: UsesSubsystem("TVE")]
+

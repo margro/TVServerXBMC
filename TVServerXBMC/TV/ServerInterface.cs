@@ -20,7 +20,7 @@ namespace MPTvClient
         IList<TvDatabase.RadioGroupMap> radiomappings = null;
         IList<TvDatabase.Card> cards = null;
         IController controller = null;
-        User me = null;
+        IUser me = null;
         Dictionary<String, String> isTimeShifting = null;
         public static Dictionary<String, TvControl.User> userlist = null;
         public Exception lastException = null;
@@ -119,7 +119,7 @@ namespace MPTvClient
         #endregion
 
         #region Control functions
-        public TvResult StartTimeShifting(int idChannel, ref string rtspURL, ref string remoteserver, ref User user, ref string timeshiftfilename)
+        public TvResult StartTimeShifting(int idChannel, ref string rtspURL, ref string remoteserver, ref IUser user, ref string timeshiftfilename)
         {
             VirtualCard vcard;
             //int cardId = -1;
@@ -207,7 +207,7 @@ namespace MPTvClient
             return result;
         }
 
-        public string GetTimeshiftUrl(ref TvControl.User me)
+        public string GetTimeshiftUrl(ref TvControl.IUser me)
         {
             if (IsTimeShifting(ref me))
             {
@@ -219,7 +219,7 @@ namespace MPTvClient
             return "";
         }
 
-        public bool IsTimeShifting(ref User user)
+        public bool IsTimeShifting(ref IUser user)
         {
             bool result = controller.IsTimeShifting(ref user);
 
@@ -244,7 +244,7 @@ namespace MPTvClient
         }
 
         // Stop the timeshift created by User user
-        public bool StopTimeShifting(ref User user)
+        public bool StopTimeShifting(ref IUser user)
         {
             if ( !IsTimeShifting(ref user) )
                 return false;
@@ -429,9 +429,9 @@ namespace MPTvClient
             {
                 foreach (Card card in cards)
                 {
-                    User user = new User();
+                    IUser user = new User();
                     user.CardId = card.IdCard;
-                    User[] usersForCard = controller.GetUsersForCard(card.IdCard);
+                    IUser[] usersForCard = controller.GetUsersForCard(card.IdCard);
                     if (usersForCard == null)
                     {
                         StreamingStatus state = new StreamingStatus();
@@ -700,6 +700,7 @@ namespace MPTvClient
 
                                 string tvchannel;
                                 int channelNumber = 0;
+                                bool freetoair = true;
 
                                 //Determine the channel number given by the provider using this channel's tuning details
                                 IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
@@ -708,6 +709,7 @@ namespace MPTvClient
                                 {
                                     //For now, just take the first one:
                                     channelNumber = tuningdetail.ChannelNumber;
+                                    freetoair = tuningdetail.FreeToAir;
                                     break;
                                 }
 
@@ -721,7 +723,7 @@ namespace MPTvClient
                                 //[2] = channel name
                                 tvchannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
                                 //[3] = isencrypted
-                                tvchannel += (chan.FreeToAir ? "0" : "1");
+                                tvchannel += (freetoair ? "0" : "1");
 
                                 tvchannels.Add(tvchannel);
                             }
@@ -847,6 +849,7 @@ namespace MPTvClient
 
                                 string radiochannel;
                                 int channelNumber = 0;
+                                bool freetoair = true;
 
                                 //Determine the channel number given by the provider using this channel's tuning details
                                 IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
@@ -855,6 +858,7 @@ namespace MPTvClient
                                 {
                                     //For now, just take the first one:
                                     channelNumber = tuningdetail.ChannelNumber;
+                                    freetoair = tuningdetail.FreeToAir;
                                     break;
                                 }
 
@@ -863,7 +867,7 @@ namespace MPTvClient
                                 //[2] = channel name
                                 radiochannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
                                 //[3] = isencrypted
-                                radiochannel += (chan.FreeToAir ? "0" : "1");
+                                radiochannel += (freetoair ? "0" : "1");
                                 //[4] = iswebstream
                                 //[5] = webstream url
                                 if (chan.IsWebstream())
@@ -1142,7 +1146,7 @@ namespace MPTvClient
                     sched.startTime = schedule.StartTime;
                     sched.endTime = schedule.EndTime;
                     sched.channelID = schedule.IdChannel;
-                    sched.channelName = schedule.ReferencedChannel().Name;
+                    sched.channelName = schedule.ReferencedChannel().DisplayName;
                     sched.description = schedule.ProgramName;
                     ScheduleRecordingType stype = (ScheduleRecordingType)schedule.ScheduleType;
                     sched.type = stype.ToString();

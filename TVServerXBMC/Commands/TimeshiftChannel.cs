@@ -18,7 +18,7 @@ namespace TVServerXBMC.Commands
         /*
          * Expect arguments: ChannelID
          */
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
             if (arguments == null || arguments.Length < 1)
             {

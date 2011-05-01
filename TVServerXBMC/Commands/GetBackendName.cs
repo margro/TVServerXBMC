@@ -13,7 +13,7 @@ namespace TVServerXBMC.Commands
 
         }
 
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
             writer.write(TVServerConnection.getBackendName());
         }

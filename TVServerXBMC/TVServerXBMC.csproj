@@ -16,6 +16,9 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,6 +91,7 @@
     <Compile Include="TV\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Gentle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -97,6 +101,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Common.Utils, Version=1.1.7.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\Common.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="Gentle.Common, Version=1.2.9.1285, Culture=neutral, PublicKeyToken=80b5de62e27be49b">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Gentle.Common.dll</HintPath>
@@ -125,15 +133,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\PluginBase.dll</HintPath>
     </Reference>
-    <Reference Include="PowerScheduler.Interfaces, Version=1.0.4.17429, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\PowerScheduler.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="SetupControls, Version=1.0.0.29853, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\SetupControls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TvBusinessLayer, Version=1.0.4.17440, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

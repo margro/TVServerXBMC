@@ -10,7 +10,7 @@ namespace TVServerXBMC.Commands
             : base(connection)
         {
         }
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
             // this needs no arguments, and will just list all the tvgroups
 

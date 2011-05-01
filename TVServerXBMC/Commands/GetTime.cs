@@ -11,7 +11,7 @@ namespace TVServerXBMC.Commands
         {
         }
 
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
           DateTime localtime = DateTime.Now;
           DateTime utctime = DateTime.UtcNow;

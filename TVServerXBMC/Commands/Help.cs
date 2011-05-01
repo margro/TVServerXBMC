@@ -14,7 +14,7 @@ namespace TVServerXBMC.Commands
         /*
          * No arguments needed, will list all commands available
          */
-        public override void handleCommand(string myCommand, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string myCommand, string[] arguments, ref TvControl.IUser me)
         {
             // get a list of all commands
             Dictionary<String, CommandHandler> allCommands = this.getConnection().getAllHandlers();

@@ -14,7 +14,7 @@ namespace TVServerXBMC.Commands
         /*
          * 1 optional argument: id
          */
-        public override void handleCommand(string command, string[] arguments, ref TvControl.User me)
+        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
             int schedId = -1;
 

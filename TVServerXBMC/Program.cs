@@ -64,7 +64,7 @@ namespace TVServerXBMC.Commands
                 }
             }
 
-            XbmcServer plugin = new XbmcServer();
+            TVServerXBMC plugin = new TVServerXBMC();
             plugin.Port = listenport;
 
             plugin.Start(RemoteControl.Instance);
