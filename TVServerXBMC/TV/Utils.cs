@@ -27,14 +27,25 @@ namespace MPTvClient
     public string timeInfo;
     public string description;
   }
-  public class EPGInfo
-  {
-    public DateTime startTime;
-    public DateTime endTime;
-    public string title;
-    public string description;
-    public string genre;
-  }
+  //public class EPGInfo
+  //{
+  //  public int      idProgram;
+  //  public int      idChannel;
+  //  public DateTime startTime;
+  //  public DateTime endTime;
+  //  public string   title;
+  //  public string   description;
+  //  public string   seriesNum;
+  //  public string   episodeNum;
+  //  public string   genre;
+  //  public DateTime originalAirDate;
+  //  public string   classification;
+  //  public int      starRating;
+  //  public int      parentalRating;
+  //  public string   episodeName;
+  //  public string   episodePart;
+  //  public int      state;
+  //}
   public class ChannelInfo
   {
     public string channelID;
