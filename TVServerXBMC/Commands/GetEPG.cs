@@ -25,26 +25,51 @@ namespace TVServerXBMC.Commands
             }
             else
             {
+                DateTime starttime;
+                DateTime endtime;
                 string channel = arguments[0];
+                
+                if (arguments.Length>=3)
+                {
+                    starttime = DateTime.Parse(arguments[1]);
+                    endtime = DateTime.Parse(arguments[2]);
+                } else {
+                    starttime = DateTime.Now;
+                    endtime = starttime;
+                }
 
                 if (channel != "")
                 {
-                    List<EPGInfo> epgs = TVServerConnection.getEpg(int.Parse(arguments[0]));
+                    List<TvDatabase.Program> epgs = TVServerConnection.getEpg(int.Parse(arguments[0]), starttime, endtime);
 
-                    foreach (EPGInfo e in epgs)
+                    foreach (TvDatabase.Program e in epgs)
                     {
-                        string epg = e.startTime.ToString("u") + "|"
-                          + e.endTime.ToString("u") + "|"
-                          + e.title.Replace("|", "") + "|"
-                          + e.description.Replace("|", "") + "|"
-                          + e.genre;
+                        string epg = e.StartTime.ToString("u") + "|"
+                            + e.EndTime.ToString("u") + "|"
+                            + e.Title.Replace("|", "") + "|"
+                            + e.Description.Replace("|", "") + "|"
+                            + e.Genre.Replace("|", "");
+                        if (arguments.Length >= 3)
+                        {
+                            epg += "|"
+                                + e.IdProgram.ToString() + "|"
+                                + e.IdChannel.ToString() + "|"
+                                + e.SeriesNum + "|"
+                                + e.EpisodeNumber + "|"
+                                + e.EpisodeName + "|"
+                                + e.EpisodePart + "|"
+                                + e.OriginalAirDate.ToString("u") + "|"
+                                + e.Classification + "|"
+                                + e.StarRating.ToString() + "|"
+                                + e.ParentalRating.ToString();
+                        }
                         results.Add(epg);
                     }
                     writer.writeList(results);
                 }
                 else
                 {
-                    writer.write("[ERROR]: Usage: " + getCommandToHandle() + ":chanNr");
+                    writer.write("[ERROR]: Usage: " + getCommandToHandle() + ":chanNr[|startDateTime|endDateTime]");
                 }
             }
         }

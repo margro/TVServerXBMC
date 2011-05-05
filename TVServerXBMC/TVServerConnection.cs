@@ -5,6 +5,7 @@ using MPTvClient;
 using TvControl;
 using System.Net;
 using TvLibrary.Log;
+using TvDatabase;
 
 namespace TVServerXBMC
 {
@@ -264,9 +265,9 @@ namespace TVServerXBMC
             return rtspURL;
         }
 
-        public static List<EPGInfo> getEpg(int chanId)
+        public static List<Program> getEpg(int chanId, DateTime startTime, DateTime endTime)
         {
-            List<EPGInfo> epgs = serverIntf.GetEPGForChannel(chanId.ToString());
+            List<Program> epgs = serverIntf.GetEPGForChannel(chanId.ToString(), startTime, endTime);
             return epgs;
         }
 

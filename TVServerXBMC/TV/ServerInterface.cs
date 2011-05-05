@@ -1302,40 +1302,39 @@ namespace MPTvClient
             if (provider == "mysql") return "yyyy-MM-dd HH:mm:ss";
             return "yyyyMMdd HH:mm:ss";
         }
-        public List<EPGInfo> GetEPGForChannel(string idChannel)
+        public List<Program> GetEPGForChannel(string idChannel, DateTime startTime, DateTime endTime)
         {
             IFormatProvider mmddFormat = new CultureInfo(String.Empty, false);
-            List<EPGInfo> infos = new List<EPGInfo>();
+            //List<Program> infos = new List<Program>();
 
             try
             {
                 SqlBuilder sb = new SqlBuilder(Gentle.Framework.StatementType.Select, typeof(Program));
                 sb.AddConstraint(Operator.Equals, "idChannel", Int32.Parse(idChannel));
-                DateTime thisMorning = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                sb.AddConstraint(String.Format("startTime>='{0}'", thisMorning.ToString(GetDateTimeString(), mmddFormat)));
+                if (startTime >= DateTime.Now)
+                {
+                    DateTime thisMorning = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                    sb.AddConstraint(String.Format("startTime>='{0}'", thisMorning.ToString(GetDateTimeString(), mmddFormat)));
+                }
+                else
+                {
+                    sb.AddConstraint(String.Format("startTime>='{0}'", startTime.ToString(GetDateTimeString(), mmddFormat)));
+                }
+                if (endTime>DateTime.Now)
+                {
+                    sb.AddConstraint(String.Format("endTime<='{0}'", endTime.ToString(GetDateTimeString(), mmddFormat)));
+                }
                 sb.AddOrderByField(true, "startTime");
                 SqlStatement stmt = sb.GetStatement(true);
                 IList programs = ObjectFactory.GetCollection(typeof(Program), stmt.Execute());
-                if (programs != null && programs.Count > 0)
-                {
-                    foreach (Program prog in programs)
-                    {
-                        EPGInfo epg = new EPGInfo();
-                        epg.startTime = prog.StartTime;
-                        epg.endTime = prog.EndTime;
-                        epg.title = prog.Title;
-                        epg.description = prog.Description;
-                        epg.genre = prog.Genre;
-                        infos.Add(epg);
-                    }
-                }
+                return (List<Program>) programs;
             }
             catch(Exception e)
             {
                 Console.WriteLine("Error while obtaining the EPG for channel " + idChannel + ": " + e.Message);
                 Log.Debug("TVServerXBMC: Error while obtaining the EPG for channel " + idChannel + ": " + e.Message);
             }
-            return infos;
+            return null;
         }
 
         public string GetVersion()
