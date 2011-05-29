@@ -990,8 +990,15 @@ namespace MPTvClient
                     //[5] description
                     //[6] stream_url (resolved hostname if resolveHostnames = True)
                     //[7] filename (we can bypass rtsp streaming when XBMC and the TV server are on the same machine)
-                    //[8] lifetime (mediaportal keep until?)
+                    //[8] keepUntilDate (DateTime)
                     //[9] original unresolved stream_url if resolveHostnames = True, otherwise this field is missing
+                    //[10] episodeName (string)
+                    //[11] seriesNumber (string)
+                    //[12] episodeNumber (string)
+                    //[13] episodePart (string)
+                    //[14] scheduleID (int)
+                    //[15] keepUntil (int)
+                    //[16] keepUntilDate (DateTime)
 
                     try
                     {
@@ -1003,20 +1010,31 @@ namespace MPTvClient
                         channelname = rec.IdChannel.ToString();
                     }
 
-                    recording = rec.IdRecording.ToString() + "|"
-                        + rec.StartTime.ToString("u") + "|"
-                        + rec.EndTime.ToString("u") + "|"
-                        + channelname.Replace("|", "") + "|"
-                        + rec.Title.Replace("|","") + "|"
-                        + rec.Description.Replace("|", "") + "|"
-                        + rtspURL + "|"
-                        + rec.FileName + "|"
-                        + rec.KeepUntilDate.ToString("u");
-                    
+                    recording = rec.IdRecording.ToString() + "|"  // 0
+                        + rec.StartTime.ToString("u") + "|"       // 1
+                        + rec.EndTime.ToString("u") + "|"         // 2
+                        + channelname.Replace("|", "") + "|"      // 3
+                        + rec.Title.Replace("|","") + "|"         // 4
+                        + rec.Description.Replace("|", "") + "|"  // 5
+                        + rtspURL + "|"                           // 6
+                        + rec.FileName + "|"                      // 7
+                        + rec.KeepUntilDate.ToString("u") + "|";  // 8
+
                     if (resolveHostnames)
                     {
-                        recording = recording + "|" + OriginalURL;
+                        recording += OriginalURL + "|";           // 9
                     }
+                    else
+                    {
+                        recording += rtspURL + "|";
+                    }
+
+                    recording += rec.KeepUntil.ToString() + "|"   // 10
+                        + rec.EpisodeName.Replace("|", "") + "|"  // 11
+                        + rec.EpisodeNum + "|"                    // 12
+                        + rec.EpisodePart + "|"                   // 13
+                        + rec.SeriesNum + "|"                     // 14
+                        + rec.Idschedule.ToString();              // 15
 
                     reclist.Add(recording);
                 }
