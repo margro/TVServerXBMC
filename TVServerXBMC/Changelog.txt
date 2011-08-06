@@ -1,3 +1,6 @@
+1.1.7.106:
+- Add support for fetching TV card settings: GetCardSettings
+
 1.1.7.105:
 - Extend ListRecordings command with episode/series fields
 

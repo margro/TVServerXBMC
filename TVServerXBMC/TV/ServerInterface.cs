@@ -1535,6 +1535,46 @@ namespace MPTvClient
             return result;
         }
 
+        public  List<String> GetCardSettings(int cardID)
+        {
+            string result = "";
+            List<String> cardSettingsList = new List<String>();
+            try
+            {
+              foreach (Card card in cards)
+              {
+                if ((cardID == -1) || (cardID == card.IdCard))
+                {
+                  result = card.IdCard.ToString() + "|"
+                    + card.DevicePath + "|"
+                    + card.Name + "|"
+                    + card.Priority.ToString() + "|"
+                    + card.GrabEPG.ToString() + "|"
+                    + card.LastEpgGrab.ToString("u") + "|"
+                    + card.RecordingFolder + "|"
+                    + card.IdServer.ToString() + "|"
+                    + card.Enabled.ToString() + "|"
+                    + card.CamType.ToString() + "|"
+                    + card.TimeShiftFolder.ToString() + "|"
+                    + card.RecordingFormat.ToString() + "|"
+                    + card.DecryptLimit.ToString() + "|"
+                    + card.PreloadCard.ToString() + "|"
+                    + card.CAM.ToString() + "|"
+                    + card.netProvider.ToString() + "|"
+                    + card.StopGraph.ToString();
+                  cardSettingsList.Add(result);
+                }
+              }
+            }
+            catch (Exception e)
+            {
+              Console.WriteLine("GetCardSettings: " + e.Message);
+              Log.Debug("TVServerXBMC: Error while obtaining the GetCardSettings: " + e.Message);
+            }
+
+            return cardSettingsList;
+        }
+
         #endregion
     }
 }
