@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TVServerXBMC")]
-[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010")]
+[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.3.104")]
-[assembly: AssemblyFileVersion("1.1.3.104")]
+[assembly: AssemblyVersion("1.1.3.106")]
+[assembly: AssemblyFileVersion("1.1.3.106")]

@@ -51,12 +51,14 @@ namespace TVServerXBMC.Commands
                     if (resolveToIP == true)
                     {
                         result += "|" + originalURL;
-                        result += "|" + timeShiftFileName;
                     }
                     else
                     {
-                        result += "||" + timeShiftFileName;
+                        result += "|";
                     }
+                    result += "|" + timeShiftFileName +
+                      "|" + me.CardId.ToString();
+
                     writer.write(result);
                 }
                 else

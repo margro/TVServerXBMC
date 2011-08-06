@@ -95,9 +95,12 @@ namespace TVServerXBMC
             // TvControl.User commands:
             handlers.Add(new SetUserName(this));
             handlers.Add(new GetUserName(this));
+            // Settings:
+            handlers.Add(new GetCardSettings(this));
+
             //handlers.Add(new Test(this));
 
-            foreach(CommandHandler h in handlers)
+            foreach (CommandHandler h in handlers)
             {
                 allHandlers.Add(h.getCommandToHandle().ToLower(), h);
             }

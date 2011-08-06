@@ -40,6 +40,7 @@
     <Compile Include="Commands\CloseConnection.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\AddSchedule.cs" />
+    <Compile Include="Commands\GetCardSettings.cs" />
     <Compile Include="Commands\GetDriveSpace.cs" />
     <Compile Include="Commands\GetRecordingInfo.cs" />
     <Compile Include="Commands\GetUserName.cs" />

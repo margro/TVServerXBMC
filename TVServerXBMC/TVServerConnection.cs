@@ -348,5 +348,10 @@ namespace TVServerXBMC
         {
             return serverIntf.GetRecordingDriveSpace();
         }
+
+        public static TVServerController GetServerInterface()
+        {
+           return serverIntf;
+        }
     }
 }
