@@ -172,12 +172,12 @@ namespace MPTvClient
                 //Console.WriteLine("Streaming server IP-address: " + GetRTSPserverIP());
 
             }
-            else if (result == TvResult.NoTuningDetails)
+            else if ((result == TvResult.NoTuningDetails) || (result== TvResult.UnknownError))
             {   //Hmmz, maybe a webstream?
                 StopTimeShifting(ref user);
-                Console.WriteLine("TV Server returned: 'NoTuningDetails'.");
+                Console.WriteLine("TV Server returned: 'NoTuningDetails' or 'UnknownError'.");
                 Console.WriteLine("Checking the availability of a webstream for this channel (id=" + idChannel.ToString() + ")");
-                Log.Debug("TVServerXBMC: TV Server returned: 'NoTuningDetails'.");
+                Log.Debug("TVServerXBMC: TV Server returned: 'NoTuningDetails' or 'UnknownError'.");
                 Log.Debug("TVServerXBMC: Checking the availability of a webstream for this channel (id=" + idChannel.ToString() + ")");
                 
                 rtspURL = GetWebStreamURL(idChannel);
