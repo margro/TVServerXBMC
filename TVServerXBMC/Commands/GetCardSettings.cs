@@ -27,7 +27,6 @@ namespace TVServerXBMC.Commands
 
             TVServerController server = TVServerConnection.GetServerInterface();
             results = server.GetCardSettings(cardID);
-            Console.WriteLine(getCommandToHandle() + " " + results);
 
             writer.writeList(results);
         }
