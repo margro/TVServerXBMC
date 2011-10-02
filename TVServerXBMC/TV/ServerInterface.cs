@@ -20,6 +20,7 @@ namespace MPTvClient
         IList<TvDatabase.RadioGroupMap> radiomappings = null;
         IList<TvDatabase.Card> cards = null;
         IController controller = null;
+
         IUser me = null;
         Dictionary<String, String> isTimeShifting = null;
         public static Dictionary<String, TvControl.User> userlist = null;
@@ -163,7 +164,7 @@ namespace MPTvClient
                 }
                 catch { }
 
-                Console.WriteLine("Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
+                Console.WriteLine("Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "' card id=" + vcard.Id);
                 Log.Debug("TVServerXBMC: Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
                 Console.WriteLine("TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
                 Log.Debug("TVServerXBMC: TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
@@ -171,6 +172,23 @@ namespace MPTvClient
                 Log.Debug("TVServerXBMC: Remote server='" + remoteserver + "'");
                 //Console.WriteLine("Streaming server IP-address: " + GetRTSPserverIP());
 
+                try {
+                  //Fetch video stream information (takes approx 2-5 ms):
+                  TvLibrary.Interfaces.IVideoStream videostream = vcard.GetCurrentVideoStream(TVServerController.userlist[user.Name]);
+                  TvLibrary.Interfaces.VideoStreamType vidtype = videostream.StreamType;
+                  Console.WriteLine("Video stream type=" + vidtype.ToString() + " Pid=" + videostream.Pid + " PcrPid=" + videostream.PcrPid);
+
+                  TvLibrary.Interfaces.IAudioStream audiostream = vcard.AudioStream;
+                  TvLibrary.Interfaces.AudioStreamType audiotype = audiostream.StreamType;
+                  Console.WriteLine("Audio stream type=" + audiotype.ToString() + " Pid=" + audiostream.Pid + " Language=" + audiostream.Language);
+                }
+                catch { }
+
+                //long pos = 0;
+                //long bufferId = 0;
+
+                //controller.TimeShiftGetCurrentFilePosition(ref user, ref pos, ref bufferId);
+                //Console.WriteLine("TimeShift file pos=" + pos.ToString() + " buffer id=" + bufferId.ToString());
             }
             else if ((result == TvResult.NoTuningDetails) || (result== TvResult.UnknownError))
             {   //Hmmz, maybe a webstream?
@@ -204,6 +222,7 @@ namespace MPTvClient
             watch.Stop();
             Console.WriteLine("StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
             Log.Debug("TVServerXBMC: StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
+
             return result;
         }
 
@@ -1459,6 +1478,7 @@ namespace MPTvClient
                     updatedSchedule.PostRecordInterval = postRecordInterval;
                 }
                 updatedSchedule.Persist();
+                RemoteControl.Instance.OnNewSchedule();
 
                 return true;
             }
@@ -1476,6 +1496,7 @@ namespace MPTvClient
 
             recording.Title = recordingName;
             recording.Persist();
+
             return true;
           }
           catch
@@ -1575,6 +1596,15 @@ namespace MPTvClient
             return cardSettingsList;
         }
 
+        public int GetSignalQuality(int cardID)
+        {
+          return controller.SignalLevel(cardID);
+        }
+
+        public int GetSignalLevel(int cardID)
+        {
+          return controller.SignalLevel(cardID);
+        }
         #endregion
     }
 }

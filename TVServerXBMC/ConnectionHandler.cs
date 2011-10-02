@@ -97,6 +97,7 @@ namespace TVServerXBMC
             handlers.Add(new GetUserName(this));
             // Settings:
             handlers.Add(new GetCardSettings(this));
+            handlers.Add(new GetSignalQuality(this));
 
             //handlers.Add(new Test(this));
 
