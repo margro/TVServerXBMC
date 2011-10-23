@@ -163,7 +163,7 @@ namespace MPTvClient
                 }
                 catch { }
 
-                Console.WriteLine("Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
+                Console.WriteLine("Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "' card id=" + vcard.Id);
                 Log.Debug("TVServerXBMC: Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
                 Console.WriteLine("TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
                 Log.Debug("TVServerXBMC: TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
@@ -204,6 +204,7 @@ namespace MPTvClient
             watch.Stop();
             Console.WriteLine("StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
             Log.Debug("TVServerXBMC: StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
+
             return result;
         }
 
@@ -1455,6 +1456,7 @@ namespace MPTvClient
                     updatedSchedule.PostRecordInterval = postRecordInterval;
                 }
                 updatedSchedule.Persist();
+                RemoteControl.Instance.OnNewSchedule();
 
                 return true;
             }
@@ -1472,6 +1474,7 @@ namespace MPTvClient
 
             recording.Title = recordingName;
             recording.Persist();
+
             return true;
           }
           catch
@@ -1571,6 +1574,15 @@ namespace MPTvClient
             return cardSettingsList;
         }
 
+        public int GetSignalQuality(int cardID)
+        {
+          return controller.SignalLevel(cardID);
+        }
+
+        public int GetSignalLevel(int cardID)
+        {
+          return controller.SignalLevel(cardID);
+        }
         #endregion
     }
 }

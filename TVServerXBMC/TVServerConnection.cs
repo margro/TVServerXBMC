@@ -191,7 +191,7 @@ namespace TVServerXBMC
 
             if (result != TvResult.Succeeded)
             {
-                rtspURL = "[ERROR]: TVServer answer: " + result.ToString();
+                rtspURL = "[ERROR]: TVServer answer: " + result.ToString() + "|" + (int) result;
             }
             else
             {
