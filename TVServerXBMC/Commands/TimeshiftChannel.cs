@@ -48,16 +48,19 @@ namespace TVServerXBMC.Commands
                     }
 
                     result = TVServerConnection.playChannel(chanId, resolveToIP, ref originalURL, ref me, ref timeShiftFileName);
-                    if (resolveToIP == true)
+                    if ( !result.StartsWith("[ERROR]") )
                     {
-                        result += "|" + originalURL;
+                      if (resolveToIP == true)
+                      {
+                          result += "|" + originalURL;
+                      }
+                      else
+                      {
+                          result += "|";
+                      }
+                      result += "|" + timeShiftFileName +
+                        "|" + me.CardId.ToString();
                     }
-                    else
-                    {
-                        result += "|";
-                    }
-                    result += "|" + timeShiftFileName +
-                      "|" + me.CardId.ToString();
 
                     writer.write(result);
                 }

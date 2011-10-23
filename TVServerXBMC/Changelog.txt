@@ -1,3 +1,10 @@
+1.2.1.109:
+- Send TvResult as integer to XBMC to be able to show a localized error message when timeshifting fails
+
+1.2.1.108:
+- Update to MediaPortal TVServer 1.2.1
+- Add GetSignalQuality command
+
 1.1.7.107:
 - Fix radio webstream detection when starting a timeshift fails
 
