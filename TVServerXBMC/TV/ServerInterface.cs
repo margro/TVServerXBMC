@@ -120,13 +120,15 @@ namespace MPTvClient
         #endregion
 
         #region Control functions
-        public TvResult StartTimeShifting(int idChannel, ref string rtspURL, ref string remoteserver, ref IUser user, ref string timeshiftfilename)
+        public TvResult StartTimeShifting(int idChannel, ref string rtspURL, ref string remoteserver, ref IUser user, ref string timeshiftfilename, ref Int64 timeShiftBufPos, ref long timeShiftBufNr)
         {
             VirtualCard vcard;
             //int cardId = -1;
             TvResult result;
             remoteserver = "";
-
+            timeShiftBufNr = -1;
+            timeShiftBufPos = -1;
+ 
             System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
 
             //cardId = user.CardId;
@@ -176,19 +178,16 @@ namespace MPTvClient
                   //Fetch video stream information (takes approx 2-5 ms):
                   TvLibrary.Interfaces.IVideoStream videostream = vcard.GetCurrentVideoStream(TVServerController.userlist[user.Name]);
                   TvLibrary.Interfaces.VideoStreamType vidtype = videostream.StreamType;
-                  Console.WriteLine("Video stream type=" + vidtype.ToString() + " Pid=" + videostream.Pid + " PcrPid=" + videostream.PcrPid);
+                  Console.WriteLine("Video stream type=" + vidtype.ToString() + " Pid=" + videostream.Pid.ToString("X") + " PcrPid=" + videostream.PcrPid.ToString("X"));
 
                   TvLibrary.Interfaces.IAudioStream audiostream = vcard.AudioStream;
                   TvLibrary.Interfaces.AudioStreamType audiotype = audiostream.StreamType;
-                  Console.WriteLine("Audio stream type=" + audiotype.ToString() + " Pid=" + audiostream.Pid + " Language=" + audiostream.Language);
+                  Console.WriteLine("Audio stream type=" + audiotype.ToString() + " Pid=" + audiostream.Pid.ToString("X") + " Language=" + audiostream.Language);
                 }
                 catch { }
 
-                //long pos = 0;
-                //long bufferId = 0;
-
-                //controller.TimeShiftGetCurrentFilePosition(ref user, ref pos, ref bufferId);
-                //Console.WriteLine("TimeShift file pos=" + pos.ToString() + " buffer id=" + bufferId.ToString());
+                controller.TimeShiftGetCurrentFilePosition(ref user, ref timeShiftBufPos, ref timeShiftBufNr);
+                Console.WriteLine("TimeShift file pos=" + timeShiftBufPos.ToString() + " buffer id=" + timeShiftBufNr.ToString());
             }
             else if ((result == TvResult.NoTuningDetails) || (result== TvResult.UnknownError))
             {   //Hmmz, maybe a webstream?
