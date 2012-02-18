@@ -1,3 +1,6 @@
+1.2.2.111:
+- Extend ListRecordings command with Genre, IdChannel and IsRecording field
+
 1.2.2.110:
 - Send timeshift buffer position to XBMC on a channel switch
 - Update binaries for MediaPortal TVServer 1.2.2
