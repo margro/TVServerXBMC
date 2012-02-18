@@ -1,3 +1,7 @@
+1.2.2.110:
+- Send timeshift buffer position to XBMC on a channel switch
+- Update binaries for MediaPortal TVServer 1.2.2
+
 1.2.1.109:
 - Send TvResult as integer to XBMC to be able to show a localized error message when timeshifting fails
 

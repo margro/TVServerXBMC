@@ -179,7 +179,7 @@ namespace TVServerXBMC
          * \param  OriginalURL is the URL given to us by the TVServer
          * \return value is the URL with resolved hostnames,
          */
-        public static String playChannel(int chanId, bool resolveHostnames, ref string OriginalURL, ref TvControl.IUser me, ref string timeShiftFileName)
+        public static String playChannel(int chanId, bool resolveHostnames, ref string OriginalURL, ref TvControl.IUser me, ref string timeShiftFileName, ref Int64 timeShiftBufPos, ref long timeShiftBufNr)
         {
             string rtspURL = "";
             string remoteserver = "";
@@ -187,7 +187,7 @@ namespace TVServerXBMC
             //serverIntf.StopTimeShifting(ref me);
             timeshiftChannel.Remove(me.Name);
 
-            TvResult result = serverIntf.StartTimeShifting(chanId, ref rtspURL, ref remoteserver, ref me, ref timeShiftFileName);
+            TvResult result = serverIntf.StartTimeShifting(chanId, ref rtspURL, ref remoteserver, ref me, ref timeShiftFileName, ref timeShiftBufPos, ref timeShiftBufNr);
 
             if (result != TvResult.Succeeded)
             {

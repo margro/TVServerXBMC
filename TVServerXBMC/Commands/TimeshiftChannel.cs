@@ -33,6 +33,8 @@ namespace TVServerXBMC.Commands
                 string originalURL = "";
                 string result;
                 string timeShiftFileName = "";
+                Int64 timeShiftBufPos = 0;
+                long timeShiftBufNr = 0;
 
                 if (arguments.Length >= 2)
                 {
@@ -47,7 +49,7 @@ namespace TVServerXBMC.Commands
                         TVServerConnection.StopTimeshift(ref me);
                     }
 
-                    result = TVServerConnection.playChannel(chanId, resolveToIP, ref originalURL, ref me, ref timeShiftFileName);
+                    result = TVServerConnection.playChannel(chanId, resolveToIP, ref originalURL, ref me, ref timeShiftFileName, ref timeShiftBufPos, ref timeShiftBufNr);
                     if ( !result.StartsWith("[ERROR]") )
                     {
                       if (resolveToIP == true)
@@ -59,7 +61,9 @@ namespace TVServerXBMC.Commands
                           result += "|";
                       }
                       result += "|" + timeShiftFileName +
-                        "|" + me.CardId.ToString();
+                        "|" + me.CardId.ToString() +
+                        "|" + timeShiftBufPos.ToString() +
+                        "|" + timeShiftBufNr.ToString();
                     }
 
                     writer.write(result);
@@ -67,7 +71,7 @@ namespace TVServerXBMC.Commands
                 else
                 {   //backward compatibility
                     TVServerConnection.StopTimeshift(ref me);
-                    result = TVServerConnection.playChannel(chanId, resolveToIP, ref originalURL, ref me, ref timeShiftFileName);
+                    result = TVServerConnection.playChannel(chanId, resolveToIP, ref originalURL, ref me, ref timeShiftFileName, ref timeShiftBufPos, ref timeShiftBufNr);
                     writer.write(result);
                 }
                 
