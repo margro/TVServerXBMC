@@ -1207,62 +1207,82 @@ namespace MPTvClient
             List<String> schedlist = new List<String>();
             try
             {
+
                 IList<Schedule> schedules = Schedule.ListAll();
                 foreach (Schedule sched in schedules)
                 {
                     String schedule;
                     String channelname;
-
-                    //XBMC pvr side:
-                    //
-                    //[0]  index/id
-                    //[1]  start date + time
-                    //[2]  end   date + time
-                    //[3]  channel nr (mediaportal channel id)
-                    //[4]  channel name
-                    //[5]  program name
-                    //[6]  repeat info/schedule type
-                    //[7]  priorty
-                    //[8]  isdone
-                    //[9]  ismanual
-                    //[10] directory
-                    //[11] keep method
-                    //[12] keep date
-                    //[13] preRecordInterval
-                    //[14] postRecordInterval
-                    //[15] canceled
-                    //[16] series
-                    //[17] isrecording (TODO)
                     try
                     {
-                        channelname = sched.ReferencedChannel().DisplayName;
-                    }
-                    catch
-                    {   // Occurs for example when a recording is pointing to a channel
-                        // that is deleted in the meantime
-                        channelname = sched.IdChannel.ToString();
-                    }
+                        IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
+                        //foreach (Program pr in progs) 
+                        if (progs.Count > 0) //Currently xbmc use the last occurence of each program has the next recording, when fixe we should return all resolved program.
+                        {
+                            Program pr = progs[0];
+                            //XBMC pvr side:
+                            //
+                            //[0]  index/id
+                            //[1]  start date + time
+                            //[2]  end   date + time
+                            //[3]  channel nr (mediaportal channel id)
+                            //[4]  channel name
+                            //[5]  program name
+                            //[6]  repeat info/schedule type
+                            //[7]  priorty
+                            //[8]  isdone
+                            //[9]  ismanual
+                            //[10] directory
+                            //[11] keep method
+                            //[12] keep date
+                            //[13] preRecordInterval
+                            //[14] postRecordInterval
+                            //[15] canceled
+                            //[16] series
+                            //[17] isrecording 
+                            try
+                            {
+                                channelname = sched.ReferencedChannel().DisplayName;
+                            }
+                            catch
+                            {   // Occurs for example when a recording is pointing to a channel
+                                // that is deleted in the meantime
+                                channelname = sched.IdChannel.ToString();
+                            }
+                            string strIsRecording;
+                            if (pr.IsRecording)
+                                strIsRecording = "True";
+                            else strIsRecording = "False";
 
-                    schedule = sched.IdSchedule.ToString() + "|"
-                        + sched.StartTime.ToString("u") + "|"
-                        + sched.EndTime.ToString("u") + "|"
-                        + sched.IdChannel.ToString() + "|"
-                        + channelname.Replace("|", "") + "|"
-                        + sched.ProgramName.Replace("|", "") + "|"
-                        + sched.ScheduleType.ToString() + "|"
-                        + sched.Priority.ToString() + "|"
-                        + sched.IsDone().ToString() + "|"
-                        + sched.IsManual.ToString() + "|"
-                        + sched.Directory + "|"
-                        + sched.KeepMethod.ToString() + "|"
-                        + sched.KeepDate.ToString("u") + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.Canceled.ToString("u") + "|"
-                        + sched.Series.ToString() + "|"
-                        + "False";
+                            schedule = sched.IdSchedule.ToString() + "|"
+                                + pr.StartTime.ToString("u") + "|"
+                                + pr.EndTime.ToString("u") + "|"
+                                + pr.IdChannel.ToString() + "|"
+                                + channelname.Replace("|", "") + "|"
+                                + sched.ProgramName.Replace("|", "") + "|"
+                                + sched.ScheduleType.ToString() + "|"
+                                + sched.Priority.ToString() + "|"
+                                + sched.IsDone().ToString() + "|"
+                                + sched.IsManual.ToString() + "|"
+                                + sched.Directory + "|"
+                                + sched.KeepMethod.ToString() + "|"
+                                + sched.KeepDate.ToString("u") + "|"
+                                + sched.PreRecordInterval.ToString() + "|"
+                                + sched.PreRecordInterval.ToString() + "|"
+                                + sched.Canceled.ToString("u") + "|"
+                                + sched.Series.ToString() + "|"
+                                + strIsRecording;
 
-                    schedlist.Add(schedule);
+                            schedlist.Add(schedule);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        lastException = ex;
+                        Console.WriteLine(ex.ToString());
+                        Log.Error("TVServerXBMC: " + ex.ToString());
+                        return null;
+                    }
                 }
             }
             catch (Exception ex)
