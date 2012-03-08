@@ -1010,13 +1010,15 @@ namespace MPTvClient
                     //[7] filename (we can bypass rtsp streaming when XBMC and the TV server are on the same machine)
                     //[8] keepUntilDate (DateTime)
                     //[9] original unresolved stream_url if resolveHostnames = True, otherwise this field is missing
-                    //[10] episodeName (string)
-                    //[11] seriesNumber (string)
+                    //[10] keepUntil (int)
+                    //[11] episodeName (string)
                     //[12] episodeNumber (string)
                     //[13] episodePart (string)
-                    //[14] scheduleID (int)
-                    //[15] keepUntil (int)
-                    //[16] keepUntilDate (DateTime)
+                    //[14] seriesNumber (string)
+                    //[15] scheduleID (int)
+                    //[16] Genre (string)
+                    //[17] channel id (int)
+                    //[18] isrecording (bool)
 
                     try
                     {
@@ -1052,7 +1054,11 @@ namespace MPTvClient
                         + rec.EpisodeNum + "|"                    // 12
                         + rec.EpisodePart + "|"                   // 13
                         + rec.SeriesNum + "|"                     // 14
-                        + rec.Idschedule.ToString();              // 15
+                        + rec.Idschedule.ToString() + "|"         // 15
+                        + rec.Genre + "|"                         // 16
+                        + rec.IdChannel.ToString() + "|"          // 17
+                        + rec.IsRecording.ToString();             // 18
+                    
 
                     reclist.Add(recording);
                 }
