@@ -1218,6 +1218,11 @@ namespace MPTvClient
                 {
                     String schedule;
                     String channelname;
+                    String strIsRecording = "False";
+                    String strStartTime;
+                    String strEndTime;
+                    String strIdChannel;
+                    String strProgramName;
 
                     //XBMC pvr side:
                     //
@@ -1249,12 +1254,36 @@ namespace MPTvClient
                         channelname = sched.IdChannel.ToString();
                     }
 
+                    strStartTime = sched.StartTime.ToString("u");
+                    strEndTime = sched.EndTime.ToString("u");
+                    strIdChannel = sched.IdChannel.ToString();
+                    strProgramName = sched.ProgramName;
+
+                    try
+                    {
+                      IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
+                      if (progs.Count > 0) //Currently xbmc use the last occurence of each program has the next recording, when fixe we should return all resolved program.
+                      {
+                        Program pr = progs[0];
+                        strStartTime = pr.StartTime.ToString("u");
+                        strEndTime = pr.EndTime.ToString("u");
+                        strIdChannel = pr.IdChannel.ToString();
+                        strProgramName = pr.Title;
+                        if (pr.EpisodeName.Length>0)
+                          strProgramName += " - " + pr.EpisodeName;
+                        if (pr.IsRecording)
+                          strIsRecording = "True";
+                      }
+                    }
+                    catch
+                    { }
+
                     schedule = sched.IdSchedule.ToString() + "|"
-                        + sched.StartTime.ToString("u") + "|"
-                        + sched.EndTime.ToString("u") + "|"
-                        + sched.IdChannel.ToString() + "|"
+                        + strStartTime + "|"
+                        + strEndTime + "|"
+                        + strIdChannel + "|"
                         + channelname.Replace("|", "") + "|"
-                        + sched.ProgramName.Replace("|", "") + "|"
+                        + strProgramName.Replace("|", "") + "|"
                         + sched.ScheduleType.ToString() + "|"
                         + sched.Priority.ToString() + "|"
                         + sched.IsDone().ToString() + "|"
@@ -1266,7 +1295,7 @@ namespace MPTvClient
                         + sched.PreRecordInterval.ToString() + "|"
                         + sched.Canceled.ToString("u") + "|"
                         + sched.Series.ToString() + "|"
-                        + "False";
+                        + strIsRecording;
 
                     schedlist.Add(schedule);
                 }
