@@ -1,3 +1,6 @@
+1.2.2.112:
+- Prefer program data for ListSchedules command when available (Thanks jajoflo)
+
 1.2.2.111:
 - Extend ListRecordings command with Genre, IdChannel and IsRecording field
 
