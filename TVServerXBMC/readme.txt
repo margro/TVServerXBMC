@@ -5,11 +5,11 @@ Original Author: EvilDude/Prashant 2008-2009
 http://forum.team-mediaportal.com/mediaportal-1-talk-45/xbmc-python-script-36590/
 
 Improvements & XBMC PVR-Addon extensions:
-Marcel Groothuis, 2010-2011
+Marcel Groothuis, 2010-2012
 http://www.scintilla.utwente.nl/~marcelg/xbmc
 _______________________________________________________________________________
 
-Tested against MediaPortal 1.2.0 alpha - 1.2.1 (TV Server 1.2.0 alpha - 1.2.1)
+Tested against MediaPortal 1.2.0 alpha - 1.2.3 (TV Server 1.2.0 alpha - 1.2.3)
 
 This version is compatible with the "MediaPortal" PVR addon for XBMC from
  http
@@ -36,7 +36,7 @@ using the source package.
 
 -[ Compile ]___________________________________________________________________
 1. Install "Visual C# .NET 2008 Express
-2. If you are using a different version of MediaPortal than "1.1.2":
+2. If you are using a different version of MediaPortal than "1.2.3":
     Replace the files in the "References/" folder by the ones from your
     MediaPortal TV Server installation
 3. Open the "TVServerXBMC.sln" and build the "Debug" version (.exe)
@@ -94,14 +94,14 @@ type "telnet" + enter (without quotes) when you see an empty black screen with
 a blinking cursor.
 
 It should answer:
-Protocol Accepted; TVServerXBMC version: 1.1.0.100
+Protocol Accepted; TVServerXBMC version: 1.2.3.113
  ---- End ----
 >
 
 Now you can control the TV Server similar to the example below:
 ===============================================================
 
-Protocol Accepted; TVServerXBMC version: 1.1.0.100
+Protocol Accepted; TVServerXBMC version: 1.2.3.113
  ---- End ----
 > help
 ListChannels

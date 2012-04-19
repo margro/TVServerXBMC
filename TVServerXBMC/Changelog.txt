@@ -1,3 +1,9 @@
+1.2.3.113:
+- Update binaries for MediaPortal TVServer 1.2.3
+- When there is an episode name, skip the title as it is usually redundant with the folder name.
+- Properly handle Schedule not resolving to a program. (Occurs when the season is finished).
+- Properly handle Instant recording not having a program name that matches the one in the EPG.
+
 1.2.2.112:
 - Prefer program data for ListSchedules command when available (Thanks jajoflo)
 
