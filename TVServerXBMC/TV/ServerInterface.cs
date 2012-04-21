@@ -1208,6 +1208,30 @@ namespace MPTvClient
             }
             return schedInfos;
         }
+        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime, string strIdChannel, string strchannelname, string strProgramName, Schedule sched, string strIsRecording, string stridProgram) 
+        {
+            string schedule; 
+            schedule = strSchedId + "|"
+                + strStartTime + "|"
+                + strEndTime + "|"
+                + strIdChannel + "|"
+                + strchannelname+ "|"
+                + strProgramName+ "|"
+                + sched.ScheduleType.ToString() + "|"
+                + sched.Priority.ToString() + "|"
+                + sched.IsDone().ToString() + "|"
+                + sched.IsManual.ToString() + "|"
+                + sched.Directory + "|"
+                + sched.KeepMethod.ToString() + "|"
+                + sched.KeepDate.ToString("u") + "|"
+                + sched.PreRecordInterval.ToString() + "|"
+                + sched.PreRecordInterval.ToString() + "|"
+                + sched.Canceled.ToString("u") + "|"
+                + sched.Series.ToString() + "|"
+                + strIsRecording + "|"
+                + stridProgram;
+            return schedule;
+        }
 
         public List<String> GetSchedules()
         {
@@ -1222,10 +1246,12 @@ namespace MPTvClient
                     String strIsRecording = "False";
                     String strStartTime;
                     String strEndTime;
+                    String strSchedId;
                     String strIdChannel;
                     String strProgramName;
-
-                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a series we won't use this.
+                    int idProgram = 0;
+ 
+                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a serie we won't use this.
                         continue;
 
                     //XBMC pvr side:
@@ -1248,6 +1274,7 @@ namespace MPTvClient
                     //[15] canceled
                     //[16] series
                     //[17] isrecording (TODO)
+                    //[18] idProgram
                     try
                     {
                         channelname = sched.ReferencedChannel().DisplayName;
@@ -1257,7 +1284,7 @@ namespace MPTvClient
                         // that is deleted in the meantime
                         channelname = sched.IdChannel.ToString();
                     }
-
+                    strSchedId = sched.IdSchedule.ToString();
                     strStartTime = sched.StartTime.ToString("u");
                     strEndTime = sched.EndTime.ToString("u");
                     strIdChannel = sched.IdChannel.ToString();
@@ -1265,9 +1292,8 @@ namespace MPTvClient
                     try
                     {
                         IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
-                        if (progs.Count > 0) //Currently xbmc uses the last occurence of each program as the next recording; we should return all resolved program.
+                        foreach (Program pr in progs) 
                         {
-                            Program pr = progs[0];
                             strStartTime = pr.StartTime.ToString("u");
                             strEndTime = pr.EndTime.ToString("u");
                             strIdChannel = pr.IdChannel.ToString();
@@ -1276,42 +1302,35 @@ namespace MPTvClient
                                 strProgramName += " - " + pr.EpisodeName;
                             if (pr.IsRecording)
                                 strIsRecording = "True";
+                            else strIsRecording = "False";
+                            idProgram = pr.IdProgram;
+                            schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""), 
+                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString()); 
+                            schedlist.Add(schedule);
                         }
-                        else if((ScheduleRecordingType)sched.ScheduleType!=(ScheduleRecordingType.Once))
+ 
+                        if (progs.Count == 0)
                         {
-                            continue; // This timer does not resolve to a program. Do not return it until we have a state for it in XBMC.
-                        }
-                        else //IF the schedule did not resolve to any program, typical when creating an Instant Recording frm XBMC and the name does not match a program name.
-                        {
-                            VirtualCard card;
-                            TvControl.TvServer tv = new TvServer();
-                            if(tv.IsRecordingSchedule(sched.IdSchedule, out card))
-                                strIsRecording = "True";
+                            if ((ScheduleRecordingType)sched.ScheduleType != (ScheduleRecordingType.Once))
+                            {
+                                continue; //This timer does not resolve to a program. Do not return it until we have a state for it in XBMC.
+                            }
+                            else //If the schedule did not resolve to any program, typical when creating an Instant Recording from XBMC and the name does not match a program name.
+                            {
+                                VirtualCard card;
+                                TvControl.TvServer tv = new TvServer();
+                                if (tv.IsRecordingSchedule(sched.IdSchedule, out card))
+                                    strIsRecording = "True";
+                                idProgram = -1;
+                                schedule=FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
+                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString()); 
+                                schedlist.Add(schedule);
+                            } 
                         }
                     }
                     catch
                     { }
-                    
-                    schedule = sched.IdSchedule.ToString() + "|"
-                        + strStartTime + "|"
-                        + strEndTime + "|"
-                        + strIdChannel + "|"
-                        + channelname.Replace("|", "") + "|"
-                        + strProgramName.Replace("|", "") + "|"
-                        + sched.ScheduleType.ToString() + "|"
-                        + sched.Priority.ToString() + "|"
-                        + sched.IsDone().ToString() + "|"
-                        + sched.IsManual.ToString() + "|"
-                        + sched.Directory + "|"
-                        + sched.KeepMethod.ToString() + "|"
-                        + sched.KeepDate.ToString("u") + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.Canceled.ToString("u") + "|"
-                        + sched.Series.ToString() + "|"
-                        + strIsRecording;
 
-                    schedlist.Add(schedule);
                 }
             }
             catch (Exception ex)
