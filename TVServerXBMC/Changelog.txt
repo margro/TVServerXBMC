@@ -1,3 +1,7 @@
+1.2.3.114:
+- Each MP Scheduled Program will translate into one Timer in xbmc. (Credits jajoflo)
+- Each timer will retain it's schedule id so the behavior won't change when modifying/deleting a timer. (Credits jajoflo)
+
 1.2.3.113:
 - Update binaries for MediaPortal TVServer 1.2.3
 - When there is an episode name, skip the title as it is usually redundant with the folder name.
