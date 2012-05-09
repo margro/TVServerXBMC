@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
 using System.IO;
-using MPTvClient;
+using TVServerXBMC;
 
 namespace TVServerXBMC.Commands
 {

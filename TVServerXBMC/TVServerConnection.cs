@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MPTvClient;
+using TVServerXBMC;
 using TvControl;
 using System.Net;
 using TvLibrary.Log;

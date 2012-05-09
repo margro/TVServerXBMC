@@ -9,7 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using TVServerXBMC.Commands;
 using TvLibrary.Log;
-using MPTvClient;
+using TVServerXBMC;
 
 namespace TVServerXBMC
 {

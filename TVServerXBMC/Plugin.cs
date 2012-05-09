@@ -4,150 +4,261 @@ using System.Text;
 using TvEngine;
 using System.Threading;
 using TvLibrary.Log;
+using TvLibrary.Interfaces;
+using TvEngine.Events;
+using TVServerXBMC.Forms;
 
 namespace TVServerXBMC
 {
-    public class TVServerXBMC : ITvServerPlugin
+    public class TVServerXBMCPlugin : ITvServerPlugin
     {
-        #region variables
-        Thread listenThread;
-        int serverPort = 9596;
-        bool connected = false;
+      #region variables
+      int m_defaultServerPort = 9596;
+      int m_serverPort = 9596;
+      bool connected = false;
+      Listener m_listener = null;
 
-        #endregion
+      #endregion
 
-        #region properties
+      #region properties
 
-        /// <summary>
-        /// returns the name of the plugin
-        /// </summary>
-        public string Name
+      /// <summary>
+      /// returns the name of the plugin
+      /// </summary>
+      public string Name
+      {
+        get { return "TVServerXBMC"; }
+      }
+
+      /// <summary>
+      /// returns the version of the plugin
+      /// </summary>
+      public string Version
+      {
+        get
         {
-            get { return "TVServerXBMC"; }
+          return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
+      }
 
-        /// <summary>
-        /// returns the version of the plugin
-        /// </summary>
-        public string Version
+      /// <summary>
+      /// returns the author of the plugin
+      /// </summary>
+      public string Author
+      {
+        get { return "margro, Prashant V"; }
+      }
+
+      /// <summary>
+      /// returns if the plugin should only run on the master server
+      /// or also on slave servers
+      /// </summary>
+      public bool MasterOnly
+      {
+        get { return true; }
+      }
+
+      // properties below are TVServerXBMC specific
+      public bool Connected
+      {
+        get
         {
-            get
-            {
-                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-
+          return connected;
         }
+      }
 
-        /// <summary>
-        /// returns the author of the plugin
-        /// </summary>
-        public string Author
-        {
-            get { return "margro, Prashant V"; }
-        }
+      public int Port
+      {
+        get { return m_serverPort; }
+        set { m_serverPort = value; }
+      }
 
-        /// <summary>
-        /// returns if the plugin should only run on the master server
-        /// or also on slave servers
-        /// </summary>
-        public bool MasterOnly
-        {
-            get { return true; }
-        }
+      #endregion
 
-        /// <summary>
-        /// returns the setup sections for display in SetupTv
-        /// </summary>
-        public SetupTv.SectionSettings Setup
-        {
-            get { return null; }
-        }
+      #region IPlugin Methods
 
-        // properties below are TVServerXBMC specific
-        public bool Connected
-        {
-            get
-            {
-                return connected;
-            }
-        }
+      /// <summary>
+      /// Starts the plugin
+      /// </summary>
+      public void Start(TvControl.IController controller)
+      {
+          // set up our remote control interface
+          Log.WriteFile("TVServerXBMC: plugin started");
 
-        public int Port
-        {
-            get { return serverPort; }
-            set { serverPort = value; }
-        }
+          try
+          {
+              LoadSettings();
 
-        #endregion
-
-        #region public methods
-
-        /// <summary>
-        /// Starts the plugin
-        /// </summary>
-        public void Start(TvControl.IController controller)
-        {
-            // set up our remote control interface
-            Log.WriteFile("plugin: TVServerXBMC started");
-
-            try
-            {
-                connected = TVServerConnection.Init(controller);
-                if (connected)
+              connected = TVServerConnection.Init(controller);
+              if (connected)
+              {
+                if (GlobalServiceProvider.Instance.IsRegistered<ITvServerEvent>())
                 {
-                    Log.Info("TVServerXBMC: Start listening on port " + serverPort);
-
-                    // start a thread for the listener
-
-                    Listener l = new Listener(serverPort);
-                    if (l.StartListening())
-                    {
-                        // start a thread to listen for clients
-                        //(new Thread(new ThreadStart(ListenForClients)).Start ();
-                        try
-                        {
-                            listenThread = new Thread(new ThreadStart(l.ListenForClients));
-                            listenThread.Start();
-                        }
-                        catch
-                        {
-                            l.Stop();
-                        }
-                    }
-                    else
-                    {
-                        connected = false;
-                    }
+                  GlobalServiceProvider.Instance.TryGet<ITvServerEvent>().OnTvServerEvent += events_OnTvServerEvent;
+                  Log.Debug("TVServerXBMC: Registered OnTvServerEvent with TV Server");
                 }
-                else
-                {
-                    Log.Error("TVServerXBMC: TVServerConnection init failed.");
-                }
-            }
-            catch
-            {
-                Log.Error("TVServerXBMC: TVServerConnection.Init failed!");
-                Console.WriteLine("TVServerConnection.Init failed!");
-            }
-        }
 
-        /// <summary>
-        /// Stops the plugin
-        /// </summary>
-        public void Stop()
+                connected = StartListenThread();
+              }
+              else
+              {
+                  Log.Error("TVServerXBMC: TVServerConnection init failed.");
+              }
+          }
+          catch
+          {
+              Log.Error("TVServerXBMC: TVServerConnection.Init failed!");
+              Console.WriteLine("TVServerConnection.Init failed!");
+          }
+      }
+
+      /// <summary>
+      /// Stops the plugin
+      /// </summary>
+      public void Stop()
+      {
+        if (GlobalServiceProvider.Instance.IsRegistered<ITvServerEvent>())
         {
-            if (listenThread != null)
-            {
-                Log.Debug("TVServerXBMC: Listenthread is aborting");
-                listenThread.Abort();
-                listenThread = null;
-            }
-            if (connected)
-              TVServerConnection.CloseAll();
-
-            Log.WriteFile("plugin: TVServerXBMC stopped");
+          Log.Debug("TVServerXBMC: Unregistered OnTvServerEvent with TV Server");
+          GlobalServiceProvider.Instance.Get<ITvServerEvent>().OnTvServerEvent -= events_OnTvServerEvent;
         }
 
-        #endregion methods
+        StopListenThread();
+
+        Log.WriteFile("TVServerXBMC: plugin stopped");
+      }
+
+      private bool StartListenThread()
+      {
+        Log.Info("TVServerXBMC: Start listening on port " + m_serverPort);
+        Console.WriteLine("TVServerXBMC: Start listening on port " + m_serverPort);
+
+        // start a thread for the listener
+
+        m_listener = new Listener(m_serverPort);
+        m_listener.StartListening();
+
+        return false;
+      }
+
+      private void StopListenThread()
+      {
+        if (m_listener != null)
+        {
+          if (connected)
+            TVServerConnection.CloseAll();
+
+          Log.Info("TVServerXBMC: Stop listening");
+
+          m_listener.Stop();
+          m_listener = null;
+        }
+      }
+
+      /// <summary>
+      /// returns the setup sections for display in SetupTv
+      /// </summary>
+      public SetupTv.SectionSettings Setup
+      {
+        get
+        {
+          SetupForm setupForm = new SetupForm();
+          setupForm.Plugin = this;
+          return setupForm;
+        }
+      }
+
+      #endregion IPlugin Methods
+
+      #region TvServer Events
+      private void events_OnTvServerEvent(object sender, EventArgs eventArgs)
+      {
+        TvEngine.Events.TvServerEventArgs args = eventArgs as TvEngine.Events.TvServerEventArgs;
+
+        if (args == null)
+          return;
+
+        Log.Debug("TVServerXBMC: OnTvServerEvent: " + args.EventType.ToString());
+
+        if (args.EventType == TvEngine.Events.TvServerEventType.ImportEpgPrograms
+            && args.EpgChannel != null
+            && args.EpgChannel.Programs.Count > 0)
+        {
+          try
+          {
+            if (args.channel != null)
+              Log.Info("TVServerXBMC: EPG import for channel: " + args.channel.Name);
+
+            TvLibrary.Channels.DVBBaseChannel dvbChannel = args.EpgChannel.Channel as TvLibrary.Channels.DVBBaseChannel;
+            if (dvbChannel != null)
+            {
+              TvDatabase.TvBusinessLayer layer = new TvDatabase.TvBusinessLayer();
+              TvDatabase.Channel mpChannel = layer.GetChannelByTuningDetail(dvbChannel.NetworkId, dvbChannel.TransportId, dvbChannel.ServiceId);
+              if (mpChannel != null)
+              {
+                Log.Debug("TVServerXBMC: received {0} programs on {1}", args.EpgChannel.Programs.Count, mpChannel.DisplayName);
+                //foreach (TvLibrary.Epg.EpgProgram p in args.EpgChannel.Programs)
+                //{
+                //  Log.Info("TVServerXBMC: program: " + p.StartTime.ToString() + "-" + p.EndTime.ToString());
+                //}
+              }
+            }
+            //ImportEpgPrograms(args.EpgChannel);
+          }
+          catch (Exception ex)
+          {
+            Log.Error("TVServerXBMC: ImportEpgPrograms(): {0}", ex.Message);
+          }
+        }
+      }
+      #endregion
+
+      #region Local methods
+
+      internal void LoadSettings()
+      {
+        try
+        {
+          TvDatabase.TvBusinessLayer layer = new TvDatabase.TvBusinessLayer();
+          m_serverPort = Convert.ToInt32(layer.GetSetting("TVServerXBMC.port", m_defaultServerPort.ToString()).Value);
+        }
+        catch (Exception ex)
+        {
+          m_serverPort = m_defaultServerPort;
+          Log.Error("TVServerXBMC: LoadSettings(): {0}", ex.Message);
+        }
+      }
+
+      internal void SaveSettings()
+      {
+        bool forceReload = false;
+
+        try
+        {
+          TvDatabase.TvBusinessLayer layer = new TvDatabase.TvBusinessLayer();
+          TvDatabase.Setting setting;
+
+          setting = layer.GetSetting("TVServerXBMC.port");
+          if (Convert.ToInt32(setting.Value) != m_serverPort)
+          {
+            Log.Info("TVServerXBMC: port setting changed from " + setting.Value + " to " + m_serverPort);
+            setting.Value = m_serverPort.ToString();
+            setting.Persist();
+            forceReload = true;
+          }
+        }
+        catch (Exception ex)
+        {
+          Log.Error("TVServerXBMC: SaveSettings(): {0}", ex.Message);
+        }
+
+        if (forceReload)
+        {
+          StopListenThread();
+          StartListenThread();
+        }
+      }
+
+      #endregion
     }
 }

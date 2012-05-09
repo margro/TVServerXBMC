@@ -9,7 +9,7 @@ using TvControl;
 using TvDatabase;
 using TvLibrary.Log;
 
-namespace MPTvClient
+namespace TVServerXBMC
 {
     public class TVServerController
     {
@@ -37,43 +37,6 @@ namespace MPTvClient
 
         public bool Setup()
         {
-            string connStr = "";
-            string provider = "";
-
-            try
-            {
-                controller.GetDatabaseConnectionString(out connStr, out provider);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: An exception occurred while connecting to the database. Did you select the right backend? TVServerXBMC default=MySQL; change your Gentle.conf file if you are using MSSQL.");
-                Log.Error("TVServerXBMC: The exception: " + ex.ToString());
-                return false;
-            }
-
-            Console.WriteLine(provider + ":" + connStr);
-
-            try
-            {
-                Console.WriteLine("Set Gentle framework provider to " + provider);
-                Console.WriteLine("Set Gentle framework provider string to " + connStr);
-                Gentle.Framework.ProviderFactory.SetDefaultProvider(provider);
-                Gentle.Framework.ProviderFactory.SetDefaultProviderConnectionString(connStr);
-                Console.WriteLine("New TvControl Admin user");
-                me = new User("TVServerXBMC", true);
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-                catch {}
-                lastException = ex;
-                return false;
-            }
-
             try
             {
                 Console.WriteLine("Fetch card list");
@@ -1649,7 +1612,9 @@ namespace MPTvClient
                     + card.PreloadCard.ToString() + "|"
                     + card.CAM.ToString() + "|"
                     + card.netProvider.ToString() + "|"
-                    + card.StopGraph.ToString();
+                    + card.StopGraph.ToString() + "|"
+                    + ShareCollection.GetUncPathForLocalPath(card.RecordingFolder) + "|"
+                    + ShareCollection.GetUncPathForLocalPath(card.TimeShiftFolder);
                   cardSettingsList.Add(result);
                 }
               }
