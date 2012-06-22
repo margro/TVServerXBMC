@@ -928,7 +928,7 @@ namespace TVServerXBMC
                         // that is deleted in the meantime
                         recInfo.channel = rec.IdChannel.ToString();
                     }
-                    recInfo.title = rec.EpisodeName.Length>0 ? rec.EpisodeName:rec.Title;
+                    recInfo.title = rec.Title;
                     recInfo.description = rec.Description;
                     recInfo.genre = rec.Genre;
                     recInfo.timeInfo = rec.StartTime.ToString("u") + "|" + rec.EndTime.ToString("u");
@@ -957,7 +957,6 @@ namespace TVServerXBMC
                 {
                     string recording;
                     string channelname;
-                    string title;
                     string rtspURL = GetRecordingURL(rec.IdRecording, server, resolveHostnames, ref OriginalURL);//server.GetStreamUrlForFileName(rec.IdRecording);
 
                     //XBMC pvr side:
@@ -993,12 +992,11 @@ namespace TVServerXBMC
                         // that is deleted in the meantime
                         channelname = rec.IdChannel.ToString();
                     }
-                    title = rec.EpisodeName.Length > 0 ? rec.EpisodeName : rec.Title;
                     recording = rec.IdRecording.ToString() + "|"  // 0
                         + rec.StartTime.ToString("u") + "|"       // 1
                         + rec.EndTime.ToString("u") + "|"         // 2
                         + channelname.Replace("|", "") + "|"      // 3
-                        + title.Replace("|","") + "|"             // 4
+                        + rec.Title.Replace("|", "") + "|"        // 4
                         + rec.Description.Replace("|", "") + "|"  // 5
                         + rtspURL + "|"                           // 6
                         + rec.FileName + "|"                      // 7

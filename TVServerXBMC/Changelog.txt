@@ -1,3 +1,6 @@
+1.2.3.116:
+- Fixed: Recording title showed only episode name
+
 1.2.3.115:
 - Add configuration tab in the TV Server plugin configuration
 - Allow changing the TVServerXBMC port and store the setting in the TVServer database
