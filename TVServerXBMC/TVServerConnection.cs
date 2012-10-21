@@ -146,6 +146,11 @@ namespace TVServerXBMC
             return serverIntf.GetRecordingInfo(recordingId, withRTSPurl);
         }
 
+        public static bool SetRecordingTimesWatched(int recordingId, int timesWatched)
+        {
+          return serverIntf.SetRecordingTimesWatched(recordingId, timesWatched);
+        }
+
         // get the amount of schedules recordings
         public static int getScheduleCount()
         {

@@ -1,3 +1,7 @@
+1.2.3.117:
+- Add support for retrieving and updating the recording "timesWatched" property
+- Fixed: postRecordInterval retrieval for schedules
+
 1.2.3.116:
 - Fixed: Recording title showed only episode name
 
