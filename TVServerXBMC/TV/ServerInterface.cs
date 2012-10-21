@@ -1186,7 +1186,7 @@ namespace TVServerXBMC
                 + sched.KeepMethod.ToString() + "|"
                 + sched.KeepDate.ToString("u") + "|"
                 + sched.PreRecordInterval.ToString() + "|"
-                + sched.PreRecordInterval.ToString() + "|"
+                + sched.PostRecordInterval.ToString() + "|"
                 + sched.Canceled.ToString("u") + "|"
                 + sched.Series.ToString() + "|"
                 + strIsRecording + "|"
