@@ -23,6 +23,7 @@ namespace TVServerXBMC.Commands
               int scheduleType = (int)TvDatabase.ScheduleRecordingType.Once;
               int priority = -1;   // Use MediaPortal default
               int keepmethod = -1; // Use MediaPortal default
+              int program_id = -1;
               DateTime keepdate;
 
               int schedindex = int.Parse(arguments[0]);
@@ -62,13 +63,17 @@ namespace TVServerXBMC.Commands
 
                   preRecordInterval = Int32.Parse(arguments[25]);
                   postRecordInterval = Int32.Parse(arguments[26]);
+                  if (arguments.Length >= 28)
+                  {
+                    program_id = int.Parse(arguments[27]);
+                  }
               }
               else
               {
                   keepdate = new DateTime(2000, 01, 01, 0, 0, 0); //MediaPortal default value 2000-01-01 00:00:00
               }
 
-              bool result = TVServerConnection.UpdateSchedule(schedindex, channelid, active, title, starttime, endtime, scheduleType, priority, keepmethod, keepdate, preRecordInterval, postRecordInterval);
+              bool result = TVServerConnection.UpdateSchedule(schedindex, channelid, active, title, starttime, endtime, scheduleType, priority, keepmethod, keepdate, preRecordInterval, postRecordInterval, program_id);
               Console.WriteLine("UpdateSchedule result : " + result.ToString());
               writer.write(result.ToString());
           }

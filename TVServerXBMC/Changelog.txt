@@ -1,3 +1,6 @@
+1.2.3.118:
+- Add support for timer enable/disable of individual programs in a Series schedule
+
 1.2.3.117:
 - Add support for retrieving and updating the recording "timesWatched" property
 - Fixed: postRecordInterval retrieval for schedules

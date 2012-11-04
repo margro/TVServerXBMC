@@ -1171,7 +1171,7 @@ namespace TVServerXBMC
             }
             return schedInfos;
         }
-        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime, string strIdChannel, string strchannelname, string strProgramName, Schedule sched, string strIsRecording, string stridProgram) 
+        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime, string strIdChannel, string strchannelname, string strProgramName, Schedule sched, string strIsRecording, string stridProgram, DateTime Canceled) 
         {
             string schedule; 
             schedule = strSchedId + "|"
@@ -1189,7 +1189,7 @@ namespace TVServerXBMC
                 + sched.KeepDate.ToString("u") + "|"
                 + sched.PreRecordInterval.ToString() + "|"
                 + sched.PostRecordInterval.ToString() + "|"
-                + sched.Canceled.ToString("u") + "|"
+                + Canceled.ToString("u") + "|"
                 + sched.Series.ToString() + "|"
                 + strIsRecording + "|"
                 + stridProgram;
@@ -1255,8 +1255,11 @@ namespace TVServerXBMC
                     try
                     {
                         IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
+                        IList<CanceledSchedule> canceled_progs = sched.ReferringCanceledSchedule();
                         foreach (Program pr in progs) 
                         {
+                            DateTime dtCanceled = sched.Canceled;
+
                             strStartTime = pr.StartTime.ToString("u");
                             strEndTime = pr.EndTime.ToString("u");
                             strIdChannel = pr.IdChannel.ToString();
@@ -1267,8 +1270,19 @@ namespace TVServerXBMC
                                 strIsRecording = "True";
                             else strIsRecording = "False";
                             idProgram = pr.IdProgram;
+
+                            // Check if this program is in the CanceledSchedule list
+                            foreach (CanceledSchedule cs in canceled_progs)
+                            {
+                              if (cs.CancelDateTime == pr.StartTime)
+                              {
+                                dtCanceled = cs.CancelDateTime;
+                                break;
+                              }
+                            }
+                          
                             schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""), 
-                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString()); 
+                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled); 
                             schedlist.Add(schedule);
                         }
  
@@ -1286,7 +1300,7 @@ namespace TVServerXBMC
                                     strIsRecording = "True";
                                 idProgram = -1;
                                 schedule=FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
-                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString()); 
+                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled); 
                                 schedlist.Add(schedule);
                             } 
                         }
@@ -1457,13 +1471,64 @@ namespace TVServerXBMC
             }
         }
 
-        public bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval)
+        public bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval, Int32 programId)
         {
             try
             {
                 TvBusinessLayer layer = new TvBusinessLayer();
                 Schedule updatedSchedule = Schedule.Retrieve(scheduleindex);
                 DateTime defaultCanceled = new DateTime(2000, 01, 01, 0, 0, 0); //Active
+
+                if ((scheduleType != (int)TvDatabase.ScheduleRecordingType.Once) && (programId != -1))
+                {
+                  // Series schedule, retrieve the canceled programs list
+                  Program program = Program.Retrieve(programId);
+
+                  //program.
+
+                  IList<CanceledSchedule> canceledSched = updatedSchedule.ReferringCanceledSchedule();
+
+                  if (active == 1)
+                  {
+                    // Check if this schedule is deactivated and remove it from the CanceledSchedule list
+                    foreach (CanceledSchedule cs in canceledSched)
+                    {
+                      if (cs.CancelDateTime == program.StartTime)
+                      {
+                        cs.Remove();
+                        break;
+                      }
+                    }
+                  }
+                  else
+                  {
+                    Boolean found = false;
+                    // Add this schedule to the CanceledSchedule list if not already in the list
+                    foreach (CanceledSchedule cs in canceledSched)
+                    {
+                      if (cs.CancelDateTime == program.StartTime)
+                      {
+                        found = true;
+                        break;
+                      }
+                    }
+
+                    if (!found)
+                    {
+                      CanceledSchedule newCs = new CanceledSchedule(scheduleindex, program.IdChannel, program.StartTime);
+                      newCs.Persist();
+                    }
+                  }
+
+                  //  if (!found)
+                  //  {
+                  //    Program.ProgramState
+                  //  }
+                  //}
+                  return true;
+                }
+
+                
 
                 updatedSchedule.ProgramName = programName;
                 updatedSchedule.StartTime = startTime;

@@ -321,9 +321,9 @@ namespace TVServerXBMC
             return serverIntf.AddSchedule(channelId, programName, startTime, endTime, scheduleType, priority, keepmethod, keepdate, preRecordInterval, postRecordInterval);
         }
 
-        public static bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval)
+        public static bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval, Int32 program_id)
         {
-            return serverIntf.UpdateSchedule(scheduleindex, channelId, active, programName, startTime, endTime, scheduleType, priority, keepmethod, keepdate, preRecordInterval, postRecordInterval);
+            return serverIntf.UpdateSchedule(scheduleindex, channelId, active, programName, startTime, endTime, scheduleType, priority, keepmethod, keepdate, preRecordInterval, postRecordInterval, program_id);
         }
 
         public static void disconnect()
