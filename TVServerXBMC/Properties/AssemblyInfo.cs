@@ -11,7 +11,7 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TVServerXBMC")]
-[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2012")]
+[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,8 +30,8 @@ using MediaPortal.Common.Utils;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.2.3.118")]
-[assembly: AssemblyFileVersion("1.2.3.118")]
+[assembly: AssemblyVersion("1.2.200.119")]
+[assembly: AssemblyFileVersion("1.2.200.119")]
 
 // Set usage and compatibility information
 [assembly: CompatibleVersion("1.1.7.0", "1.1.6.27644")]
