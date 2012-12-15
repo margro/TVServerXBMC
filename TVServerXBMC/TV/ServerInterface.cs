@@ -680,18 +680,28 @@ namespace TVServerXBMC
                                 if (chan == null) continue;
 
                                 string tvchannel;
-                                int channelNumber = 0;
-                                bool freetoair = true;
+                                int channelNumber = 10000;
+                                bool freetoair = false;
+
+                                try
+                                {
+                                    channelNumber = chan.ChannelNumber;
+                                }
+                                catch
+                                {
+                                }
 
                                 //Determine the channel number given by the provider using this channel's tuning details
                                 IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
 
                                 foreach (TuningDetail tuningdetail in tuningdetails)
                                 {
-                                    //For now, just take the first one:
-                                    channelNumber = tuningdetail.ChannelNumber;
-                                    freetoair = tuningdetail.FreeToAir;
-                                    break;
+                                    freetoair = freetoair || tuningdetail.FreeToAir;
+                                    if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                                    {
+                                        channelNumber = tuningdetail.ChannelNumber;
+                                        break;
+                                    }
                                 }
 
                                 //XBMC side:
@@ -829,18 +839,27 @@ namespace TVServerXBMC
                                 if (chan == null) continue;
 
                                 string radiochannel;
-                                int channelNumber = 0;
-                                bool freetoair = true;
+                                int channelNumber = 10000;
+                                bool freetoair = false;
+
+                                try
+                                {
+                                    channelNumber = chan.ChannelNumber;
+                                }
+                                catch
+                                { }
 
                                 //Determine the channel number given by the provider using this channel's tuning details
                                 IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
 
                                 foreach (TuningDetail tuningdetail in tuningdetails)
                                 {
-                                    //For now, just take the first one:
-                                    channelNumber = tuningdetail.ChannelNumber;
-                                    freetoair = tuningdetail.FreeToAir;
-                                    break;
+                                    freetoair = freetoair || tuningdetail.FreeToAir;
+                                    if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                                    {
+                                        channelNumber = tuningdetail.ChannelNumber;
+                                        break;
+                                    }
                                 }
 
                                 //[0] = channel uid
