@@ -1,3 +1,25 @@
+1.2.3.118:
+- Add support for timer enable/disable of individual programs in a Series schedule
+
+1.2.3.117:
+- Add support for retrieving and updating the recording "timesWatched" property
+- Fixed: postRecordInterval retrieval for schedules
+
+1.2.3.116:
+- Fixed: Recording title showed only episode name
+
+1.2.3.115:
+- Add configuration tab in the TV Server plugin configuration
+- Allow changing the TVServerXBMC port and store the setting in the TVServer database
+- Add the option to create shares for the Timeshift and Recordings folders when using XBMC on a different machine
+- Extend the GetCardSettings command with the sharenames (when available)
+- Remove unneeded Gentle initialization from the plugin version. Only needed for the standalone exe
+- Subscribe the plugin to TV Server events like EPG updates. TODO: forward them to XBMC
+
+1.2.3.114:
+- Each MP Scheduled Program will translate into one Timer in xbmc. (Credits jajoflo)
+- Each timer will retain it's schedule id so the behavior won't change when modifying/deleting a timer. (Credits jajoflo)
+
 1.2.3.113:
 - Update binaries for MediaPortal TVServer 1.2.3
 - When there is an episode name, skip the title as it is usually redundant with the folder name.

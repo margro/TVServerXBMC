@@ -9,7 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using TVServerXBMC.Commands;
 using TvLibrary.Log;
-using MPTvClient;
+using TVServerXBMC;
 
 namespace TVServerXBMC
 {
@@ -85,6 +85,7 @@ namespace TVServerXBMC
             handlers.Add(new IsRecording(this));
             handlers.Add(new StopRecording(this));
             handlers.Add(new GetRecordingInfo(this));
+            handlers.Add(new SetRecordingTimesWatched(this));
             // Timer/Schedule commands:
             handlers.Add(new GetScheduleCount(this));
             handlers.Add(new ListSchedules(this));

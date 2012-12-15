@@ -43,6 +43,7 @@
     <Compile Include="Commands\CloseConnection.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\AddSchedule.cs" />
+    <Compile Include="Commands\SetRecordingTimesWatched.cs" />
     <Compile Include="Commands\GetSignalQuality.cs" />
     <Compile Include="Commands\GetCardSettings.cs" />
     <Compile Include="Commands\GetDriveSpace.cs" />
@@ -75,6 +76,18 @@
     <Compile Include="Commands\ListGroups.cs" />
     <Compile Include="Commands\ListRecordings.cs" />
     <Compile Include="Commands\ListRecordedTV.cs" />
+    <Compile Include="Forms\CreateShareForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CreateShareForm.Designer.cs">
+      <DependentUpon>CreateShareForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SetupForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SetupForm.Designer.cs">
+      <DependentUpon>SetupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Commands\StopTimeshift.cs" />
     <Compile Include="Commands\TimeshiftChannel.cs" />
@@ -82,24 +95,16 @@
     <Compile Include="Listener.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="TV\frmMain.cs">
-      <SubType>Form</SubType>
-    </None>
-    <None Include="TV\frmMain.designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
-    </None>
     <Compile Include="TV\ServerInterface.cs" />
     <Compile Include="TVServerConnection.cs" />
+    <Compile Include="TV\ShareUtils.cs" />
+    <Compile Include="TV\Utility.cs" />
     <Compile Include="TV\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Gentle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TV\frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +148,12 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="TvBusinessLayer, Version=1.0.4.17440, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\TvBusinessLayer.dll</HintPath>
@@ -164,6 +174,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\TvLibrary.Interfaces.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\CreateShareForm.resx">
+      <DependentUpon>CreateShareForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SetupForm.resx">
+      <DependentUpon>SetupForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

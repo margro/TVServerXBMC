@@ -15,6 +15,7 @@ namespace TVServerXBMC
         private List<TcpClient> clients;
         private Mutex cmdMutex;
         private bool stopme = false;
+        private Thread m_listenThread;
 
         public Listener()
         {
@@ -41,6 +42,11 @@ namespace TVServerXBMC
             try
             {
                 tcpListener.Start();
+
+                // start a thread to listen for clients
+                m_listenThread = new Thread(new ThreadStart(ListenForClients));
+                m_listenThread.Start();
+
                 return true;
             }
             catch (ThreadAbortException)
@@ -73,6 +79,24 @@ namespace TVServerXBMC
         {
             Log.Error("TVServerXBMC: tcpListener.Stop()");
             Console.WriteLine("TVServerXBMC: tcpListener.Stop()");
+            stopme = true;
+
+            if (m_listenThread != null)
+            {
+              Log.Debug("TVServerXBMC: Listenthread is aborting");
+              m_listenThread.Abort();
+              m_listenThread = null;
+            }
+
+            if (clients.Count > 0)
+            {
+              foreach (TcpClient client in clients)
+              {
+                client.Close();
+              }
+
+              clients = null;
+            }
         }
 
         public void ListenForClients()

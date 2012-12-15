@@ -15,8 +15,10 @@ namespace TVServerXBMC.Commands
         //static int listenport = 9595;       //local port for the MPTV XBMC server
 
         static string hostname = "localhost";
-        static int listenport = 9596;
         static bool connected = false;
+        static TvControl.IController controller;
+        static string databaseConnectionString;
+        static string databaseProvider;
 
         public static void Main(string[] args)
         {
@@ -33,9 +35,11 @@ namespace TVServerXBMC.Commands
             }
             
             Console.WriteLine("Connected to the MediaPortal TVServer running on: '" + hostname + "'");
+            controller = RemoteControl.Instance;
+
             try
             {
-                 Console.WriteLine("MediaPortal TVServer version: " + RemoteControl.Instance.GetAssemblyVersion.ToString());
+                 Console.WriteLine("MediaPortal TVServer version: " + controller.GetAssemblyVersion.ToString());
             }
             catch
             {
@@ -43,8 +47,6 @@ namespace TVServerXBMC.Commands
 
             // Display information about the EXE assembly.
             System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-            //Console.WriteLine("Assembly identity={0}" + a.FullName);
-            //Console.WriteLine("Codebase={0}" + a.CodeBase);
 
             // Display the set of assemblies our assemblies reference.
             Console.WriteLine("Referenced assemblies:");
@@ -64,14 +66,33 @@ namespace TVServerXBMC.Commands
                 }
             }
 
-            TVServerXBMC plugin = new TVServerXBMC();
-            plugin.Port = listenport;
-
-            plugin.Start(RemoteControl.Instance);
-
-            if(plugin.Connected)
+            try
             {
-                Console.WriteLine("Running MediaPortal TV Server -> XBMC wrapper at port: " + listenport);
+              controller.GetDatabaseConnectionString(out databaseConnectionString, out databaseProvider);
+              Console.WriteLine(databaseProvider + ":" + databaseConnectionString);
+              Console.WriteLine("Set Gentle framework provider to " + databaseProvider);
+              Console.WriteLine("Set Gentle framework provider string to " + databaseConnectionString);
+              Gentle.Framework.ProviderFactory.SetDefaultProvider(databaseProvider);
+              Gentle.Framework.ProviderFactory.SetDefaultProviderConnectionString(databaseConnectionString);
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine("An exception occurred while connecting to the database. Did you select the right backend? TVServerXBMC default=MySQL; change your Gentle.conf file if you are using MSSQL.");
+              try
+              {
+                Console.WriteLine("The exception: " + ex.ToString());
+              }
+              catch { }
+            }
+
+            TVServerXBMCPlugin plugin = new TVServerXBMCPlugin();
+
+            Console.WriteLine("Starting debug version of the TVServerXBMC plugin");
+            plugin.Start(controller);
+
+            if (plugin.Connected)
+            {
+                Console.WriteLine("Running MediaPortal TV Server -> XBMC wrapper at port: " + plugin.Port);
                 try
                 {
                     while (!Console.ReadLine().Contains("quit"))
@@ -92,6 +113,5 @@ namespace TVServerXBMC.Commands
                 return;
             }
         }
-
     }
 }

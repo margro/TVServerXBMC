@@ -9,7 +9,7 @@ using TvControl;
 using TvDatabase;
 using TvLibrary.Log;
 
-namespace MPTvClient
+namespace TVServerXBMC
 {
     public class TVServerController
     {
@@ -37,43 +37,6 @@ namespace MPTvClient
 
         public bool Setup()
         {
-            string connStr = "";
-            string provider = "";
-
-            try
-            {
-                controller.GetDatabaseConnectionString(out connStr, out provider);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: An exception occurred while connecting to the database. Did you select the right backend? TVServerXBMC default=MySQL; change your Gentle.conf file if you are using MSSQL.");
-                Log.Error("TVServerXBMC: The exception: " + ex.ToString());
-                return false;
-            }
-
-            Console.WriteLine(provider + ":" + connStr);
-
-            try
-            {
-                Console.WriteLine("Set Gentle framework provider to " + provider);
-                Console.WriteLine("Set Gentle framework provider string to " + connStr);
-                Gentle.Framework.ProviderFactory.SetDefaultProvider(provider);
-                Gentle.Framework.ProviderFactory.SetDefaultProviderConnectionString(connStr);
-                Console.WriteLine("New TvControl Admin user");
-                me = new User("TVServerXBMC", true);
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-                catch {}
-                lastException = ex;
-                return false;
-            }
-
             try
             {
                 Console.WriteLine("Fetch card list");
@@ -965,7 +928,7 @@ namespace MPTvClient
                         // that is deleted in the meantime
                         recInfo.channel = rec.IdChannel.ToString();
                     }
-                    recInfo.title = rec.EpisodeName.Length>0 ? rec.EpisodeName:rec.Title;
+                    recInfo.title = rec.Title;
                     recInfo.description = rec.Description;
                     recInfo.genre = rec.Genre;
                     recInfo.timeInfo = rec.StartTime.ToString("u") + "|" + rec.EndTime.ToString("u");
@@ -994,7 +957,6 @@ namespace MPTvClient
                 {
                     string recording;
                     string channelname;
-                    string title;
                     string rtspURL = GetRecordingURL(rec.IdRecording, server, resolveHostnames, ref OriginalURL);//server.GetStreamUrlForFileName(rec.IdRecording);
 
                     //XBMC pvr side:
@@ -1020,6 +982,7 @@ namespace MPTvClient
                     //[16] Genre (string)
                     //[17] channel id (int)
                     //[18] isrecording (bool)
+                    //[19] timesWatched (int)
 
                     try
                     {
@@ -1030,12 +993,11 @@ namespace MPTvClient
                         // that is deleted in the meantime
                         channelname = rec.IdChannel.ToString();
                     }
-                    title = rec.EpisodeName.Length > 0 ? rec.EpisodeName : rec.Title;
                     recording = rec.IdRecording.ToString() + "|"  // 0
                         + rec.StartTime.ToString("u") + "|"       // 1
                         + rec.EndTime.ToString("u") + "|"         // 2
                         + channelname.Replace("|", "") + "|"      // 3
-                        + title.Replace("|","") + "|"             // 4
+                        + rec.Title.Replace("|", "") + "|"        // 4
                         + rec.Description.Replace("|", "") + "|"  // 5
                         + rtspURL + "|"                           // 6
                         + rec.FileName + "|"                      // 7
@@ -1058,7 +1020,8 @@ namespace MPTvClient
                         + rec.Idschedule.ToString() + "|"         // 15
                         + rec.Genre + "|"                         // 16
                         + rec.IdChannel.ToString() + "|"          // 17
-                        + rec.IsRecording.ToString();             // 18
+                        + rec.IsRecording.ToString() + "|"        // 18
+                        + rec.TimesWatched.ToString();            // 19
                     
 
                     reclist.Add(recording);
@@ -1208,6 +1171,30 @@ namespace MPTvClient
             }
             return schedInfos;
         }
+        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime, string strIdChannel, string strchannelname, string strProgramName, Schedule sched, string strIsRecording, string stridProgram, DateTime Canceled) 
+        {
+            string schedule; 
+            schedule = strSchedId + "|"
+                + strStartTime + "|"
+                + strEndTime + "|"
+                + strIdChannel + "|"
+                + strchannelname+ "|"
+                + strProgramName+ "|"
+                + sched.ScheduleType.ToString() + "|"
+                + sched.Priority.ToString() + "|"
+                + sched.IsDone().ToString() + "|"
+                + sched.IsManual.ToString() + "|"
+                + sched.Directory + "|"
+                + sched.KeepMethod.ToString() + "|"
+                + sched.KeepDate.ToString("u") + "|"
+                + sched.PreRecordInterval.ToString() + "|"
+                + sched.PostRecordInterval.ToString() + "|"
+                + Canceled.ToString("u") + "|"
+                + sched.Series.ToString() + "|"
+                + strIsRecording + "|"
+                + stridProgram;
+            return schedule;
+        }
 
         public List<String> GetSchedules()
         {
@@ -1222,10 +1209,12 @@ namespace MPTvClient
                     String strIsRecording = "False";
                     String strStartTime;
                     String strEndTime;
+                    String strSchedId;
                     String strIdChannel;
                     String strProgramName;
-
-                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a series we won't use this.
+                    int idProgram = 0;
+ 
+                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a serie we won't use this.
                         continue;
 
                     //XBMC pvr side:
@@ -1248,6 +1237,7 @@ namespace MPTvClient
                     //[15] canceled
                     //[16] series
                     //[17] isrecording (TODO)
+                    //[18] idProgram
                     try
                     {
                         channelname = sched.ReferencedChannel().DisplayName;
@@ -1257,7 +1247,7 @@ namespace MPTvClient
                         // that is deleted in the meantime
                         channelname = sched.IdChannel.ToString();
                     }
-
+                    strSchedId = sched.IdSchedule.ToString();
                     strStartTime = sched.StartTime.ToString("u");
                     strEndTime = sched.EndTime.ToString("u");
                     strIdChannel = sched.IdChannel.ToString();
@@ -1265,9 +1255,11 @@ namespace MPTvClient
                     try
                     {
                         IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
-                        if (progs.Count > 0) //Currently xbmc uses the last occurence of each program as the next recording; we should return all resolved program.
+                        IList<CanceledSchedule> canceled_progs = sched.ReferringCanceledSchedule();
+                        foreach (Program pr in progs) 
                         {
-                            Program pr = progs[0];
+                            DateTime dtCanceled = sched.Canceled;
+
                             strStartTime = pr.StartTime.ToString("u");
                             strEndTime = pr.EndTime.ToString("u");
                             strIdChannel = pr.IdChannel.ToString();
@@ -1276,42 +1268,46 @@ namespace MPTvClient
                                 strProgramName += " - " + pr.EpisodeName;
                             if (pr.IsRecording)
                                 strIsRecording = "True";
+                            else strIsRecording = "False";
+                            idProgram = pr.IdProgram;
+
+                            // Check if this program is in the CanceledSchedule list
+                            foreach (CanceledSchedule cs in canceled_progs)
+                            {
+                              if (cs.CancelDateTime == pr.StartTime)
+                              {
+                                dtCanceled = cs.CancelDateTime;
+                                break;
+                              }
+                            }
+                          
+                            schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""), 
+                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled); 
+                            schedlist.Add(schedule);
                         }
-                        else if((ScheduleRecordingType)sched.ScheduleType!=(ScheduleRecordingType.Once))
+ 
+                        if (progs.Count == 0)
                         {
-                            continue; // This timer does not resolve to a program. Do not return it until we have a state for it in XBMC.
-                        }
-                        else //IF the schedule did not resolve to any program, typical when creating an Instant Recording frm XBMC and the name does not match a program name.
-                        {
-                            VirtualCard card;
-                            TvControl.TvServer tv = new TvServer();
-                            if(tv.IsRecordingSchedule(sched.IdSchedule, out card))
-                                strIsRecording = "True";
+                            if ((ScheduleRecordingType)sched.ScheduleType != (ScheduleRecordingType.Once))
+                            {
+                                continue; //This timer does not resolve to a program. Do not return it until we have a state for it in XBMC.
+                            }
+                            else //If the schedule did not resolve to any program, typical when creating an Instant Recording from XBMC and the name does not match a program name.
+                            {
+                                VirtualCard card;
+                                TvControl.TvServer tv = new TvServer();
+                                if (tv.IsRecordingSchedule(sched.IdSchedule, out card))
+                                    strIsRecording = "True";
+                                idProgram = -1;
+                                schedule=FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
+                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled); 
+                                schedlist.Add(schedule);
+                            } 
                         }
                     }
                     catch
                     { }
-                    
-                    schedule = sched.IdSchedule.ToString() + "|"
-                        + strStartTime + "|"
-                        + strEndTime + "|"
-                        + strIdChannel + "|"
-                        + channelname.Replace("|", "") + "|"
-                        + strProgramName.Replace("|", "") + "|"
-                        + sched.ScheduleType.ToString() + "|"
-                        + sched.Priority.ToString() + "|"
-                        + sched.IsDone().ToString() + "|"
-                        + sched.IsManual.ToString() + "|"
-                        + sched.Directory + "|"
-                        + sched.KeepMethod.ToString() + "|"
-                        + sched.KeepDate.ToString("u") + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.PreRecordInterval.ToString() + "|"
-                        + sched.Canceled.ToString("u") + "|"
-                        + sched.Series.ToString() + "|"
-                        + strIsRecording;
 
-                    schedlist.Add(schedule);
                 }
             }
             catch (Exception ex)
@@ -1475,13 +1471,64 @@ namespace MPTvClient
             }
         }
 
-        public bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval)
+        public bool UpdateSchedule(int scheduleindex, int channelId, int active, String programName, DateTime startTime, DateTime endTime, int scheduleType, Int32 priority, Int32 keepmethod, DateTime keepdate, Int32 preRecordInterval, Int32 postRecordInterval, Int32 programId)
         {
             try
             {
                 TvBusinessLayer layer = new TvBusinessLayer();
                 Schedule updatedSchedule = Schedule.Retrieve(scheduleindex);
                 DateTime defaultCanceled = new DateTime(2000, 01, 01, 0, 0, 0); //Active
+
+                if ((scheduleType != (int)TvDatabase.ScheduleRecordingType.Once) && (programId != -1))
+                {
+                  // Series schedule, retrieve the canceled programs list
+                  Program program = Program.Retrieve(programId);
+
+                  //program.
+
+                  IList<CanceledSchedule> canceledSched = updatedSchedule.ReferringCanceledSchedule();
+
+                  if (active == 1)
+                  {
+                    // Check if this schedule is deactivated and remove it from the CanceledSchedule list
+                    foreach (CanceledSchedule cs in canceledSched)
+                    {
+                      if (cs.CancelDateTime == program.StartTime)
+                      {
+                        cs.Remove();
+                        break;
+                      }
+                    }
+                  }
+                  else
+                  {
+                    Boolean found = false;
+                    // Add this schedule to the CanceledSchedule list if not already in the list
+                    foreach (CanceledSchedule cs in canceledSched)
+                    {
+                      if (cs.CancelDateTime == program.StartTime)
+                      {
+                        found = true;
+                        break;
+                      }
+                    }
+
+                    if (!found)
+                    {
+                      CanceledSchedule newCs = new CanceledSchedule(scheduleindex, program.IdChannel, program.StartTime);
+                      newCs.Persist();
+                    }
+                  }
+
+                  //  if (!found)
+                  //  {
+                  //    Program.ProgramState
+                  //  }
+                  //}
+                  return true;
+                }
+
+                
 
                 updatedSchedule.ProgramName = programName;
                 updatedSchedule.StartTime = startTime;
@@ -1543,6 +1590,29 @@ namespace MPTvClient
             Recording recording = Recording.Retrieve(recordingindex);
 
             recording.Title = recordingName;
+            recording.Persist();
+
+            return true;
+          }
+          catch
+          {
+            return false;
+          }
+        }
+
+        public bool SetRecordingTimesWatched(int recordingindex, int timesWatched)
+        {
+          try
+          {
+            Recording recording = Recording.Retrieve(recordingindex);
+
+            if (recording.TimesWatched < timesWatched)
+              recording.TimesWatched = timesWatched;
+            else
+            {
+              // some other client already updated the counter, so just do a +1 here
+              recording.TimesWatched++;
+            }
             recording.Persist();
 
             return true;
@@ -1630,7 +1700,9 @@ namespace MPTvClient
                     + card.PreloadCard.ToString() + "|"
                     + card.CAM.ToString() + "|"
                     + card.netProvider.ToString() + "|"
-                    + card.StopGraph.ToString();
+                    + card.StopGraph.ToString() + "|"
+                    + ShareCollection.GetUncPathForLocalPath(card.RecordingFolder) + "|"
+                    + ShareCollection.GetUncPathForLocalPath(card.TimeShiftFolder);
                   cardSettingsList.Add(result);
                 }
               }

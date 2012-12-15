@@ -5,9 +5,9 @@ using TVServerXBMC;
 
 namespace TVServerXBMC.Commands
 {
-   class UpdateRecording : CommandHandler
+   class SetRecordingTimesWatched : CommandHandler
    {
-     public UpdateRecording(ConnectionHandler connection)
+     public SetRecordingTimesWatched(ConnectionHandler connection)
          : base(connection)
       {
 
@@ -19,21 +19,21 @@ namespace TVServerXBMC.Commands
           if ((arguments != null) && (arguments.Length == 2))
           {
               int recindex = int.Parse(arguments[0]);
-              String name = arguments[1];
+              int count = int.Parse(arguments[1]);
 
-              bool result = TVServerConnection.UpdateRecording(recindex, name);
-              Console.WriteLine("UpdateRecording result : " + result.ToString());
+              bool result = TVServerConnection.SetRecordingTimesWatched(recindex, count);
+              Console.WriteLine("SetRecordingTimesWatched result : " + result.ToString());
               writer.write(result.ToString());
           }
           else
           {
-              getConnection().WriteLine("[ERROR]: Expected format: " + getCommandToHandle() + ":RecordingIndex|NewName");
+              getConnection().WriteLine("[ERROR]: Expected format: " + getCommandToHandle() + ":RecordingIndex|timesWatched");
           }
       }
 
       public override string getCommandToHandle()
       {
-        return "UpdateRecording";
+        return "SetRecordingTimesWatched";
       }
    }
 }
