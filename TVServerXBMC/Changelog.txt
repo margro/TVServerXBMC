@@ -1,5 +1,6 @@
 1.2.3.119:
 - Fix SignalQuality value (was before identical to the SignalLevel value)
+- Fix timeshift buffer id retrieval
 
 1.2.3.118:
 - Add support for timer enable/disable of individual programs in a Series schedule
