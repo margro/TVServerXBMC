@@ -1,4 +1,4 @@
-TVServerXBMC v1.2.1.x - Source package
+TVServerXBMC v1.3.x - Source package
 MediaPortal TVServer plugin for XBMC
 _______________________________________________________________________________
 Original Author: EvilDude/Prashant 2008-2009
@@ -9,7 +9,9 @@ Marcel Groothuis, 2010-2012
 http://www.scintilla.utwente.nl/~marcelg/xbmc
 _______________________________________________________________________________
 
-Tested against MediaPortal 1.2.0 alpha - 1.2.3 (TV Server 1.2.0 alpha - 1.2.3)
+Tested against:
+- MediaPortal 1.3.0 beta (TV Server 1.3.0 beta - v1.2.200.0)
+This version is not compatible with 1.2.x and 1.3.0 alpha
 
 This version is compatible with the "MediaPortal" PVR addon for XBMC from
  http

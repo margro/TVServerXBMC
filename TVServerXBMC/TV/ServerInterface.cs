@@ -89,8 +89,8 @@ namespace TVServerXBMC
             //int cardId = -1;
             TvResult result;
             remoteserver = "";
-            timeShiftBufNr = -1;
-            timeShiftBufPos = -1;
+            timeShiftBufNr = 0;
+            timeShiftBufPos = 0;
  
             System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
 
@@ -1737,7 +1737,7 @@ namespace TVServerXBMC
 
         public int GetSignalQuality(int cardID)
         {
-          return controller.SignalLevel(cardID);
+          return controller.SignalQuality(cardID);
         }
 
         public int GetSignalLevel(int cardID)

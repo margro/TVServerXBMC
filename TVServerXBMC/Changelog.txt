@@ -1,5 +1,7 @@
 1.2.200.119:
 - Channel number fixes for MediaPortal TVServer 1.3.0 beta (v1.2.200).
+- Fix SignalQuality value (was before identical to the SignalLevel value)
+- Fix timeshift buffer id retrieval
 
 1.2.3.118:
 - Add support for timer enable/disable of individual programs in a Series schedule
