@@ -1718,7 +1718,7 @@ namespace TVServerXBMC
 
         public int GetSignalQuality(int cardID)
         {
-          return controller.SignalLevel(cardID);
+          return controller.SignalQuality(cardID);
         }
 
         public int GetSignalLevel(int cardID)

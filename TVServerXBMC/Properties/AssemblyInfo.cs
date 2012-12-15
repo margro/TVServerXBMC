@@ -30,8 +30,8 @@ using MediaPortal.Common.Utils;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.2.3.118")]
-[assembly: AssemblyFileVersion("1.2.3.118")]
+[assembly: AssemblyVersion("1.2.3.119")]
+[assembly: AssemblyFileVersion("1.2.3.119")]
 
 // Set usage and compatibility information
 [assembly: CompatibleVersion("1.1.7.0", "1.1.6.27644")]
