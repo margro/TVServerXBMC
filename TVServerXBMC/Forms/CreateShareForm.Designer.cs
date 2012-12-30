@@ -104,7 +104,8 @@
       this.Controls.Add(this._pathLabel);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
       this.Name = "CreateShareForm";
-      this.Text = "CreateShareForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+      this.Text = "Create UNC Share";
       this.Load += new System.EventHandler(this.CreateShareForm_Load);
       this.ResumeLayout(false);
       this.PerformLayout();

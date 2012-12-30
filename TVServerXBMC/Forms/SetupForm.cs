@@ -1,14 +1,37 @@
-﻿using System;
+﻿/*
+ *  TVServerXBMC plugin for Team MediaPortal's TV-Server
+ *  Copyright (C) 2010-2012 Marcel Groothuis
+ *  http://www.github.com/margro
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * This SetupForm is based on the SetupForm from ARGUS TV
+ * http://www.argus-tv.com
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 using TvLibrary.Log;
 using TvControl;
+
+using TVServerXBMC.Common;
 
 namespace TVServerXBMC.Forms
 {
@@ -80,7 +103,7 @@ namespace TVServerXBMC.Forms
 
         if (anyError)
         {
-          MessageBox.Show(this, "You must set up a share with full permissions for the core" + Environment.NewLine + "services account for all recording folders!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+          MessageBox.Show(this, "You must set up at least 2 shares with full permissions to access the recordings and timeshift folders on remote XBMC clients!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
       }
       catch (Exception ex)
@@ -94,7 +117,7 @@ namespace TVServerXBMC.Forms
       bool hasError = true;
       string message;
 
-      string uncPath = ShareCollection.GetUncPathForLocalPath(path);
+      string uncPath = ShareExplorer.GetUncPathForLocalPath(path);
       if (!String.IsNullOrEmpty(uncPath))
       {
         Log.Info("TVServerXBMC: " + path + " => " + uncPath);
@@ -118,16 +141,16 @@ namespace TVServerXBMC.Forms
       if (uncRecordingPathsDataGrid.SelectedRows.Count > 0)
       {
         UncPathItem linkItem = uncRecordingPathsDataGrid.SelectedRows[0].DataBoundItem as UncPathItem;
-        createUncShareButton.Enabled = linkItem.HasError;
+        createRecordingsShareButton.Enabled = true;
       }
       else
       {
-        createUncShareButton.Enabled = false;
+        createRecordingsShareButton.Enabled = false;
       }
       if (uncTimeshiftPathsDataGrid.SelectedRows.Count > 0)
       {
         UncPathItem linkItem = uncTimeshiftPathsDataGrid.SelectedRows[0].DataBoundItem as UncPathItem;
-        createTimeshiftShareButton.Enabled = linkItem.HasError;
+        createTimeshiftShareButton.Enabled = true;
       }
       else
       {
@@ -171,14 +194,16 @@ namespace TVServerXBMC.Forms
       }
     }
 
-    private void createUncShareButton_Click(object sender, EventArgs e)
+    private void createRecordingsShareButton_Click(object sender, EventArgs e)
     {
-      MessageBox.Show("TODO");
+      if (uncRecordingPathsDataGrid.SelectedRows.Count > 0)
+      {
+        ShowCreateShareForm(uncRecordingPathsDataGrid.SelectedRows[0].DataBoundItem as UncPathItem);
+      }
     }
 
     private void createTimeshiftShareButton_Click(object sender, EventArgs e)
     {
-      MessageBox.Show("TODO");
       if (uncTimeshiftPathsDataGrid.SelectedRows.Count > 0)
       {
         ShowCreateShareForm(uncTimeshiftPathsDataGrid.SelectedRows[0].DataBoundItem as UncPathItem);
@@ -254,6 +279,5 @@ namespace TVServerXBMC.Forms
         LoadUncPaths();
       }
     }
-
   }
 }

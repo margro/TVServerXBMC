@@ -48,7 +48,7 @@ namespace TVServerXBMC
 
     public static bool CreateUncShare(string shareName, string localPath)
     {
-      ManagementScope scope = new ManagementScope(@"\\localhost\root\cimv2");
+      ManagementScope scope = new System.Management.ManagementScope(@"root\CIMV2");
       scope.Connect();
 
       using (ManagementClass managementClass = new ManagementClass(scope, new ManagementPath("Win32_Share"), (ObjectGetOptions) null))
@@ -59,7 +59,7 @@ namespace TVServerXBMC
 
         using (ManagementObject wmiTrustee = new ManagementClass(scope, new ManagementPath("Win32_Trustee"), (ObjectGetOptions) null).CreateInstance())
         {
-          wmiTrustee["SIDString"] = (object) binaryForm;
+          wmiTrustee["SID"] = (object) binaryForm;
           using (ManagementObject wmiACE = new ManagementClass(scope, new ManagementPath("Win32_ACE"), (ObjectGetOptions) null).CreateInstance())
           {
             wmiACE["AccessMask"] = 131241; //READ_CONTROL | FILE_READ | FILE_TRAVERSE | FILE_READ_EA | FILE_LIST_DIRECTORY
@@ -69,7 +69,7 @@ namespace TVServerXBMC
             using (ManagementObject wmiSecurityDescriptor = new ManagementClass(scope, new ManagementPath("Win32_SecurityDescriptor"), (ObjectGetOptions) null).CreateInstance())
             { 
               wmiSecurityDescriptor["ControlFlags"] = 4;
-              wmiSecurityDescriptor["DACL"] = new ManagementObject[1] { wmiACE };
+              wmiSecurityDescriptor["DACL"] = new ManagementObject[] { wmiACE };
               using (ManagementBaseObject inParamsCreate = managementClass.GetMethodParameters("Create"))
               {
                 inParamsCreate["Access"] = wmiSecurityDescriptor;

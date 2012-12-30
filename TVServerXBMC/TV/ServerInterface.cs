@@ -9,6 +9,8 @@ using TvControl;
 using TvDatabase;
 using TvLibrary.Log;
 
+using TVServerXBMC.Common;
+
 namespace TVServerXBMC
 {
     public class TVServerController
@@ -1720,8 +1722,8 @@ namespace TVServerXBMC
                     + card.CAM.ToString() + "|"
                     + card.netProvider.ToString() + "|"
                     + card.StopGraph.ToString() + "|"
-                    + ShareCollection.GetUncPathForLocalPath(card.RecordingFolder) + "|"
-                    + ShareCollection.GetUncPathForLocalPath(card.TimeShiftFolder);
+                    + ShareExplorer.GetUncPathForLocalPath(card.RecordingFolder) + "|"
+                    + ShareExplorer.GetUncPathForLocalPath(card.TimeShiftFolder);
                   cardSettingsList.Add(result);
                 }
               }

@@ -47,13 +47,13 @@
       this.uncTimeshiftPathsDataGrid = new System.Windows.Forms.DataGridView();
       this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.uncTimeshiftPathsBindingSource = new System.Windows.Forms.BindingSource(this.components);
       this.uncRecordingGroupBox = new System.Windows.Forms.GroupBox();
-      this.createUncShareButton = new System.Windows.Forms.Button();
+      this.createRecordingsShareButton = new System.Windows.Forms.Button();
       this.uncRecordingPathsDataGrid = new System.Windows.Forms.DataGridView();
       this.Card = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.Path = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.uncRecordingPathsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-      this.uncTimeshiftPathsBindingSource = new System.Windows.Forms.BindingSource(this.components);
       this.tabControl1.SuspendLayout();
       this.tabPage1.SuspendLayout();
       this.groupBox1.SuspendLayout();
@@ -61,10 +61,10 @@
       this.uncPathsTabPage.SuspendLayout();
       this.uncTimeshiftGroupBox.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsDataGrid)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsBindingSource)).BeginInit();
       this.uncRecordingGroupBox.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.uncRecordingPathsDataGrid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.uncRecordingPathsBindingSource)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
       // tabControl1
@@ -178,6 +178,9 @@
       // 
       // uncTimeshiftPathsDataGrid
       // 
+      this.uncTimeshiftPathsDataGrid.AllowUserToAddRows = false;
+      this.uncTimeshiftPathsDataGrid.AllowUserToDeleteRows = false;
+      this.uncTimeshiftPathsDataGrid.AllowUserToResizeRows = false;
       this.uncTimeshiftPathsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                   | System.Windows.Forms.AnchorStyles.Left)
                   | System.Windows.Forms.AnchorStyles.Right)));
@@ -209,7 +212,9 @@
       this.uncTimeshiftPathsDataGrid.DefaultCellStyle = dataGridViewCellStyle2;
       this.uncTimeshiftPathsDataGrid.GridColor = System.Drawing.SystemColors.Control;
       this.uncTimeshiftPathsDataGrid.Location = new System.Drawing.Point(7, 20);
+      this.uncTimeshiftPathsDataGrid.MultiSelect = false;
       this.uncTimeshiftPathsDataGrid.Name = "uncTimeshiftPathsDataGrid";
+      this.uncTimeshiftPathsDataGrid.ReadOnly = true;
       dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
       dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
       dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -219,7 +224,9 @@
       dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.uncTimeshiftPathsDataGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
       this.uncTimeshiftPathsDataGrid.RowHeadersVisible = false;
+      this.uncTimeshiftPathsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.uncTimeshiftPathsDataGrid.Size = new System.Drawing.Size(525, 100);
+      this.uncTimeshiftPathsDataGrid.StandardTab = true;
       this.uncTimeshiftPathsDataGrid.TabIndex = 0;
       this.uncTimeshiftPathsDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.uncTimeshiftPathsDataGrid_CellFormatting);
       this.uncTimeshiftPathsDataGrid.SelectionChanged += new System.EventHandler(this.uncTimeshiftPathsDataGrid_SelectionChanged);
@@ -231,6 +238,7 @@
       this.dataGridViewTextBoxColumn1.FillWeight = 30F;
       this.dataGridViewTextBoxColumn1.HeaderText = "Card";
       this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+      this.dataGridViewTextBoxColumn1.ReadOnly = true;
       // 
       // dataGridViewTextBoxColumn2
       // 
@@ -239,12 +247,13 @@
       this.dataGridViewTextBoxColumn2.FillWeight = 70F;
       this.dataGridViewTextBoxColumn2.HeaderText = "Path";
       this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+      this.dataGridViewTextBoxColumn2.ReadOnly = true;
       // 
       // uncRecordingGroupBox
       // 
       this.uncRecordingGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                   | System.Windows.Forms.AnchorStyles.Right)));
-      this.uncRecordingGroupBox.Controls.Add(this.createUncShareButton);
+      this.uncRecordingGroupBox.Controls.Add(this.createRecordingsShareButton);
       this.uncRecordingGroupBox.Controls.Add(this.uncRecordingPathsDataGrid);
       this.uncRecordingGroupBox.Location = new System.Drawing.Point(7, 7);
       this.uncRecordingGroupBox.Name = "uncRecordingGroupBox";
@@ -253,19 +262,22 @@
       this.uncRecordingGroupBox.TabStop = false;
       this.uncRecordingGroupBox.Text = "UNC Recording Paths";
       // 
-      // createUncShareButton
+      // createRecordingsShareButton
       // 
-      this.createUncShareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.createUncShareButton.Location = new System.Drawing.Point(7, 123);
-      this.createUncShareButton.Name = "createUncShareButton";
-      this.createUncShareButton.Size = new System.Drawing.Size(100, 23);
-      this.createUncShareButton.TabIndex = 12;
-      this.createUncShareButton.Text = "Create Share";
-      this.createUncShareButton.UseVisualStyleBackColor = true;
-      this.createUncShareButton.Click += new System.EventHandler(this.createUncShareButton_Click);
+      this.createRecordingsShareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.createRecordingsShareButton.Location = new System.Drawing.Point(7, 123);
+      this.createRecordingsShareButton.Name = "createRecordingsShareButton";
+      this.createRecordingsShareButton.Size = new System.Drawing.Size(100, 23);
+      this.createRecordingsShareButton.TabIndex = 12;
+      this.createRecordingsShareButton.Text = "Create Share";
+      this.createRecordingsShareButton.UseVisualStyleBackColor = true;
+      this.createRecordingsShareButton.Click += new System.EventHandler(this.createRecordingsShareButton_Click);
       // 
       // uncRecordingPathsDataGrid
       // 
+      this.uncRecordingPathsDataGrid.AllowUserToAddRows = false;
+      this.uncRecordingPathsDataGrid.AllowUserToDeleteRows = false;
+      this.uncRecordingPathsDataGrid.AllowUserToResizeRows = false;
       this.uncRecordingPathsDataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                   | System.Windows.Forms.AnchorStyles.Left)
                   | System.Windows.Forms.AnchorStyles.Right)));
@@ -297,7 +309,9 @@
       this.uncRecordingPathsDataGrid.DefaultCellStyle = dataGridViewCellStyle5;
       this.uncRecordingPathsDataGrid.GridColor = System.Drawing.SystemColors.Control;
       this.uncRecordingPathsDataGrid.Location = new System.Drawing.Point(7, 20);
+      this.uncRecordingPathsDataGrid.MultiSelect = false;
       this.uncRecordingPathsDataGrid.Name = "uncRecordingPathsDataGrid";
+      this.uncRecordingPathsDataGrid.ReadOnly = true;
       dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
       dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
       dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -307,7 +321,9 @@
       dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
       this.uncRecordingPathsDataGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
       this.uncRecordingPathsDataGrid.RowHeadersVisible = false;
+      this.uncRecordingPathsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
       this.uncRecordingPathsDataGrid.Size = new System.Drawing.Size(525, 100);
+      this.uncRecordingPathsDataGrid.StandardTab = true;
       this.uncRecordingPathsDataGrid.TabIndex = 0;
       this.uncRecordingPathsDataGrid.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.uncRecordingPathsDataGrid_CellFormatting);
       this.uncRecordingPathsDataGrid.SelectionChanged += new System.EventHandler(this.uncRecordingPathsDataGrid_SelectionChanged);
@@ -319,6 +335,7 @@
       this.Card.FillWeight = 30F;
       this.Card.HeaderText = "Card";
       this.Card.Name = "Card";
+      this.Card.ReadOnly = true;
       // 
       // Path
       // 
@@ -327,6 +344,7 @@
       this.Path.FillWeight = 70F;
       this.Path.HeaderText = "Path";
       this.Path.Name = "Path";
+      this.Path.ReadOnly = true;
       // 
       // SetupForm
       // 
@@ -343,10 +361,10 @@
       this.uncPathsTabPage.ResumeLayout(false);
       this.uncTimeshiftGroupBox.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsDataGrid)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsBindingSource)).EndInit();
       this.uncRecordingGroupBox.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.uncRecordingPathsDataGrid)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.uncRecordingPathsBindingSource)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.uncTimeshiftPathsBindingSource)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -368,7 +386,7 @@
     private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
     private System.Windows.Forms.Button createTimeshiftShareButton;
-    private System.Windows.Forms.Button createUncShareButton;
+    private System.Windows.Forms.Button createRecordingsShareButton;
     private System.Windows.Forms.Button refreshUncButton;
     private System.Windows.Forms.BindingSource uncRecordingPathsBindingSource;
     private System.Windows.Forms.BindingSource uncTimeshiftPathsBindingSource;
