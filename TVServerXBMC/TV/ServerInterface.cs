@@ -717,6 +717,19 @@ namespace TVServerXBMC
                                 tvchannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
                                 //[3] = isencrypted
                                 tvchannel += (freetoair ? "0" : "1");
+                                //[4] = iswebstream
+                                //[5] = webstream url
+                                if (chan.IsWebstream())
+                                {
+                                  tvchannel += "|1|";
+                                  tvchannel += GetWebStreamURL(ref chan) + "|";
+                                }
+                                else
+                                {
+                                  tvchannel += "|0||";
+                                }
+                                //[6] = visibleinguide
+                                tvchannel += (chan.VisibleInGuide ? "1" : "0");
 
                                 tvchannels.Add(tvchannel);
                             }
@@ -875,12 +888,14 @@ namespace TVServerXBMC
                                 if (chan.IsWebstream())
                                 {
                                     radiochannel += "|1|";
-                                    radiochannel += GetWebStreamURL(ref chan);
+                                    radiochannel += GetWebStreamURL(ref chan) + "|";
                                 }
                                 else
                                 {
-                                    radiochannel += "|0|";
+                                    radiochannel += "|0||";
                                 }
+                                //[6] = visibleinguide
+                                radiochannel += (chan.VisibleInGuide ? "1" : "0");
 
                                 radiochannels.Add(radiochannel);
 
