@@ -86,6 +86,8 @@ namespace TVServerXBMC
             handlers.Add(new StopRecording(this));
             handlers.Add(new GetRecordingInfo(this));
             handlers.Add(new SetRecordingTimesWatched(this));
+            handlers.Add(new GetRecordingStopTime(this));
+            handlers.Add(new SetRecordingStopTime(this));
             // Timer/Schedule commands:
             handlers.Add(new GetScheduleCount(this));
             handlers.Add(new ListSchedules(this));

@@ -1,3 +1,7 @@
+1.2.200.121:
+- Added support for setting and retrieving the recording StopTime
+- Added "GetRecordingStopTime" and "SetRecordingStopTime" commands
+
 1.2.200.120:
 - Share creation improvements
 - Channels: send also the VisibleInGuide option to XBMC

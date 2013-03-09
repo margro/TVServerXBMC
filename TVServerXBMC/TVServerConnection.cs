@@ -151,6 +151,16 @@ namespace TVServerXBMC
           return serverIntf.SetRecordingTimesWatched(recordingId, timesWatched);
         }
 
+        public static int GetRecordingStopTime(int recordingId)
+        {
+          return serverIntf.GetRecordingStopTime(recordingId);
+        }
+
+        public static bool SetRecordingStopTime(int recordingId, int stopTime)
+        {
+          return serverIntf.SetRecordingStopTime(recordingId, stopTime);
+        }
+
         // get the amount of schedules recordings
         public static int getScheduleCount()
         {

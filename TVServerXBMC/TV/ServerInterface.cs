@@ -1019,6 +1019,7 @@ namespace TVServerXBMC
                     //[17] channel id (int)
                     //[18] isrecording (bool)
                     //[19] timesWatched (int)
+                    //[20] stopTime (int)
 
                     try
                     {
@@ -1057,8 +1058,8 @@ namespace TVServerXBMC
                         + rec.Genre + "|"                         // 16
                         + rec.IdChannel.ToString() + "|"          // 17
                         + rec.IsRecording.ToString() + "|"        // 18
-                        + rec.TimesWatched.ToString();            // 19
-                    
+                        + rec.TimesWatched.ToString() + "|"       // 19
+                        + rec.StopTime.ToString();                // 20
 
                     reclist.Add(recording);
                 }
@@ -1649,6 +1650,37 @@ namespace TVServerXBMC
               // some other client already updated the counter, so just do a +1 here
               recording.TimesWatched++;
             }
+            recording.Persist();
+
+            return true;
+          }
+          catch
+          {
+            return false;
+          }
+        }
+
+        public int GetRecordingStopTime(int recordingindex)
+        {
+          try
+          {
+            Recording recording = Recording.Retrieve(recordingindex);
+
+            return recording.StopTime;
+          }
+          catch
+          {
+            return -1;
+          }
+        }
+
+        public bool SetRecordingStopTime(int recordingindex, int stopTime)
+        {
+          try
+          {
+            Recording recording = Recording.Retrieve(recordingindex);
+
+            recording.StopTime = stopTime;
             recording.Persist();
 
             return true;
