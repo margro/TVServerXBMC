@@ -1,3 +1,8 @@
+1.3.0.122
+- Added: support for retrieving channels from multiple specified groups (>1, < All groups)
+- Updated: referenced assemblies for TVServer 1.3.0 (final)
+- Added: MPEI configuration for creating a MPEI file
+
 1.2.200.121:
 - Added support for setting and retrieving the recording StopTime
 - Added "GetRecordingStopTime" and "SetRecordingStopTime" commands
