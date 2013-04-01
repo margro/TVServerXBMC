@@ -77,15 +77,15 @@ namespace TVServerXBMC
             return refChannelInfos;
         }
 
-        public static List<string> GetTVChannels(String group)
+        public static List<string> GetTVChannels(List<string> groups)
         {
-            List<string> result = serverIntf.GetTVChannels(group);
+            List<string> result = serverIntf.GetTVChannels(groups);
             return result;
         }
 
-        public static List<string> GetRadioChannels(String group)
+        public static List<string> GetRadioChannels(List<string> groups)
         {
-            List<string> result = serverIntf.GetRadioChannels(group);
+            List<string> result = serverIntf.GetRadioChannels(groups);
             return result;
         }
 

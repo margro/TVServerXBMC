@@ -659,86 +659,111 @@ namespace TVServerXBMC
             return refChannelInfos;
         }
 
-        public List<string> GetTVChannels(string groupName)
+        public List<string> GetTVChannels(List<string> groupNames)
         {
             try
             {
-                if (tvgroups != null)
+                List<string> tvchannels = new List<string>();
+                HashSet<Channel> uniqueChannels = new HashSet<Channel>();
+
+                if (groupNames.Count > 0)
                 {
-                    List<string> tvchannels = new List<string>();
+                    IList<TvDatabase.ChannelGroup> tvGroups = ChannelGroup.ListAll();
 
-                    if (groupName.Length == 0)
-                        groupName = "All Channels";
-
-                    foreach (ChannelGroup group in tvgroups)
+                    if (tvGroups != null)
                     {
-                        if (group.GroupName == groupName)
+                        foreach (ChannelGroup group in tvGroups)
                         {
-                            IList<GroupMap> maps = group.ReferringGroupMap();
-                            foreach (GroupMap map in maps)
+                            if (groupNames.Contains(group.GroupName))
                             {
-                                Channel chan = map.ReferencedChannel();
-
-                                if (chan == null) continue;
-
-                                string tvchannel;
-                                int channelNumber = 10000;
-                                bool freetoair = false;
-
-                                try
+                                IList<GroupMap> maps = group.ReferringGroupMap();
+                                foreach (GroupMap map in maps)
                                 {
-                                    channelNumber = chan.ChannelNumber;
-                                }
-                                catch
-                                {
-                                }
+                                    Channel chan = map.ReferencedChannel();
 
-                                //Determine the channel number given by the provider using this channel's tuning details
-                                IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+                                    if (chan == null)
+                                        continue;
 
-                                foreach (TuningDetail tuningdetail in tuningdetails)
-                                {
-                                    freetoair = freetoair || tuningdetail.FreeToAir;
-                                    if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
-                                    {
-                                        channelNumber = tuningdetail.ChannelNumber;
-                                        break;
-                                    }
+                                    uniqueChannels.Add(chan);
                                 }
-
-                                //XBMC side:
-                                //uid, number, name, callsign, iconpath, isencrypted,
-                                //isradio, ishidden, isrecording, bouquet, multifeed,
-                                //stream_url;
-
-                                //[0] = channel uid
-                                //[1] = channel number
-                                //[2] = channel name
-                                tvchannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
-                                //[3] = isencrypted
-                                tvchannel += (freetoair ? "0" : "1");
-                                //[4] = iswebstream
-                                //[5] = webstream url
-                                if (chan.IsWebstream())
-                                {
-                                  tvchannel += "|1|";
-                                  tvchannel += GetWebStreamURL(ref chan) + "|";
-                                }
-                                else
-                                {
-                                  tvchannel += "|0||";
-                                }
-                                //[6] = visibleinguide
-                                tvchannel += (chan.VisibleInGuide ? "1" : "0");
-
-                                tvchannels.Add(tvchannel);
                             }
                         }
                     }
-
-                    return tvchannels;
+                    else
+                    {
+                        Console.WriteLine("TVServerXBMC: GetTVChannels: no tv groups?");
+                        Log.Error("TVServerXBMC: GetTVChannels: no tv groups?");
+                        return null;
+                    }
                 }
-                return null;
+                else
+                {
+                    IList<TvDatabase.Channel> channels = Channel.ListAll();
+
+                    foreach (Channel chan in channels)
+                    {
+                        if (chan.IsTv)
+                            uniqueChannels.Add(chan);
+                    }
+                }
+
+                foreach (Channel chan in uniqueChannels)
+                {
+                    string tvchannel;
+                    int channelNumber = 10000;
+                    bool freetoair = false;
+
+                    try
+                    {
+                        channelNumber = chan.ChannelNumber;
+                    }
+                    catch
+                    {
+                    }
+
+                    //Determine the channel number given by the provider using this channel's tuning details
+                    IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+
+                    foreach (TuningDetail tuningdetail in tuningdetails)
+                    {
+                        freetoair = freetoair || tuningdetail.FreeToAir;
+                        if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                        {
+                            channelNumber = tuningdetail.ChannelNumber;
+                            break;
+                        }
+                    }
+
+                    //XBMC side:
+                    //uid, number, name, callsign, iconpath, isencrypted,
+                    //isradio, ishidden, isrecording, bouquet, multifeed,
+                    //stream_url;
+
+                    //[0] = channel uid
+                    //[1] = channel number
+                    //[2] = channel name
+                    tvchannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
+                    //[3] = isencrypted
+                    tvchannel += (freetoair ? "0" : "1");
+                    //[4] = iswebstream
+                    //[5] = webstream url
+                    if (chan.IsWebstream())
+                    {
+                        tvchannel += "|1|";
+                        Channel webChannel = chan;
+                        tvchannel += GetWebStreamURL(ref webChannel) + "|";
+                    }
+                    else
+                    {
+                        tvchannel += "|0||";
+                    }
+                    //[6] = visibleinguide
+                    tvchannel += (chan.VisibleInGuide ? "1" : "0");
+
+                    tvchannels.Add(tvchannel);
+                }
+
+                return tvchannels;
             }
             catch (Exception ex)
             {
@@ -747,7 +772,6 @@ namespace TVServerXBMC
                 Log.Error("TVServerXBMC: " + ex.ToString());
                 return null;
             }
-
         }
         
         public List<ChannelInfo> getRadioChannels(string groupName)
@@ -831,81 +855,108 @@ namespace TVServerXBMC
             return radioChannels;
         }
 
-        public List<string> GetRadioChannels(string groupName)
+        public List<string> GetRadioChannels(List<string> groupNames)
         {
             try
             {
-                if (radiogroups != null)
+                List<string> radiochannels = new List<string>();
+                HashSet<Channel> uniqueChannels = new HashSet<Channel>();
+
+                if (groupNames.Count > 0)
                 {
-                    List<string> radiochannels = new List<string>();
+                    IList<TvDatabase.RadioChannelGroup> radioGroups = RadioChannelGroup.ListAll();
 
-                    if (groupName.Length == 0)
-                        groupName = "All Channels";
-
-                    foreach (RadioChannelGroup group in radiogroups)
+                    if (radioGroups != null)
                     {
-                        if (group.GroupName == groupName)
+                        foreach (RadioChannelGroup group in radioGroups)
                         {
-                            IList<RadioGroupMap> maps = group.ReferringRadioGroupMap();
-                            foreach (RadioGroupMap map in maps)
+                            if (groupNames.Contains(group.GroupName))
                             {
-                                Channel chan = map.ReferencedChannel();
 
-                                if (chan == null) continue;
-
-                                string radiochannel;
-                                int channelNumber = 10000;
-                                bool freetoair = false;
-
-                                try
+                                IList<RadioGroupMap> maps = group.ReferringRadioGroupMap();
+                                foreach (RadioGroupMap map in maps)
                                 {
-                                    channelNumber = chan.ChannelNumber;
+                                    Channel chan = map.ReferencedChannel();
+
+                                    if (chan == null)
+                                        continue;
+
+                                    uniqueChannels.Add(chan);
                                 }
-                                catch
-                                { }
-
-                                //Determine the channel number given by the provider using this channel's tuning details
-                                IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
-
-                                foreach (TuningDetail tuningdetail in tuningdetails)
-                                {
-                                    freetoair = freetoair || tuningdetail.FreeToAir;
-                                    if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
-                                    {
-                                        channelNumber = tuningdetail.ChannelNumber;
-                                        break;
-                                    }
-                                }
-
-                                //[0] = channel uid
-                                //[1] = channel number
-                                //[2] = channel name
-                                radiochannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
-                                //[3] = isencrypted
-                                radiochannel += (freetoair ? "0" : "1");
-                                //[4] = iswebstream
-                                //[5] = webstream url
-                                if (chan.IsWebstream())
-                                {
-                                    radiochannel += "|1|";
-                                    radiochannel += GetWebStreamURL(ref chan) + "|";
-                                }
-                                else
-                                {
-                                    radiochannel += "|0||";
-                                }
-                                //[6] = visibleinguide
-                                radiochannel += (chan.VisibleInGuide ? "1" : "0");
-
-                                radiochannels.Add(radiochannel);
-
                             }
                         }
                     }
-
-                    return radiochannels;
+                    else
+                    {
+                       Console.WriteLine("TVServerXBMC: GetRadioChannels: no radio groups?");
+                        Log.Error("TVServerXBMC: GetRadioChannels: no radio groups?");
+                        return null;
+                    }
                 }
-                return null;
+                else
+                {
+                    IList<TvDatabase.Channel> channels = Channel.ListAll();
+
+                    foreach (Channel chan in channels)
+                    {
+                        if (chan.IsRadio)
+                            uniqueChannels.Add(chan);
+                    }
+                }
+
+                foreach (Channel chan in uniqueChannels)
+                {
+                    string radiochannel;
+                    int channelNumber = 10000;
+                    bool freetoair = false;
+
+                    try
+                    {
+                        channelNumber = chan.ChannelNumber;
+                    }
+                    catch
+                    {
+                    }
+
+                    //Determine the channel number given by the provider using this channel's tuning details
+                    IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+
+                    foreach (TuningDetail tuningdetail in tuningdetails)
+                    {
+                        freetoair = freetoair || tuningdetail.FreeToAir;
+                        if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                        {
+                            channelNumber = tuningdetail.ChannelNumber;
+                            break;
+                        }
+                    }
+
+                    //XBMC side:
+                    //[0] = channel uid
+                    //[1] = channel number
+                    //[2] = channel name
+                    radiochannel = chan.IdChannel + "|" + channelNumber + "|" + chan.DisplayName + "|";
+                    //[3] = isencrypted
+                    radiochannel += (freetoair ? "0" : "1");
+                    //[4] = iswebstream
+                    //[5] = webstream url
+                    if (chan.IsWebstream())
+                    {
+                        radiochannel += "|1|";
+                        Channel webChannel = chan;
+                        radiochannel += GetWebStreamURL(ref webChannel) + "|";
+                    }
+                    else
+                    {
+                        radiochannel += "|0||";
+                    }
+                    //[6] = visibleinguide
+                    radiochannel += (chan.VisibleInGuide ? "1" : "0");
+
+                    radiochannels.Add(radiochannel);
+                }
+
+                return radiochannels;
             }
             catch (Exception ex)
             {

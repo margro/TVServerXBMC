@@ -14,20 +14,18 @@ namespace TVServerXBMC.Commands
 
         public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
-            String group;
+            List<string> groups;
 
-            if (arguments != null)
+            if ((arguments != null) && (arguments[0].Length > 0))
             {   //we want to list all channels in group arg[0]
-                group = arguments[0];
+                groups = new List<string>(arguments);
             }
             else
             {
-                group = "";
+                groups = new List<string>();
             }
-
-            Console.WriteLine("Radio channels from group:" + group);
-            
-            List<string> radiochannels = TVServerConnection.GetRadioChannels(group);
+           
+            List<string> radiochannels = TVServerConnection.GetRadioChannels(groups);
 
             foreach (string channel in radiochannels)
             {
