@@ -77,7 +77,7 @@ namespace TVServerXBMC
 
         public void Stop()
         {
-            Log.Error("TVServerXBMC: tcpListener.Stop()");
+            Log.Debug("TVServerXBMC: tcpListener.Stop()");
             Console.WriteLine("TVServerXBMC: tcpListener.Stop()");
             stopme = true;
 
