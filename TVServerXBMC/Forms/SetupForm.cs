@@ -103,7 +103,8 @@ namespace TVServerXBMC.Forms
 
         if (anyError)
         {
-          MessageBox.Show(this, "You must set up at least 2 shares with full permissions to access the recordings and timeshift folders on remote XBMC clients!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        //  MessageBox.Show(this, "You must set up at least 2 shares with full permissions to access the recordings and timeshift folders on remote XBMC clients!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+          Log.Info("TVServerXBMC: At least one of the timeshift or recordings folders is not accessible for remote clients.");
         }
       }
       catch (Exception ex)
