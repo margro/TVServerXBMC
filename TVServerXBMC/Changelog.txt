@@ -1,3 +1,6 @@
+1.4.0.123
+- Updated: referenced assemblies for TVServer 1.4.0 (final)
+
 1.3.0.122
 - Added: support for retrieving channels from multiple specified groups (>1, < All groups)
 - Updated: referenced assemblies for TVServer 1.3.0 (final)

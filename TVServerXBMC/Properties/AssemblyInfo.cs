@@ -34,6 +34,6 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyFileVersion("1.4.0.123")]
 
 // Set usage and compatibility information to MediaPortal v1.3.0 beta and above
-[assembly: CompatibleVersion("1.2.200.0", "1.2.200.0")]
+[assembly: CompatibleVersion("1.4.0.0", "1.2.200.0")]
 [assembly: UsesSubsystem("TVE")]
 

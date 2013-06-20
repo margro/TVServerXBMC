@@ -139,11 +139,11 @@ Click Next to continue or Cancel to exit Setup.</Value>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>3</Minor>
+          <Minor>4</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
-        <WarnOnly>false</WarnOnly>
+        <WarnOnly>true</WarnOnly>
         <Message>requires MediaPortal TVServer version 1.3.0  to 1.3.999.</Message>
         <Name>TvServer</Name>
       </DependencyItem>
@@ -177,12 +177,12 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Marcel Groothuis, Prashant V</Author>
     <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
     <ForumPage>http://forum.xbmc.org/forumdisplay.php?fid=171</ForumPage>
-    <UpdateUrl>https://github.com/margro/TVServerXBMC/tree/mediaportal_1.3/Installer/MPEI_Update.xml</UpdateUrl>
+    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
-      <Minor>3</Minor>
+      <Minor>4</Minor>
       <Build>0</Build>
-      <Revision>121</Revision>
+      <Revision>123</Revision>
     </Version>
     <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
 
@@ -196,8 +196,8 @@ Click Next to continue or Cancel to exit Setup.</Value>
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/[Name]-[Version].mpe1</OnlineLocation>
-    <ReleaseDate>2013-03-16T19:29:03.9483205+01:00</ReleaseDate>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.4.0.123.mpe1</OnlineLocation>
+    <ReleaseDate>2013-06-20T19:29:03</ReleaseDate>
     <Tags>xbmc, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>
