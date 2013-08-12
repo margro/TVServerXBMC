@@ -1,5 +1,7 @@
 1.3.0.124
 - Changed: do not cache the card list
+- Added: Support for downloading channel thumbs from the backend
+
 
 1.3.0.123
 - Removed the Messagebox that requires 2 shares to be created. It confused people with a Single Seat setup.

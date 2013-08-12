@@ -10,6 +10,7 @@ namespace TVServerXBMC.Commands
     class DataWriter
     {
         readonly StreamWriter writer;
+        readonly BinaryWriter binWriter;
 
         // will always end with a newline, so this is anything before that
         private String commandSeparator = Environment.NewLine;
@@ -21,6 +22,7 @@ namespace TVServerXBMC.Commands
         public DataWriter(NetworkStream stream)
         {
             writer = new StreamWriter(stream);
+            binWriter = new BinaryWriter(stream);
         }
 
         private String getSameString(String str)
@@ -108,6 +110,12 @@ namespace TVServerXBMC.Commands
             writer.Write(line + commandSeparator);
             Console.WriteLine("Socket write: " + line + commandSeparator);
             writer.Flush();
+        }
+
+        public void writeBytes(Byte[] bytes)
+        {
+          binWriter.Write(bytes);
+          binWriter.Flush();
         }
         
         public void writeList(List<string> list)

@@ -368,5 +368,19 @@ namespace TVServerXBMC
         {
            return serverIntf;
         }
+
+        public static string GetLogoPath(Boolean bIsRadio)
+        {
+          if (bIsRadio)
+          {
+            return String.Format(@"{0}\Team MediaPortal\MediaPortal\thumbs\Radio\",
+                 System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData));
+          }
+          else
+          {
+            return String.Format(@"{0}\Team MediaPortal\MediaPortal\thumbs\TV\Logos\",
+                 System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData));
+          }
+        }
     }
 }
