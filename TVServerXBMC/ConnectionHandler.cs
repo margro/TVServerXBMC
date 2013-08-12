@@ -78,6 +78,7 @@ namespace TVServerXBMC
             handlers.Add(new ListTVChannels(this));
             handlers.Add(new ListRadioChannels(this));
             handlers.Add(new ListRadioGroups(this));
+            handlers.Add(new GetChannelThumb(this));
             // Recording commands:
             handlers.Add(new GetRecordingCount(this));
             handlers.Add(new ListRecordings(this));

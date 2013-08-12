@@ -43,6 +43,7 @@
     <Compile Include="Commands\CloseConnection.cs" />
     <Compile Include="Commands\CommandHandler.cs" />
     <Compile Include="Commands\AddSchedule.cs" />
+    <Compile Include="Commands\GetChannelThumb.cs" />
     <Compile Include="Commands\GetRecordingStopTime.cs" />
     <Compile Include="Commands\SetRecordingStopTime.cs" />
     <Compile Include="Commands\SetRecordingTimesWatched.cs" />
