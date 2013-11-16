@@ -15,11 +15,6 @@ namespace TVServerXBMC
 {
     public class TVServerController
     {
-        IList<TvDatabase.ChannelGroup> tvgroups = null;
-        IList<TvDatabase.Channel> channels = null;
-        IList<TvDatabase.GroupMap> tvmappings = null;
-        IList<TvDatabase.RadioChannelGroup> radiogroups = null;
-        IList<TvDatabase.RadioGroupMap> radiomappings = null;
         IController controller = null;
 
         IUser me = null;
@@ -40,25 +35,8 @@ namespace TVServerXBMC
         {
             try
             {
-                Console.Write("Fetch TV and radio channel list");
-                channels = Channel.ListAll();
-                Console.WriteLine(": " + channels.Count + " channels found");
-
-                // TV channel groups information:
-                Console.Write("Fetch TV groups list");
-                tvgroups = ChannelGroup.ListAll();
-                Console.WriteLine(": " + tvgroups.Count + " tvgroups found");
-                Console.Write("Fetch TV group mappings");
-                tvmappings = GroupMap.ListAll();
-                Console.WriteLine(": " + tvmappings.Count + " tvmappings found");
-
-                // Radio channel groups information:
-                Console.Write("Fetch radio groups");
-                radiogroups = RadioChannelGroup.ListAll();
-                Console.WriteLine(": " + radiogroups.Count + " radiogroups found");
-                Console.Write("Fetch radio group mappings");
-                radiomappings = RadioGroupMap.ListAll();
-                Console.WriteLine(": " + channels.Count + " radiomappings found");
+              // Just to check our database connection:
+              IList<TvDatabase.ChannelGroup> tvgroups = ChannelGroup.ListAll();
             }
             catch(Exception ex)
             {
@@ -492,8 +470,11 @@ namespace TVServerXBMC
             List<string> lGroups = new List<string>();
             try
             {
-                foreach (ChannelGroup group in tvgroups)
-                    lGroups.Add(group.GroupName);
+              IList<TvDatabase.ChannelGroup> tvgroups = ChannelGroup.ListAll();
+              foreach (ChannelGroup group in tvgroups)
+              {
+                lGroups.Add(group.GroupName);
+              }
             }
             catch (Exception ex)
             {
@@ -512,8 +493,11 @@ namespace TVServerXBMC
             List<string> lGroups = new List<string>();
             try
             {
-                foreach (RadioChannelGroup group in radiogroups)
-                    lGroups.Add(group.GroupName);
+              IList<TvDatabase.RadioChannelGroup> radiogroups = RadioChannelGroup.ListAll();
+              foreach (RadioChannelGroup group in radiogroups)
+              {
+                lGroups.Add(group.GroupName);
+              }
             }
             catch (Exception ex)
             {
@@ -527,62 +511,79 @@ namespace TVServerXBMC
 
         public int GetChannelCount(String group)
         {
+          try
+          {
+
             if (group == "" || group == null)
             {
-                return channels.Count;
+              IList<TvDatabase.Channel> channels = Channel.ListAll();
+              return channels.Count;
             }
             else
             {
-                foreach (ChannelGroup chgroup in tvgroups)
+              IList<ChannelGroup> tvgroups = ChannelGroup.ListAll();
+              foreach (ChannelGroup chgroup in tvgroups)
+              {
+                if (chgroup.GroupName == group)
                 {
-                    if (chgroup.GroupName == group)
-                    {
-                        IList<GroupMap> maps = chgroup.ReferringGroupMap();
-                        return maps.Count;
-                    }
+                  IList<GroupMap> maps = chgroup.ReferringGroupMap();
+                  return maps.Count;
                 }
+              }
             }
-
-            return 0;
+          }
+          catch (Exception ex)
+          {
+            Log.Error("TVServerXBMC: An exception occurred in GetChannelCount(): " + ex.Message);
+          }
+          return 0;
         }
 
         public ChannelInfo GetChannelInfo(int chanId)
         {
+          try
+          {
+            IList<Channel> channels = Channel.ListAll();
             foreach (Channel chan in channels)
             {
-                if (chan.IdChannel == chanId)
+              if (chan.IdChannel == chanId)
+              {
+                // this is the channel we want
+                ChannelInfo channelInfo = new ChannelInfo();
+                TvDatabase.Program epg = null;
+
+                channelInfo.channelID = chan.IdChannel.ToString();
+                channelInfo.name = chan.DisplayName;
+                channelInfo.isWebStream = chan.IsWebstream();
+                channelInfo.epgNow = new ProgrammInfo();
+                channelInfo.epgNext = new ProgrammInfo();
+
+                try
                 {
-                    // this is the channel we want
-                    ChannelInfo channelInfo = new ChannelInfo();
-                    TvDatabase.Program epg = null;
-
-                    channelInfo.channelID = chan.IdChannel.ToString();
-                    channelInfo.name = chan.DisplayName;
-                    channelInfo.isWebStream = chan.IsWebstream();
-                    channelInfo.epgNow = new ProgrammInfo();
-                    channelInfo.epgNext = new ProgrammInfo();
-
-                    try
-                    {
-                        epg = chan.CurrentProgram;
-                        if (epg != null)
-                        {
-                            channelInfo.epgNow.timeInfo = epg.StartTime.ToShortTimeString() + "-" + epg.EndTime.ToShortTimeString();
-                            channelInfo.epgNow.description = epg.Title;
-                        }
-                        epg = chan.NextProgram;
-                        if (epg != null)
-                        {
-                            channelInfo.epgNext.timeInfo = epg.StartTime.ToShortTimeString() + "-" + epg.EndTime.ToShortTimeString();
-                            channelInfo.epgNext.description = epg.Title;
-                        }
-                    }
-                    catch { }
-
-                    return channelInfo;
+                  epg = chan.CurrentProgram;
+                  if (epg != null)
+                  {
+                    channelInfo.epgNow.timeInfo = epg.StartTime.ToShortTimeString() + "-" + epg.EndTime.ToShortTimeString();
+                    channelInfo.epgNow.description = epg.Title;
+                  }
+                  epg = chan.NextProgram;
+                  if (epg != null)
+                  {
+                    channelInfo.epgNext.timeInfo = epg.StartTime.ToShortTimeString() + "-" + epg.EndTime.ToShortTimeString();
+                    channelInfo.epgNext.description = epg.Title;
+                  }
                 }
+                catch { }
+
+                return channelInfo;
+              }
             }
-            return null;
+          }
+          catch (Exception ex)
+          {
+            Log.Error("TVServerXBMC: An exception occurred in GetChannelInfo(): " + ex.Message);
+          }
+          return null;
         }
 
         public List<ChannelInfo> GetChannelInfosForGroup(string groupName)
@@ -590,6 +591,7 @@ namespace TVServerXBMC
             List<ChannelInfo> refChannelInfos = new List<ChannelInfo>();
             try
             {
+                IList<TvDatabase.ChannelGroup> tvgroups = ChannelGroup.ListAll();
                 if (tvgroups != null)
                 {
                     foreach (ChannelGroup group in tvgroups)
@@ -782,6 +784,8 @@ namespace TVServerXBMC
                 if (groupName == "")
                 {
                     TvDatabase.Program epg;
+
+                    IList<Channel> channels = Channel.ListAll();
                     foreach (Channel chan in channels)
                     {
                         if (!chan.IsRadio)
@@ -809,6 +813,7 @@ namespace TVServerXBMC
                 }
                 else
                 {
+                    IList<TvDatabase.RadioChannelGroup> radiogroups = RadioChannelGroup.ListAll();
                     foreach (RadioChannelGroup group in radiogroups)
                     {
                         if (group.GroupName == groupName)
