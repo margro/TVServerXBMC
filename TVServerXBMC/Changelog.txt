@@ -1,7 +1,7 @@
 1.4.0.124
-- Changed: do not cache the card list
+- Changed: do not cache the card list, channel lists and group lists
 - Added: Support for downloading channel thumbs from the backend
-
+- Updated: more exception handling to prevent TVServerXBMC plugin crashes
 
 1.4.0.123
 - Updated: referenced assemblies for TVServer 1.4.0 (final)

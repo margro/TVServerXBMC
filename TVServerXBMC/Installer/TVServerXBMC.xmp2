@@ -138,14 +138,33 @@ Click Next to continue or Cancel to exit Setup.</Value>
           <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
-          <Major>1</Major>
-          <Minor>4</Minor>
+          <Major>99</Major>
+          <Minor>999</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires MediaPortal TVServer version 1.3.0  to 1.3.999.</Message>
-        <Name>TvServer</Name>
+        <Message>requires at least MPEI 1.2.x</Message>
+        <Name>MPEI</Name>
+      </DependencyItem>
+      <DependencyItem>
+        <Type>TvServer</Type>
+        <Id />
+        <MinVersion>
+          <Major>1</Major>
+          <Minor>1</Minor>
+          <Build>6</Build>
+          <Revision>27644</Revision>
+        </MinVersion>
+        <MaxVersion>
+          <Major>1</Major>
+          <Minor>4</Minor>
+          <Build>999</Build>
+          <Revision>99999</Revision>
+        </MaxVersion>
+        <WarnOnly>true</WarnOnly>
+        <Message>requires MediaPortal TVServer version 1.1.6.27644 to 1.4.*</Message>
+        <Name>MediaPortal TVServer</Name>
       </DependencyItem>
       <DependencyItem>
         <Type>MediaPortal</Type>
@@ -182,7 +201,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Major>1</Major>
       <Minor>4</Minor>
       <Build>0</Build>
-      <Revision>123</Revision>
+      <Revision>124</Revision>
     </Version>
     <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
 
@@ -197,7 +216,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.4.0.123.mpe1</OnlineLocation>
-    <ReleaseDate>2013-06-20T19:29:03</ReleaseDate>
+    <ReleaseDate>2013-11-16T19:29:03</ReleaseDate>
     <Tags>xbmc, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>
