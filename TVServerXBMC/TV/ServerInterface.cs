@@ -1806,26 +1806,34 @@ namespace TVServerXBMC
               {
                 if ((cardID == -1) || (cardID == card.IdCard))
                 {
-                  result = card.IdCard.ToString() + "|"
-                    + card.DevicePath + "|"
-                    + card.Name + "|"
-                    + card.Priority.ToString() + "|"
-                    + card.GrabEPG.ToString() + "|"
-                    + card.LastEpgGrab.ToString("u") + "|"
-                    + card.RecordingFolder + "|"
-                    + card.IdServer.ToString() + "|"
-                    + card.Enabled.ToString() + "|"
-                    + card.CamType.ToString() + "|"
-                    + card.TimeShiftFolder.ToString() + "|"
-                    + card.RecordingFormat.ToString() + "|"
-                    + card.DecryptLimit.ToString() + "|"
-                    + card.PreloadCard.ToString() + "|"
-                    + card.CAM.ToString() + "|"
-                    + card.netProvider.ToString() + "|"
-                    + card.StopGraph.ToString() + "|"
-                    + ShareExplorer.GetUncPathForLocalPath(card.RecordingFolder) + "|"
-                    + ShareExplorer.GetUncPathForLocalPath(card.TimeShiftFolder);
-                  cardSettingsList.Add(result);
+                  try
+                  {
+                    result = card.IdCard.ToString() + "|"
+                      + card.DevicePath.Replace('|', ' ') + "|"
+                      + card.Name.Replace('|',' ') + "|"
+                      + card.Priority.ToString() + "|"
+                      + card.GrabEPG.ToString() + "|"
+                      + card.LastEpgGrab.ToString("u") + "|"
+                      + card.RecordingFolder + "|"
+                      + card.IdServer.ToString() + "|"
+                      + card.Enabled.ToString() + "|"
+                      + card.CamType.ToString() + "|"
+                      + card.TimeShiftFolder.ToString() + "|"
+                      + card.RecordingFormat.ToString() + "|"
+                      + card.DecryptLimit.ToString() + "|"
+                      + card.PreloadCard.ToString() + "|"
+                      + card.CAM.ToString() + "|"
+                      + card.netProvider.ToString() + "|"
+                      + card.StopGraph.ToString() + "|"
+                      + ShareExplorer.GetUncPathForLocalPath(card.RecordingFolder) + "|"
+                      + ShareExplorer.GetUncPathForLocalPath(card.TimeShiftFolder);
+                    cardSettingsList.Add(result);
+                  }
+                  catch (Exception e)
+                  {
+                    Console.WriteLine("GetCardSettings: " + e.Message);
+                    Log.Debug("TVServerXBMC: Error while obtaining the GetCardSettings for card '" + card.Name + "': " + e.Message);
+                  }
                 }
               }
             }
