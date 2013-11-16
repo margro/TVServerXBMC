@@ -203,19 +203,19 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Build>0</Build>
       <Revision>124</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
-
-
-. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
-
-
-
-
-
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
+
+
+. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
+
+
+
+
+
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.4.0.123.mpe1</OnlineLocation>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.4.0.124.mpe1</OnlineLocation>
     <ReleaseDate>2013-11-16T19:29:03</ReleaseDate>
     <Tags>xbmc, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
