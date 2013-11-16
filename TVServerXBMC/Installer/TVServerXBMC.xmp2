@@ -133,18 +133,18 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>2</Minor>
-          <Build>200</Build>
+          <Minor>5</Minor>
+          <Build>0</Build>
           <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
-          <Major>99</Major>
-          <Minor>999</Minor>
+          <Major>1</Major>
+          <Minor>5</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires at least MPEI 1.2.x</Message>
+        <Message>requires MPEI 1.5.x</Message>
         <Name>MPEI</Name>
       </DependencyItem>
       <DependencyItem>
@@ -152,18 +152,18 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>1</Minor>
-          <Build>6</Build>
-          <Revision>27644</Revision>
+          <Minor>5</Minor>
+          <Build>0</Build>
+          <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>4</Minor>
+          <Minor>5</Minor>
           <Build>999</Build>
-          <Revision>99999</Revision>
+          <Revision>0</Revision>
         </MaxVersion>
         <WarnOnly>true</WarnOnly>
-        <Message>requires MediaPortal TVServer version 1.1.6.27644 to 1.4.*</Message>
+        <Message>requires MediaPortal TVServer version 1.5.*</Message>
         <Name>MediaPortal TVServer</Name>
       </DependencyItem>
       <DependencyItem>
@@ -196,26 +196,26 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Marcel Groothuis, Prashant V</Author>
     <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
     <ForumPage>http://forum.xbmc.org/forumdisplay.php?fid=171</ForumPage>
-    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update.xml</UpdateUrl>
+    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_5.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
-      <Minor>4</Minor>
+      <Minor>5</Minor>
       <Build>0</Build>
       <Revision>124</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
-
-
-. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
-
-
-
-
-
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
+
+
+. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
+
+
+
+
+
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.4.0.123.mpe1</OnlineLocation>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.5.0.124.mpe1</OnlineLocation>
     <ReleaseDate>2013-11-16T19:29:03</ReleaseDate>
     <Tags>xbmc, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
@@ -265,7 +265,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
   <ProjectSettings>
     <FolderGroups />
     <ProjectFilename>TVServerXBMC.xmp2</ProjectFilename>
-    <UpdatePath1>MPEI_update.xml</UpdatePath1>
+    <UpdatePath1>MPEI_update_1_5.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />
   </ProjectSettings>
