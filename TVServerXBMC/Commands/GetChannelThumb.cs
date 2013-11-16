@@ -59,17 +59,22 @@ namespace TVServerXBMC.Commands
                 else
                 {
                   Byte[] thumbData = File.ReadAllBytes(strThumbPath + strThumbName);
-                  Int64 fileLength = thumbData.LongLength;
-                  //string strFileLength = fileLength.ToString();
+                  Int32 fileLength = thumbData.Length;
+                  Int32 thumbNameLength = strThumbName.Length;
+                  Byte[] utf8ThumbName = System.Text.Encoding.UTF8.GetBytes(strThumbName);
+                  Byte[] thumbNameLengthBytes = BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(utf8ThumbName.Length));
+                  Byte[] fileLengthBytes = BitConverter.GetBytes(System.Net.IPAddress.HostToNetworkOrder(fileLength));
 
-                  string strThumbInfo = "1|"
-                    + strThumbName + "|"
-                    + fileLength.ToString();
+                  Byte[] strThumbInfo = { 0x31, 0x7C }; // ASCII: "1|"
 
-                  writer.write(strThumbInfo);
+                  writer.writeBytes(strThumbInfo);
+                  writer.writeBytes(thumbNameLengthBytes);
+                  writer.writeBytes(utf8ThumbName);
+                  writer.writeBytes(fileLengthBytes);
                   writer.writeBytes(thumbData);
-                  
-                  writer.write("|END");
+
+                  Byte[] strEnd = { 0x7C, 0x45, 0x4E, 0x44 }; // ASCII: "|END"
+                  writer.writeBytes(strEnd);
 
                 }
               }
