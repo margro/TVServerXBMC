@@ -202,40 +202,53 @@ namespace TVServerXBMC
 
         private void handleCommand(String command, String[] arguments)
         {
+          try
+          {
             String handleCommand = command.ToLower();
             if (allHandlers.ContainsKey(handleCommand))
             {
+              try
+              {
                 cmdMutex.WaitOne();
-                try
-                {
-                    allHandlers[handleCommand].handleCommand(command, arguments, ref me);
-                }
-                catch {
-                    WriteLine("[ERROR]: Command failed: " + command);
-                    Log.Debug("TVServerXBMC: Command failed: " + command);
-                }
+                allHandlers[handleCommand].handleCommand(command, arguments, ref me);
+              }
+              catch (Exception e)
+              {
+                WriteLine("[ERROR]: Command failed: " + command);
+                Log.Debug("TVServerXBMC: Command failed: " + command);
+                Log.Debug("TVServerXBMC: Exception: " + command + " => " + e.Message);
+                Log.Debug("TVServerXBMC: Stack trace: " + e.StackTrace);
+              }
+              finally
+              {
                 cmdMutex.ReleaseMutex();
+              }
             }
             else if (handleCommand == "quit" || handleCommand == "exit")
             {
-                Disconnect();
+              Disconnect();
             }
             else if (handleCommand == "?")
             {
-                foreach (KeyValuePair<String, CommandHandler> kvp in allHandlers)
-                {
-                    WriteLine(kvp.Key);
-                    Console.WriteLine("Command: " + kvp.Key);
-                }
+              foreach (KeyValuePair<String, CommandHandler> kvp in allHandlers)
+              {
+                WriteLine(kvp.Key);
+                Console.WriteLine("Command: " + kvp.Key);
+              }
             }
             else
             {
-                WriteLine("[ERROR]: UnknownCommand:" + command);
-                Console.WriteLine("[ERROR]: Unknown command : " + command);
-                Log.Debug("TVServerXBMC: Unknown command: " + command);
+              WriteLine("[ERROR]: UnknownCommand:" + command);
+              Console.WriteLine("[ERROR]: Unknown command : " + command);
+              Log.Debug("TVServerXBMC: Unknown command: " + command);
             }
-            
-
+          }
+          catch(Exception e)
+          {
+            WriteLine("[ERROR]: Exception:" + command + " => " + e.Message);
+            Log.Debug("TVServerXBMC: Exception: " + command + " => " + e.Message);
+            Log.Debug("TVServerXBMC: Stack trace: " + e.StackTrace);
+          }
         }
 
         private void ProcessConnection(StreamReader reader)
@@ -284,15 +297,17 @@ namespace TVServerXBMC
 
             if (clientType != ClientType.python)
             {
+              try
+              {
                 cmdMutex.WaitOne();
-                try
-                {
-                    allHandlers["stoptimeshift"].handleCommand("StopTimeshift", null, ref me);
-                }
-                catch
-                {
-                }
+                allHandlers["stoptimeshift"].handleCommand("StopTimeshift", null, ref me);
+              }
+              catch
+              { }
+              finally
+              {
                 cmdMutex.ReleaseMutex();
+              }
             }
         }
     }
