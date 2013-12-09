@@ -20,7 +20,6 @@ namespace TVServerXBMC
         IList<TvDatabase.GroupMap> tvmappings = null;
         IList<TvDatabase.RadioChannelGroup> radiogroups = null;
         IList<TvDatabase.RadioGroupMap> radiomappings = null;
-        IList<TvDatabase.Card> cards = null;
         IController controller = null;
 
         IUser me = null;
@@ -41,8 +40,6 @@ namespace TVServerXBMC
         {
             try
             {
-                Console.WriteLine("Fetch card list");
-                cards = Card.ListAll();
                 Console.Write("Fetch TV and radio channel list");
                 channels = Channel.ListAll();
                 Console.WriteLine(": " + channels.Count + " channels found");
@@ -410,6 +407,9 @@ namespace TVServerXBMC
             VirtualCard vcard;
             try
             {
+
+                IList<TvDatabase.Card> cards = Card.ListAll();
+                
                 foreach (Card card in cards)
                 {
                     IUser user = new User();
@@ -1763,6 +1763,7 @@ namespace TVServerXBMC
             {
                 TvBusinessLayer layer = new TvBusinessLayer();
                 //Int32.Parse(layer.GetSetting("preRecordInterval", "5").Value);
+                IList<TvDatabase.Card> cards = Card.ListAll();
 
                 foreach (Card card in cards)
                 {
@@ -1799,6 +1800,8 @@ namespace TVServerXBMC
             List<String> cardSettingsList = new List<String>();
             try
             {
+              IList<TvDatabase.Card> cards = Card.ListAll();
+
               foreach (Card card in cards)
               {
                 if ((cardID == -1) || (cardID == card.IdCard))
