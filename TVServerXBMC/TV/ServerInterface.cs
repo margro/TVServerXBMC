@@ -354,24 +354,21 @@ namespace TVServerXBMC
         #endregion
 
         #region Info functions
-        public ReceptionDetails GetReceptionDetails()
+        public ReceptionDetails GetReceptionDetails(int cardID)
         {
-            VirtualCard vcard;
-            try
-            {
-                vcard = new VirtualCard(me, RemoteControl.HostName);
-            }
-            catch (Exception ex)
-            {
-                lastException = ex;
-                Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
-                return null;
-            }
-            ReceptionDetails details = new ReceptionDetails();
-            details.signalLevel = vcard.SignalLevel;
-            details.signalQuality = vcard.SignalQuality;
-            return details;
+          ReceptionDetails details = new ReceptionDetails();
+          try
+          {
+            details.signalLevel = controller.SignalLevel(cardID);
+            details.signalQuality = controller.SignalQuality(cardID);
+
+          }
+          catch
+          {
+            details.signalLevel = 0;
+            details.signalQuality = 0;
+          }
+          return details;
         }
 
         public string GetBackendName()
@@ -1849,16 +1846,6 @@ namespace TVServerXBMC
             }
 
             return cardSettingsList;
-        }
-
-        public int GetSignalQuality(int cardID)
-        {
-          return controller.SignalQuality(cardID);
-        }
-
-        public int GetSignalLevel(int cardID)
-        {
-          return controller.SignalLevel(cardID);
         }
         #endregion
     }

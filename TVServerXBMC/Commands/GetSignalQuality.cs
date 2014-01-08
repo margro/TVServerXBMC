@@ -30,10 +30,9 @@ namespace TVServerXBMC.Commands
             }
 
             TVServerController server = TVServerConnection.GetServerInterface();
-            int level = server.GetSignalLevel(cardID);
-            int quality = server.GetSignalQuality(cardID);
+            ReceptionDetails details = server.GetReceptionDetails(cardID);
 
-            writer.write(level.ToString() + "|" + quality.ToString());
+            writer.write(details.signalLevel.ToString() + "|" + details.signalQuality.ToString());
           }
           catch
           {
