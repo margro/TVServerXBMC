@@ -1847,6 +1847,19 @@ namespace TVServerXBMC
 
             return cardSettingsList;
         }
+
+        public void HeartBeat(IUser user)
+        {
+          try
+          {
+            RemoteControl.Instance.HeartBeat(user);
+          }
+          catch (Exception e)
+          {
+            Log.Error("TVServerXBMC: failed sending HeartBeat signal to server. ({0})", e.Message);
+          }
+        }
+
         #endregion
     }
 }
