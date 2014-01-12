@@ -196,26 +196,35 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Marcel Groothuis, Prashant V</Author>
     <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
     <ForumPage>http://forum.xbmc.org/forumdisplay.php?fid=171</ForumPage>
-    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_5.xml</UpdateUrl>
+    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_6.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
-      <Minor>5</Minor>
+      <Minor>6</Minor>
       <Build>0</Build>
-      <Revision>124</Revision>
+      <Revision>125</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
-
-
-. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
-
-
-
-
-
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
+
+
+
+
+
+. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
+
+
+
+
+
+
+
+
+
+
+
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.5.0.124.mpe1</OnlineLocation>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.6.0.125.mpe1</OnlineLocation>
     <ReleaseDate>2013-11-16T19:29:03</ReleaseDate>
     <Tags>xbmc, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>

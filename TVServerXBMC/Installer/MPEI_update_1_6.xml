@@ -155,5 +155,159 @@
       </ProjectSettings>
       <IsSkin>false</IsSkin>
     </PackageClass>
+    <PackageClass>
+      <Version>2.0</Version>
+      <Groups>
+        <Items>
+          <GroupItem Name="TVServer_plugin">
+            <DisplayName>TVServer_plugin</DisplayName>
+            <DefaulChecked>true</DefaulChecked>
+            <Description>TVServer_plugin</Description>
+            <Files>
+              <Items />
+            </Files>
+          </GroupItem>
+        </Items>
+      </Groups>
+      <Sections>
+        <Items />
+      </Sections>
+      <Dependencies>
+        <Items>
+          <DependencyItem>
+            <Type>Installer</Type>
+            <Id />
+            <MinVersion>
+              <Major>1</Major>
+              <Minor>5</Minor>
+              <Build>0</Build>
+              <Revision>0</Revision>
+            </MinVersion>
+            <MaxVersion>
+              <Major>1</Major>
+              <Minor>6</Minor>
+              <Build>999</Build>
+              <Revision>0</Revision>
+            </MaxVersion>
+            <WarnOnly>true</WarnOnly>
+            <Message>requires MPEI 1.5.x</Message>
+            <Name>MPEI</Name>
+          </DependencyItem>
+          <DependencyItem>
+            <Type>TvServer</Type>
+            <Id />
+            <MinVersion>
+              <Major>1</Major>
+              <Minor>6</Minor>
+              <Build>0</Build>
+              <Revision>0</Revision>
+            </MinVersion>
+            <MaxVersion>
+              <Major>1</Major>
+              <Minor>6</Minor>
+              <Build>999</Build>
+              <Revision>0</Revision>
+            </MaxVersion>
+            <WarnOnly>true</WarnOnly>
+            <Message>requires MediaPortal TVServer version 1.6.*</Message>
+            <Name>MediaPortal TVServer</Name>
+          </DependencyItem>
+          <DependencyItem>
+            <Type>MediaPortal</Type>
+            <Id />
+            <MinVersion>
+              <Major>1</Major>
+              <Minor>1</Minor>
+              <Build>6</Build>
+              <Revision>27644</Revision>
+            </MinVersion>
+            <MaxVersion>
+              <Major>1</Major>
+              <Minor>1</Minor>
+              <Build>6</Build>
+              <Revision>27644</Revision>
+            </MaxVersion>
+            <WarnOnly>false</WarnOnly>
+            <Message>requires MediaPortal version 1.1.6.27644 to 1.1.6.27644.</Message>
+            <Name>MediaPortal</Name>
+          </DependencyItem>
+        </Items>
+      </Dependencies>
+      <PluginDependencies>
+        <Items />
+      </PluginDependencies>
+      <GeneralInfo>
+        <Name>TVServerXBMC</Name>
+        <Id>81b6b5e8-b4e0-4d1c-a2e2-cb2db54844f1</Id>
+        <Author>Marcel Groothuis, Prashant V</Author>
+        <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
+        <ForumPage>http://forum.xbmc.org/forumdisplay.php?fid=171</ForumPage>
+        <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_6.xml</UpdateUrl>
+        <Version>
+          <Major>1</Major>
+          <Minor>6</Minor>
+          <Build>0</Build>
+          <Revision>125</Revision>
+        </Version>
+        <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
+
+
+
+
+
+. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
+
+
+
+
+
+
+
+
+
+
+
+</ExtensionDescription>
+        <VersionDescription />
+        <DevelopmentStatus>Stable</DevelopmentStatus>
+        <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.6.0.125.mpe1</OnlineLocation>
+        <ReleaseDate>2013-11-16T19:29:03</ReleaseDate>
+        <Tags>xbmc, tv server plugins</Tags>
+        <Location>..\bin\[Name]-[Version].mpe1</Location>
+        <Params>
+          <Items>
+            <SectionParam Name="Online Icon">
+              <Value />
+              <ValueType>String</ValueType>
+              <Description>The icon file of the package stored online (jpg,png,bmp)</Description>
+            </SectionParam>
+            <SectionParam Name="Configuration file">
+              <Value />
+              <ValueType>Template</ValueType>
+              <Description>The file used to configure the extension.
+ If it has .exe extension the will be executed.
+ If it has .dll extension it's started like MP plugin configuration.</Description>
+            </SectionParam>
+            <SectionParam Name="Online Screenshots">
+              <Value />
+              <ValueType>String</ValueType>
+              <Description>Online stored screenshot urls separated by ; </Description>
+            </SectionParam>
+            <SectionParam Name="Force to uninstall on update">
+              <Value>yes</Value>
+              <ValueType>Bool</ValueType>
+              <Description>Show dialog and force to uninstall previous version when updating an extension. Should only be disabled if you are using an NSIS/MSI installer.</Description>
+            </SectionParam>
+          </Items>
+        </Params>
+      </GeneralInfo>
+      <UniqueFileList>
+        <Items />
+      </UniqueFileList>
+      <ProjectSettings>
+        <FolderGroups />
+      </ProjectSettings>
+      <IsSkin>false</IsSkin>
+    </PackageClass>
   </Items>
 </ExtensionCollection>
