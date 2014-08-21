@@ -711,6 +711,8 @@ namespace TVServerXBMC
                     string tvchannel;
                     int channelNumber = 10000;
                     bool freetoair = false;
+                    int majorChannel = -1;
+                    int minorChannel = -1;
 
                     try
                     {
@@ -723,14 +725,27 @@ namespace TVServerXBMC
                     //Determine the channel number given by the provider using this channel's tuning details
                     IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
 
-                    foreach (TuningDetail tuningdetail in tuningdetails)
+                    try
                     {
-                        freetoair = freetoair || tuningdetail.FreeToAir;
-                        if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                        foreach (TuningDetail tuningdetail in tuningdetails)
                         {
-                            channelNumber = tuningdetail.ChannelNumber;
-                            break;
+                            freetoair = freetoair || tuningdetail.FreeToAir;
+                            if (tuningdetail.ChannelType == 1) // ATSC
+                            {
+                                if (tuningdetail.MajorChannel != -1)
+                                    majorChannel = tuningdetail.MajorChannel;
+                                if (tuningdetail.MinorChannel != -1)
+                                    minorChannel = tuningdetail.MinorChannel;
+                            }
+                            if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                            {
+                                channelNumber = tuningdetail.ChannelNumber;
+                                break;
+                            }
                         }
+                    }
+                    catch
+                    {
                     }
 
                     //XBMC side:
@@ -757,7 +772,10 @@ namespace TVServerXBMC
                         tvchannel += "|0||";
                     }
                     //[6] = visibleinguide
-                    tvchannel += (chan.VisibleInGuide ? "1" : "0");
+                    tvchannel += (chan.VisibleInGuide ? "1" : "0") + "|";
+                    //[7] = ATSC majorchannel
+                    //[8] = ATSC minorchannel
+                    tvchannel += majorChannel + "|" + minorChannel;
 
                     tvchannels.Add(tvchannel);
                 }
@@ -911,6 +929,8 @@ namespace TVServerXBMC
                     string radiochannel;
                     int channelNumber = 10000;
                     bool freetoair = false;
+                    int majorChannel = -1;
+                    int minorChannel = -1;
 
                     try
                     {
@@ -920,17 +940,30 @@ namespace TVServerXBMC
                     {
                     }
 
-                    //Determine the channel number given by the provider using this channel's tuning details
-                    IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
-
-                    foreach (TuningDetail tuningdetail in tuningdetails)
+                    try
                     {
-                        freetoair = freetoair || tuningdetail.FreeToAir;
-                        if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                        //Determine the channel number given by the provider using this channel's tuning details
+                        IList<TuningDetail> tuningdetails = chan.ReferringTuningDetail();
+
+                        foreach (TuningDetail tuningdetail in tuningdetails)
                         {
-                            channelNumber = tuningdetail.ChannelNumber;
-                            break;
+                            freetoair = freetoair || tuningdetail.FreeToAir;
+                            if (tuningdetail.ChannelType == 1) // ATSC
+                            {
+                                if (tuningdetail.MajorChannel != -1)
+                                    majorChannel = tuningdetail.MajorChannel;
+                                if (tuningdetail.MinorChannel != -1)
+                                    minorChannel = tuningdetail.MinorChannel;
+                            }
+                            if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
+                            {
+                                channelNumber = tuningdetail.ChannelNumber;
+                                break;
+                            }
                         }
+                    }
+                    catch
+                    {
                     }
 
                     //XBMC side:
@@ -953,7 +986,10 @@ namespace TVServerXBMC
                         radiochannel += "|0||";
                     }
                     //[6] = visibleinguide
-                    radiochannel += (chan.VisibleInGuide ? "1" : "0");
+                    radiochannel += (chan.VisibleInGuide ? "1" : "0") + "|";
+                    //[7] = ATSC majorchannel
+                    //[8] = ATSC minorchannel
+                    radiochannel += majorChannel + "|" + minorChannel;
 
                     radiochannels.Add(radiochannel);
                 }
