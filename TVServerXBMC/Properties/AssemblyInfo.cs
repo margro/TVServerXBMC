@@ -30,10 +30,10 @@ using MediaPortal.Common.Utils;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.8.0.126")]
-[assembly: AssemblyFileVersion("1.8.0.126")]
+[assembly: AssemblyVersion("1.10.0.127")]
+[assembly: AssemblyFileVersion("1.10.0.127")]
 
 // Set usage and compatibility information to MediaPortal v1.3.0 beta and above
-[assembly: CompatibleVersion("1.8.0.0", "1.5.0.0")]
+[assembly: CompatibleVersion("1.9.100.0", "1.5.0.0")]
 [assembly: UsesSubsystem("TVE")]
 

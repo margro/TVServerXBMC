@@ -139,7 +139,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>8</Minor>
+          <Minor>10</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
@@ -152,13 +152,13 @@ Click Next to continue or Cancel to exit Setup.</Value>
         <Id />
         <MinVersion>
           <Major>1</Major>
-          <Minor>5</Minor>
+          <Minor>9</Minor>
           <Build>0</Build>
           <Revision>0</Revision>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>8</Minor>
+          <Minor>10</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
@@ -196,20 +196,20 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Author>Marcel Groothuis, Prashant V</Author>
     <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
     <ForumPage>http://forum.xbmc.org/forumdisplay.php?fid=171</ForumPage>
-    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_8.xml</UpdateUrl>
+    <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_10.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
-      <Minor>8</Minor>
+      <Minor>10</Minor>
       <Build>0</Build>
-      <Revision>126</Revision>
+      <Revision>127</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above)
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
 
 
 
 
 
-. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC  to access and control the TVServer.
+. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
 
 
 
@@ -224,9 +224,9 @@ Click Next to continue or Cancel to exit Setup.</Value>
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.8.0.126.mpe1</OnlineLocation>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.10.0.127.mpe1</OnlineLocation>
     <ReleaseDate>2014-08-18T19:29:03</ReleaseDate>
-    <Tags>xbmc, tv server plugins</Tags>
+    <Tags>xbmc, kodi, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>
       <Items>
