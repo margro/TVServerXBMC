@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
     class Help : CommandHandler
     {

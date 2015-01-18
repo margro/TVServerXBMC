@@ -4,7 +4,7 @@ using System.Text;
 using TvControl;
 
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
     // simple wrapper to let us run it as a program
     // allowing for much faster debugging
@@ -12,7 +12,7 @@ namespace TVServerXBMC.Commands
     class Program
     {
         //static string hostname = "htpc";    //hostname of the TV server
-        //static int listenport = 9595;       //local port for the MPTV XBMC server
+        //static int listenport = 9595;       //local port for the MPTV XBMC/Kodi server
 
         static string hostname = "localhost";
         static bool connected = false;
@@ -77,7 +77,7 @@ namespace TVServerXBMC.Commands
             }
             catch (Exception ex)
             {
-              Console.WriteLine("An exception occurred while connecting to the database. Did you select the right backend? TVServerXBMC default=MySQL; change your Gentle.conf file if you are using MSSQL.");
+              Console.WriteLine("An exception occurred while connecting to the database. Did you select the right backend? TVServerKodi default=MySQL; change your Gentle.conf file if you are using MSSQL.");
               try
               {
                 Console.WriteLine("The exception: " + ex.ToString());
@@ -85,14 +85,14 @@ namespace TVServerXBMC.Commands
               catch { }
             }
 
-            TVServerXBMCPlugin plugin = new TVServerXBMCPlugin();
+            TVServerKodiPlugin plugin = new TVServerKodiPlugin();
 
-            Console.WriteLine("Starting debug version of the TVServerXBMC plugin");
+            Console.WriteLine("Starting debug version of the TVServerKodi plugin");
             plugin.Start(controller);
 
             if (plugin.Connected)
             {
-                Console.WriteLine("Running MediaPortal TV Server -> XBMC wrapper at port: " + plugin.Port);
+                Console.WriteLine("Running MediaPortal TV Server -> Kodi wrapper at port: " + plugin.Port);
                 try
                 {
                     while (!Console.ReadLine().Contains("quit"))

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
 using System.IO;
-using TVServerXBMC;
+using TVServerKodi;
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
     class DataWriter
     {

@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TVServerXBMC.Common
+namespace TVServerKodi.Common
 {
     public class PlatformInfo
     {

@@ -1,10 +1,10 @@
 TVServerKodi v1.10.x - Source package
-MediaPortal TVServer plugin for XBMC
+MediaPortal TVServer plugin for XBMC/Kodi
 _______________________________________________________________________________
 Original Author: EvilDude/Prashant 2008-2009
 http://forum.team-mediaportal.com/mediaportal-1-talk-45/xbmc-python-script-36590/
 
-Improvements & XBMC PVR-Addon extensions:
+Improvements & XBMC/Kodi PVR-Addon extensions:
 Marcel Groothuis, 2010-2015
 http://www.scintilla.utwente.nl/~marcelg/xbmc
 _______________________________________________________________________________
@@ -73,9 +73,6 @@ Test the plugin/standalone version:
 
 Windows:
 You can test the TVServerKodi tool/plugin using a "telnet" session to port 9596.
-The TVServerKodi plugin/exe can handle at the moment only one connection at a
-time. Please make sure that your telnet connection is closed when you start
-XBMC-pvr or open the XBMP-TV plugin.
 
 PS. Windows Vista does not install "telnet" by default, you can enable it via
 "Control Panel" -> "Programs and Features" -> "Turn Windows features on or off."

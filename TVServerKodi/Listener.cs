@@ -6,7 +6,7 @@ using System.Threading;
 using System.Net;
 using TvLibrary.Log;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
     class Listener
     {
@@ -57,18 +57,18 @@ namespace TVServerXBMC
             {
                 if (e.SocketErrorCode == System.Net.Sockets.SocketError.AddressAlreadyInUse)
                 {
-                    Console.WriteLine("Socket error: address already in use. Check if you have other instances of the TVServerXBMC running (plugin/exe)");
-                    Log.Error("TVServerXBMC: Socket error: address already in use. Check if you have other instances of the TVServerXBMC running (plugin/exe)");
+                    Console.WriteLine("Socket error: address already in use. Check if you have other instances of the TVServerKodi running (plugin/exe)");
+                    Log.Error("TVServerKodi: Socket error: address already in use. Check if you have other instances of the TVServerKodi running (plugin/exe)");
                 }
                 else
                 {
-                    Log.Error("TVServerXBMC: Socket error : " + e.ToString());
+                    Log.Error("TVServerKodi: Socket error : " + e.ToString());
                     Console.WriteLine(e.ToString());
                 }
             }
             catch (Exception e)
             {
-                Log.Error("TVServerXBMC: Unknown error : " + e.ToString());
+                Log.Error("TVServerKodi: Unknown error : " + e.ToString());
                 Console.WriteLine(e.ToString());
             }
 
@@ -77,13 +77,13 @@ namespace TVServerXBMC
 
         public void Stop()
         {
-            Log.Debug("TVServerXBMC: tcpListener.Stop()");
-            Console.WriteLine("TVServerXBMC: tcpListener.Stop()");
+            Log.Debug("TVServerKodi: tcpListener.Stop()");
+            Console.WriteLine("TVServerKodi: tcpListener.Stop()");
             stopme = true;
 
             if (m_listenThread != null)
             {
-              Log.Debug("TVServerXBMC: Listenthread is aborting");
+              Log.Debug("TVServerKodi: Listenthread is aborting");
               m_listenThread.Abort();
               m_listenThread = null;
             }
@@ -107,7 +107,7 @@ namespace TVServerXBMC
             while (!stopme)
             {
                 Console.WriteLine("Waiting for clients...");
-                Log.Debug("TVServerXBMC: Waiting for clients...");
+                Log.Debug("TVServerKodi: Waiting for clients...");
                 while (!this.tcpListener.Pending())
                 {
                     Thread.Sleep(30);
@@ -118,7 +118,7 @@ namespace TVServerXBMC
 
                 // Multithreaded version:
                 Console.WriteLine("New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
-                Log.Debug("TVServerXBMC: New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
+                Log.Debug("TVServerKodi: New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
                 //___________________________
                 lock(this) {
                     clients.Add(client);

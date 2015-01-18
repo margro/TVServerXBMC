@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TVServerXBMC;
+using TVServerKodi;
 using TvControl;
 using System.Net;
 using TvLibrary.Log;
 using TvDatabase;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
     class TVServerConnection
     {
@@ -250,7 +250,7 @@ namespace TVServerXBMC
 
                                 if (newHost.Length == 0)
                                 {
-                                    Log.Debug("TVServerXBMC: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
+                                    Log.Debug("TVServerKodi: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
                                     Console.WriteLine("No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
                                 }
                             }
@@ -258,8 +258,8 @@ namespace TVServerXBMC
                             {
                                 Console.WriteLine("IP resolve for '" + u.DnsSafeHost + "' failed.");
                                 Console.WriteLine("Error: " + ex.ToString());
-                                Log.Debug("TVServerXBMC: IP resolve for '" + u.DnsSafeHost + "' failed.");
-                                Log.Debug("TVServerXBMC: Error: " + ex.ToString());
+                                Log.Debug("TVServerKodi: IP resolve for '" + u.DnsSafeHost + "' failed.");
+                                Log.Debug("TVServerKodi: Error: " + ex.ToString());
                             }
                         }
                     }
@@ -275,7 +275,7 @@ namespace TVServerXBMC
 
             }
 
-            Log.Debug("TVServerXBMC: PlayChannel " + chanId.ToString() + " => URL=" + rtspURL);
+            Log.Debug("TVServerKodi: PlayChannel " + chanId.ToString() + " => URL=" + rtspURL);
             //Console.WriteLine("PlayChannel result : " + rtspURL);
             return rtspURL;
         }

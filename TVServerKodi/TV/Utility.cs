@@ -27,7 +27,7 @@ using System.Security.Principal;
 
 using TvDatabase;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
   internal static class Utility
   {

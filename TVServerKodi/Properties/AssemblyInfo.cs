@@ -6,12 +6,12 @@ using MediaPortal.Common.Utils;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TVServerXBMC")]
-[assembly: AssemblyDescription("MediaPortal TVServer plugin for XBMC PVR clients")]
+[assembly: AssemblyTitle("TVServerKodi")]
+[assembly: AssemblyDescription("MediaPortal TVServer plugin for Kodi and XBMC PVR clients")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TVServerXBMC")]
-[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2013")]
+[assembly: AssemblyProduct("TVServerKodi")]
+[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

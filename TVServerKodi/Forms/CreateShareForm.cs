@@ -28,7 +28,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace TVServerXBMC.Forms
+namespace TVServerKodi.Forms
 {
   public partial class CreateShareForm : Form
   {

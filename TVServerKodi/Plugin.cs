@@ -6,11 +6,11 @@ using System.Threading;
 using TvLibrary.Log;
 using TvLibrary.Interfaces;
 using TvEngine.Events;
-using TVServerXBMC.Forms;
+using TVServerKodi.Forms;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
-    public class TVServerXBMCPlugin : ITvServerPlugin
+    public class TVServerKodiPlugin : ITvServerPlugin
     {
       #region variables
       int m_defaultServerPort = 9596;
@@ -27,7 +27,7 @@ namespace TVServerXBMC
       /// </summary>
       public string Name
       {
-        get { return "TVServerXBMC"; }
+        get { return "TVServerKodi"; }
       }
 
       /// <summary>
@@ -58,7 +58,7 @@ namespace TVServerXBMC
         get { return true; }
       }
 
-      // properties below are TVServerXBMC specific
+      // properties below are TVServerKodi specific
       public bool Connected
       {
         get
@@ -83,7 +83,7 @@ namespace TVServerXBMC
       public void Start(TvControl.IController controller)
       {
           // set up our remote control interface
-          Log.WriteFile("TVServerXBMC: plugin started");
+          Log.WriteFile("TVServerKodi: plugin started");
 
           try
           {
@@ -95,19 +95,19 @@ namespace TVServerXBMC
                 if (GlobalServiceProvider.Instance.IsRegistered<ITvServerEvent>())
                 {
                   GlobalServiceProvider.Instance.TryGet<ITvServerEvent>().OnTvServerEvent += events_OnTvServerEvent;
-                  Log.Debug("TVServerXBMC: Registered OnTvServerEvent with TV Server");
+                  Log.Debug("TVServerKodi: Registered OnTvServerEvent with TV Server");
                 }
 
                 connected = StartListenThread();
               }
               else
               {
-                  Log.Error("TVServerXBMC: TVServerConnection init failed.");
+                  Log.Error("TVServerKodi: TVServerConnection init failed.");
               }
           }
           catch
           {
-              Log.Error("TVServerXBMC: TVServerConnection.Init failed!");
+              Log.Error("TVServerKodi: TVServerConnection.Init failed!");
               Console.WriteLine("TVServerConnection.Init failed!");
           }
       }
@@ -119,19 +119,19 @@ namespace TVServerXBMC
       {
         if (GlobalServiceProvider.Instance.IsRegistered<ITvServerEvent>())
         {
-          Log.Debug("TVServerXBMC: Unregistered OnTvServerEvent with TV Server");
+          Log.Debug("TVServerKodi: Unregistered OnTvServerEvent with TV Server");
           GlobalServiceProvider.Instance.Get<ITvServerEvent>().OnTvServerEvent -= events_OnTvServerEvent;
         }
 
         StopListenThread();
 
-        Log.WriteFile("TVServerXBMC: plugin stopped");
+        Log.WriteFile("TVServerKodi: plugin stopped");
       }
 
       private bool StartListenThread()
       {
-        Log.Info("TVServerXBMC: Start listening on port " + m_serverPort);
-        Console.WriteLine("TVServerXBMC: Start listening on port " + m_serverPort);
+        Log.Info("TVServerKodi: Start listening on port " + m_serverPort);
+        Console.WriteLine("TVServerKodi: Start listening on port " + m_serverPort);
 
         // start a thread for the listener
 
@@ -148,7 +148,7 @@ namespace TVServerXBMC
           if (connected)
             TVServerConnection.CloseAll();
 
-          Log.Info("TVServerXBMC: Stop listening");
+          Log.Info("TVServerKodi: Stop listening");
 
           m_listener.Stop();
           m_listener = null;
@@ -178,7 +178,7 @@ namespace TVServerXBMC
         if (args == null)
           return;
 
-        Log.Debug("TVServerXBMC: OnTvServerEvent: " + args.EventType.ToString());
+        Log.Debug("TVServerKodi: OnTvServerEvent: " + args.EventType.ToString());
 
         if (args.EventType == TvEngine.Events.TvServerEventType.ImportEpgPrograms
             && args.EpgChannel != null
@@ -187,7 +187,7 @@ namespace TVServerXBMC
           try
           {
             if (args.channel != null)
-              Log.Info("TVServerXBMC: EPG import for channel: " + args.channel.Name);
+              Log.Info("TVServerKodi: EPG import for channel: " + args.channel.Name);
 
             TvLibrary.Channels.DVBBaseChannel dvbChannel = args.EpgChannel.Channel as TvLibrary.Channels.DVBBaseChannel;
             if (dvbChannel != null)
@@ -196,10 +196,10 @@ namespace TVServerXBMC
               TvDatabase.Channel mpChannel = layer.GetChannelByTuningDetail(dvbChannel.NetworkId, dvbChannel.TransportId, dvbChannel.ServiceId);
               if (mpChannel != null)
               {
-                Log.Debug("TVServerXBMC: received {0} programs on {1}", args.EpgChannel.Programs.Count, mpChannel.DisplayName);
+                Log.Debug("TVServerKodi: received {0} programs on {1}", args.EpgChannel.Programs.Count, mpChannel.DisplayName);
                 //foreach (TvLibrary.Epg.EpgProgram p in args.EpgChannel.Programs)
                 //{
-                //  Log.Info("TVServerXBMC: program: " + p.StartTime.ToString() + "-" + p.EndTime.ToString());
+                //  Log.Info("TVServerKodi: program: " + p.StartTime.ToString() + "-" + p.EndTime.ToString());
                 //}
               }
             }
@@ -207,7 +207,7 @@ namespace TVServerXBMC
           }
           catch (Exception ex)
           {
-            Log.Error("TVServerXBMC: ImportEpgPrograms(): {0}", ex.Message);
+            Log.Error("TVServerKodi: ImportEpgPrograms(): {0}", ex.Message);
           }
         }
       }
@@ -220,12 +220,12 @@ namespace TVServerXBMC
         try
         {
           TvDatabase.TvBusinessLayer layer = new TvDatabase.TvBusinessLayer();
-          m_serverPort = Convert.ToInt32(layer.GetSetting("TVServerXBMC.port", m_defaultServerPort.ToString()).Value);
+          m_serverPort = Convert.ToInt32(layer.GetSetting("TVServerKodi.port", m_defaultServerPort.ToString()).Value);
         }
         catch (Exception ex)
         {
           m_serverPort = m_defaultServerPort;
-          Log.Error("TVServerXBMC: LoadSettings(): {0}", ex.Message);
+          Log.Error("TVServerKodi: LoadSettings(): {0}", ex.Message);
         }
       }
 
@@ -238,10 +238,10 @@ namespace TVServerXBMC
           TvDatabase.TvBusinessLayer layer = new TvDatabase.TvBusinessLayer();
           TvDatabase.Setting setting;
 
-          setting = layer.GetSetting("TVServerXBMC.port");
+          setting = layer.GetSetting("TVServerKodi.port");
           if (Convert.ToInt32(setting.Value) != m_serverPort)
           {
-            Log.Info("TVServerXBMC: port setting changed from " + setting.Value + " to " + m_serverPort);
+            Log.Info("TVServerKodi: port setting changed from " + setting.Value + " to " + m_serverPort);
             setting.Value = m_serverPort.ToString();
             setting.Persist();
             forceReload = true;
@@ -249,7 +249,7 @@ namespace TVServerXBMC
         }
         catch (Exception ex)
         {
-          Log.Error("TVServerXBMC: SaveSettings(): {0}", ex.Message);
+          Log.Error("TVServerKodi: SaveSettings(): {0}", ex.Message);
         }
 
         if (forceReload)

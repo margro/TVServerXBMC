@@ -1,4 +1,4 @@
-﻿namespace TVServerXBMC.Forms
+﻿namespace TVServerKodi.Forms
 {
   partial class CreateShareForm
   {

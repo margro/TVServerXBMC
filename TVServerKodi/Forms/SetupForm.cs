@@ -1,5 +1,5 @@
 ﻿/*
- *  TVServerXBMC plugin for Team MediaPortal's TV-Server
+ *  TVServerKodi plugin for Team MediaPortal's TV-Server
  *  Copyright (C) 2010-2012 Marcel Groothuis
  *  http://www.github.com/margro
  *
@@ -31,9 +31,9 @@ using System.Windows.Forms;
 using TvLibrary.Log;
 using TvControl;
 
-using TVServerXBMC.Common;
+using TVServerKodi.Common;
 
-namespace TVServerXBMC.Forms
+namespace TVServerKodi.Forms
 {
   public partial class SetupForm : SetupTv.SectionSettings
   {
@@ -44,9 +44,9 @@ namespace TVServerXBMC.Forms
     }
 
     #region Properties
-    private TVServerXBMCPlugin m_plugin;
+    private TVServerKodiPlugin m_plugin;
 
-    public TVServerXBMCPlugin Plugin
+    public TVServerKodiPlugin Plugin
     {
       get { return m_plugin; }
       set { m_plugin = value; }
@@ -57,7 +57,7 @@ namespace TVServerXBMC.Forms
 
     public override void OnSectionActivated()
     {
-      Log.Info("TVServerXBMC: Configuration activated");
+      Log.Info("TVServerKodi: Configuration activated");
 
       m_plugin.LoadSettings();
       portNumericUpDown.Value = m_plugin.Port;
@@ -69,7 +69,7 @@ namespace TVServerXBMC.Forms
 
     public override void OnSectionDeActivated()
     {
-      Log.Info("TVServerXBMC: Configuration deactivated");
+      Log.Info("TVServerKodi: Configuration deactivated");
 
       m_plugin.Port = (int) portNumericUpDown.Value;
       m_plugin.SaveSettings();
@@ -81,7 +81,7 @@ namespace TVServerXBMC.Forms
 
     private void LoadUncPaths()
     {
-      Log.Info("TVServerXBMC: Loading UNC paths");
+      Log.Info("TVServerKodi: Loading UNC paths");
       try
       {
         bool anyError = false;
@@ -103,8 +103,8 @@ namespace TVServerXBMC.Forms
 
         if (anyError)
         {
-        //  MessageBox.Show(this, "You must set up at least 2 shares with full permissions to access the recordings and timeshift folders on remote XBMC clients!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-          Log.Info("TVServerXBMC: At least one of the timeshift or recordings folders is not accessible for remote clients.");
+        //  MessageBox.Show(this, "You must set up at least 2 shares with full permissions to access the recordings and timeshift folders on remote Kodi clients!", null, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+          Log.Info("TVServerKodi: At least one of the timeshift or recordings folders is not accessible for remote clients.");
         }
       }
       catch (Exception ex)
@@ -121,7 +121,7 @@ namespace TVServerXBMC.Forms
       string uncPath = ShareExplorer.GetUncPathForLocalPath(path);
       if (!String.IsNullOrEmpty(uncPath))
       {
-        Log.Info("TVServerXBMC: " + path + " => " + uncPath);
+        Log.Info("TVServerKodi: " + path + " => " + uncPath);
         message = uncPath;
         path = uncPath;
         hasError = false;

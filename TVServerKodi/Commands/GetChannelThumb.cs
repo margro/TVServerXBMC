@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using TVServerXBMC;
+using TVServerKodi;
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
     class GetChannelThumb : CommandHandler
     {

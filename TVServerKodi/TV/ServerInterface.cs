@@ -9,9 +9,9 @@ using TvControl;
 using TvDatabase;
 using TvLibrary.Log;
 
-using TVServerXBMC.Common;
+using TVServerKodi.Common;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
     public class TVServerController
     {
@@ -41,11 +41,11 @@ namespace TVServerXBMC
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Log.Error("TVServerXBMC: An exception occurred during Setup(): " + ex.Message);
+                Log.Error("TVServerKodi: An exception occurred during Setup(): " + ex.Message);
                 if (ex.Source == "Gentle.Common")
                 {
-                    Console.WriteLine("TVServerXBMC has problems connecting to the database. Check your settings (Gentle.config)");
-                    Log.Error("TVServerXBMC has problems connecting to the database. Check your settings");
+                    Console.WriteLine("TVServerKodi has problems connecting to the database. Check your settings (Gentle.config)");
+                    Log.Error("TVServerKodi has problems connecting to the database. Check your settings");
                 }
 
                 return false;
@@ -78,7 +78,7 @@ namespace TVServerXBMC
             try
             {
                 Console.WriteLine("Start timeshift for channel " + idChannel + " for user '" + user.Name);
-                Log.Info("TVServerXBMC: Start timeshift for channel " + idChannel + " for user '" + user.Name);
+                Log.Info("TVServerKodi: Start timeshift for channel " + idChannel + " for user '" + user.Name);
 
                 //result = controller.StartTimeShifting(ref user, idChannel, out vcard, cardId != -1); //This one is faster but we need to know the card id on beforehand
                 result = controller.StartTimeShifting(ref user, idChannel, out vcard);
@@ -107,11 +107,11 @@ namespace TVServerXBMC
                 catch { }
 
                 Console.WriteLine("Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "' card id=" + vcard.Id);
-                Log.Debug("TVServerXBMC: Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
+                Log.Debug("TVServerKodi: Timeshift started for channel: '" + vcard.ChannelName + "' on device '" + vcard.Name + "'");
                 Console.WriteLine("TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
-                Log.Debug("TVServerXBMC: TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
+                Log.Debug("TVServerKodi: TV Server returned '" + rtspURL + "' as timeshift URL and " + timeshiftfilename + " as timeshift file");
                 Console.WriteLine("Remote server='" + remoteserver + "'");
-                Log.Debug("TVServerXBMC: Remote server='" + remoteserver + "'");
+                Log.Debug("TVServerKodi: Remote server='" + remoteserver + "'");
                 //Console.WriteLine("Streaming server IP-address: " + GetRTSPserverIP());
 
                 try {
@@ -134,8 +134,8 @@ namespace TVServerXBMC
                 StopTimeShifting(ref user);
                 Console.WriteLine("TV Server returned: 'NoTuningDetails' or 'UnknownError'.");
                 Console.WriteLine("Checking the availability of a webstream for this channel (id=" + idChannel.ToString() + ")");
-                Log.Debug("TVServerXBMC: TV Server returned: 'NoTuningDetails' or 'UnknownError'.");
-                Log.Debug("TVServerXBMC: Checking the availability of a webstream for this channel (id=" + idChannel.ToString() + ")");
+                Log.Debug("TVServerKodi: TV Server returned: 'NoTuningDetails' or 'UnknownError'.");
+                Log.Debug("TVServerKodi: Checking the availability of a webstream for this channel (id=" + idChannel.ToString() + ")");
                 
                 rtspURL = GetWebStreamURL(idChannel);
                 
@@ -143,24 +143,24 @@ namespace TVServerXBMC
                 {
                     result = TvResult.Succeeded;
                     Console.WriteLine("Found a webstream: '" + rtspURL + "'");
-                    Log.Debug("TVServerXBMC: Found a webstream: '" + rtspURL + "'");
+                    Log.Debug("TVServerKodi: Found a webstream: '" + rtspURL + "'");
                 }
                 else
                 {
                     Console.WriteLine("Unable to find tuning details or a webstream for channel (id=" + idChannel + ")");
-                    Log.Debug("TVServerXBMC: Unable to find tuning details or a webstream for channel (id=" + idChannel + ")");
+                    Log.Debug("TVServerKodi: Unable to find tuning details or a webstream for channel (id=" + idChannel + ")");
                 }
             }
             else
             {
                 StopTimeShifting(ref user);
                 Console.WriteLine("Failed. TvResult = " + result.ToString());
-                Log.Debug("TVServerXBMC: Failed. TvResult = " + result.ToString());
+                Log.Debug("TVServerKodi: Failed. TvResult = " + result.ToString());
             }
 
             watch.Stop();
             Console.WriteLine("StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
-            Log.Debug("TVServerXBMC: StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
+            Log.Debug("TVServerKodi: StartTimeShifting took " + watch.ElapsedMilliseconds.ToString() + " ms");
 
             return result;
         }
@@ -221,11 +221,11 @@ namespace TVServerXBMC
             return result;
         }
 
-        // Stop all active timeshifts created by the TVServerXBMC plugin
+        // Stop all active timeshifts created by the TVServerKodi plugin
         public bool StopTimeShifting()
         {
-            Console.WriteLine("TODO: fixme StopTimeShifting() for all TVServerXBMC users");
-            Log.Debug("TVServerXBMC: TODO: fixme StopTimeShifting()");
+            Console.WriteLine("TODO: fixme StopTimeShifting() for all TVServerKodi users");
+            Log.Debug("TVServerKodi: TODO: fixme StopTimeShifting()");
             return true;
         }
 
@@ -240,7 +240,7 @@ namespace TVServerXBMC
             // we resolve any host names, as xbox can't do NETBIOS resolution..
             try
             {
-                // XBMC's ffmpeg rtsp code does not like port numbers in the url
+                // XBMC/Kodi's ffmpeg rtsp code does not like port numbers in the url
                 rtspURL = rtspURL.Replace(":554", "");
                 // Workaround for MP TVserver bug when using default port for rtsp => returns rtsp://ip:0
                 rtspURL = rtspURL.Replace(":0", "");
@@ -278,15 +278,15 @@ namespace TVServerXBMC
                             if (newHost.Length == 0)
                             {
                                 Console.WriteLine("No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
-                                Log.Debug("TVServerXBMC: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
+                                Log.Debug("TVServerKodi: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
                             }
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine("IP resolve for '" + u.DnsSafeHost + "' failed.");
                             Console.WriteLine("Error: " + ex.ToString());
-                            Log.Debug("TVServerXBMC: IP resolve for '" + u.DnsSafeHost + "' failed.");
-                            Log.Debug("TVServerXBMC: Error: " + ex.ToString());
+                            Log.Debug("TVServerKodi: IP resolve for '" + u.DnsSafeHost + "' failed.");
+                            Log.Debug("TVServerKodi: Error: " + ex.ToString());
                         }
                     }
                 }
@@ -346,7 +346,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
             }
             return result;
         }
@@ -455,7 +455,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return states;
@@ -477,7 +477,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return lGroups;
@@ -500,7 +500,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return lGroups;
@@ -531,7 +531,7 @@ namespace TVServerXBMC
           }
           catch (Exception ex)
           {
-            Log.Error("TVServerXBMC: An exception occurred in GetChannelCount(): " + ex.Message);
+            Log.Error("TVServerKodi: An exception occurred in GetChannelCount(): " + ex.Message);
           }
           return 0;
         }
@@ -578,7 +578,7 @@ namespace TVServerXBMC
           }
           catch (Exception ex)
           {
-            Log.Error("TVServerXBMC: An exception occurred in GetChannelInfo(): " + ex.Message);
+            Log.Error("TVServerKodi: An exception occurred in GetChannelInfo(): " + ex.Message);
           }
           return null;
         }
@@ -623,7 +623,7 @@ namespace TVServerXBMC
                                 catch (Exception e)
                                 {
                                     Console.WriteLine("Error while obtaining the EPG for channel " + channelInfo.channelID + ": " + e.ToString());
-                                    Log.Error("TVServerXBMC: Error while obtaining the EPG for channel " + channelInfo.channelID + ": " + e.ToString());
+                                    Log.Error("TVServerKodi: Error while obtaining the EPG for channel " + channelInfo.channelID + ": " + e.ToString());
                                 }
                                 
                                 //Get the tuning details
@@ -652,7 +652,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return refChannelInfos;
@@ -690,8 +690,8 @@ namespace TVServerXBMC
                     }
                     else
                     {
-                        Console.WriteLine("TVServerXBMC: GetTVChannels: no tv groups?");
-                        Log.Error("TVServerXBMC: GetTVChannels: no tv groups?");
+                        Console.WriteLine("TVServerKodi: GetTVChannels: no tv groups?");
+                        Log.Error("TVServerKodi: GetTVChannels: no tv groups?");
                         return null;
                     }
                 }
@@ -748,7 +748,7 @@ namespace TVServerXBMC
                     {
                     }
 
-                    //XBMC side:
+                    //Kodi side:
                     //uid, number, name, callsign, iconpath, isencrypted,
                     //isradio, ishidden, isrecording, bouquet, multifeed,
                     //stream_url;
@@ -786,7 +786,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
         }
@@ -869,7 +869,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return radioChannels;
@@ -908,8 +908,8 @@ namespace TVServerXBMC
                     }
                     else
                     {
-                       Console.WriteLine("TVServerXBMC: GetRadioChannels: no radio groups?");
-                        Log.Error("TVServerXBMC: GetRadioChannels: no radio groups?");
+                       Console.WriteLine("TVServerKodi: GetRadioChannels: no radio groups?");
+                        Log.Error("TVServerKodi: GetRadioChannels: no radio groups?");
                         return null;
                     }
                 }
@@ -1000,7 +1000,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
         }
@@ -1064,7 +1064,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return recInfos;
@@ -1157,7 +1157,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.Write("Exception in GetRecordings() " + ex.Message);
-                Log.Debug("TVServerXBMC: Exception in GetRecordings() " + ex.Message);
+                Log.Debug("TVServerKodi: Exception in GetRecordings() " + ex.Message);
                 return null;
             }
             return reclist;
@@ -1190,7 +1190,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return recInfos;
@@ -1252,7 +1252,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return result;
             }
             return result;
@@ -1292,7 +1292,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return schedInfos;
@@ -1440,7 +1440,7 @@ namespace TVServerXBMC
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
                 return null;
             }
             return schedlist;
@@ -1491,14 +1491,14 @@ namespace TVServerXBMC
                 else
                 {
                     Console.Write("Error retrieving Schedule info for schedule id=%i.", index);
-                    Log.Error("TVServerXBMC: Error retrieving Schedule info for schedule id=%i.", index);
+                    Log.Error("TVServerKodi: Error retrieving Schedule info for schedule id=%i.", index);
                 }
             }
             catch (Exception ex)
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
-                Log.Error("TVServerXBMC: " + ex.ToString());
+                Log.Error("TVServerKodi: " + ex.ToString());
             }
             return schedInfo;
         }
@@ -1539,7 +1539,7 @@ namespace TVServerXBMC
             catch(Exception e)
             {
                 Console.WriteLine("Error while obtaining the EPG for channel " + idChannel + ": " + e.Message);
-                Log.Debug("TVServerXBMC: Error while obtaining the EPG for channel " + idChannel + ": " + e.Message);
+                Log.Debug("TVServerKodi: Error while obtaining the EPG for channel " + idChannel + ": " + e.Message);
             }
             return null;
         }
@@ -1826,7 +1826,7 @@ namespace TVServerXBMC
             catch (Exception e)
             {
                 Console.WriteLine("Error while obtaining the GetRecordingDriveSpace: " + e.Message);
-                Log.Debug("TVServerXBMC: Error while obtaining the GetRecordingDriveSpace: " + e.Message);
+                Log.Debug("TVServerKodi: Error while obtaining the GetRecordingDriveSpace: " + e.Message);
             }
 
             return result;
@@ -1870,7 +1870,7 @@ namespace TVServerXBMC
                   catch (Exception e)
                   {
                     Console.WriteLine("GetCardSettings: " + e.Message);
-                    Log.Debug("TVServerXBMC: Error while obtaining the GetCardSettings for card '" + card.Name + "': " + e.Message);
+                    Log.Debug("TVServerKodi: Error while obtaining the GetCardSettings for card '" + card.Name + "': " + e.Message);
                   }
                 }
               }
@@ -1878,7 +1878,7 @@ namespace TVServerXBMC
             catch (Exception e)
             {
               Console.WriteLine("GetCardSettings: " + e.Message);
-              Log.Debug("TVServerXBMC: Error while obtaining the GetCardSettings: " + e.Message);
+              Log.Debug("TVServerKodi: Error while obtaining the GetCardSettings: " + e.Message);
             }
 
             return cardSettingsList;
@@ -1892,7 +1892,7 @@ namespace TVServerXBMC
           }
           catch (Exception e)
           {
-            Log.Error("TVServerXBMC: failed sending HeartBeat signal to server. ({0})", e.Message);
+            Log.Error("TVServerKodi: failed sending HeartBeat signal to server. ({0})", e.Message);
           }
         }
 

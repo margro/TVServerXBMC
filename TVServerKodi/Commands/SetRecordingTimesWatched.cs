@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TVServerXBMC;
+using TVServerKodi;
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
    class SetRecordingTimesWatched : CommandHandler
    {

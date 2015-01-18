@@ -1,4 +1,5 @@
 1.10.100.127:
+- Added: PVRclientKodi connection protocol name
 - Changed: New name: TVServerKodi
 - Updated: referenced assemblies for TVServer 1.10.0 (final)
 

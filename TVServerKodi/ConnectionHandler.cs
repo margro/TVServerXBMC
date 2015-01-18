@@ -7,11 +7,11 @@ using System.Threading;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
-using TVServerXBMC.Commands;
+using TVServerKodi.Commands;
 using TvLibrary.Log;
-using TVServerXBMC;
+using TVServerKodi;
 
-namespace TVServerXBMC
+namespace TVServerKodi
 {
     enum ClientType
     {
@@ -66,7 +66,7 @@ namespace TVServerXBMC
             handlers.Add(new Help(this));
             handlers.Add(new IsTimeshifting(this));
 
-            // Added for XBMC PVR client addon:
+            // Added for XBMC/Kodi PVR client addon:
             handlers.Add(new GetVersion(this));
             handlers.Add(new GetBackendName(this));
             handlers.Add(new GetDriveSpace(this));
@@ -142,18 +142,18 @@ namespace TVServerXBMC
                 cmd_sep = ":";
                 arg_sep = "|";
 
-                WriteLine("Protocol Accepted; TVServerXBMC version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                WriteLine("Protocol Accepted; TVServerKodi version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 Console.WriteLine("Correct protocol, telnet connection accepted!");
-                Log.Debug("TVServerXBMC: telnet connection accepted!");
+                Log.Debug("TVServerKodi: telnet connection accepted!");
 
-                username = "XBMCtelnet";
+                username = "Koditelnet";
                 clientType = ClientType.telnet;
             }
             else if (Regex.IsMatch(versionInfo,"^TVServerXBMC:0-[0-3]$",RegexOptions.IgnoreCase))
             {
                 WriteLine("Protocol-Accept;0-3");
                 Console.WriteLine("Correct protocol, connection accepted!");
-                Log.Debug("TVServerXBMC: connection accepted!");
+                Log.Debug("TVServerKodi: connection accepted!");
                 username = "XBMCpython";
                 clientType = ClientType.python;
             }
@@ -166,9 +166,23 @@ namespace TVServerXBMC
 
                 WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 Console.WriteLine("Correct protocol, connection accepted!");
-                Log.Debug("TVServerXBMC: connection accepted from XBMC PVR addon");
+                Log.Debug("TVServerKodi: connection accepted from XBMC PVR addon");
 
                 username = "XBMCpvrclient" + clientnr;
+                clientType = ClientType.pvrclient;
+            }
+            else if (Regex.IsMatch(versionInfo, "^PVRclientKodi:0-[1]$", RegexOptions.IgnoreCase))
+            {
+                writer.setArgumentSeparator("|");
+                //reader side:
+                cmd_sep = ":";
+                arg_sep = "|";
+
+                WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                Console.WriteLine("Correct protocol, connection accepted!");
+                Log.Debug("TVServerKodi: connection accepted from Kodi PVR addon");
+
+                username = "Kodipvrclient" + clientnr;
                 clientType = ClientType.pvrclient;
             }
             else
@@ -176,7 +190,7 @@ namespace TVServerXBMC
                 WriteLine("Unexpected Protocol");
                 client.Close();
                 Console.WriteLine("Unexpected protocol:" + versionInfo);
-                Log.Debug("TVServerXBMC: Unexpected protocol:" + versionInfo);
+                Log.Debug("TVServerKodi: Unexpected protocol:" + versionInfo);
 
                 clientType = ClientType.unknown;
                 return;
@@ -215,9 +229,9 @@ namespace TVServerXBMC
               catch (Exception e)
               {
                 WriteLine("[ERROR]: Command failed: " + command);
-                Log.Debug("TVServerXBMC: Command failed: " + command);
-                Log.Debug("TVServerXBMC: Exception: " + command + " => " + e.Message);
-                Log.Debug("TVServerXBMC: Stack trace: " + e.StackTrace);
+                Log.Debug("TVServerKodi: Command failed: " + command);
+                Log.Debug("TVServerKodi: Exception: " + command + " => " + e.Message);
+                Log.Debug("TVServerKodi: Stack trace: " + e.StackTrace);
               }
               finally
               {
@@ -240,14 +254,14 @@ namespace TVServerXBMC
             {
               WriteLine("[ERROR]: UnknownCommand:" + command);
               Console.WriteLine("[ERROR]: Unknown command : " + command);
-              Log.Debug("TVServerXBMC: Unknown command: " + command);
+              Log.Debug("TVServerKodi: Unknown command: " + command);
             }
           }
           catch(Exception e)
           {
             WriteLine("[ERROR]: Exception:" + command + " => " + e.Message);
-            Log.Debug("TVServerXBMC: Exception: " + command + " => " + e.Message);
-            Log.Debug("TVServerXBMC: Stack trace: " + e.StackTrace);
+            Log.Debug("TVServerKodi: Exception: " + command + " => " + e.Message);
+            Log.Debug("TVServerKodi: Stack trace: " + e.StackTrace);
           }
         }
 
@@ -278,7 +292,7 @@ namespace TVServerXBMC
                         }
 
                         Console.WriteLine("Handling command; " + command);
-                        Log.Debug("TVServerXBMC: Handling command: " + command);
+                        Log.Debug("TVServerKodi: Handling command: " + command);
                         handleCommand(command, arguments);
                     }
                     else
@@ -290,10 +304,10 @@ namespace TVServerXBMC
             catch (Exception e)
             {
                 Console.WriteLine("Exception while processing connection : " + e.ToString());
-                Log.Debug("TVServerXBMC: Exception while processing connection: " + e.ToString());
+                Log.Debug("TVServerKodi: Exception while processing connection: " + e.ToString());
             }
             Console.WriteLine("Connection closed");
-            Log.Debug("TVServerXBMC: Connection closed");
+            Log.Debug("TVServerKodi: Connection closed");
 
             if (clientType != ClientType.python)
             {

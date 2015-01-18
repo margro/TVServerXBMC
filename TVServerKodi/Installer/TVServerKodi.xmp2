@@ -209,7 +209,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
 
 
 
-. The TVServerXBMC plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
+. The TVServerKodi plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
 
 
 

@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace TVServerXBMC.Common
+namespace TVServerKodi.Common
 {
 	public class ShareExplorer
 	{

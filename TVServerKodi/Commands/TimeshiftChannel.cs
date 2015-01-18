@@ -4,7 +4,7 @@ using System.Text;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace TVServerXBMC.Commands
+namespace TVServerKodi.Commands
 {
     class TimeshiftChannel : CommandHandler
     {
