@@ -13,9 +13,9 @@
             <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
               <Param1 />
               <UpdateOption>AlwaysOverwrite</UpdateOption>
-              <LocalFileName>..\bin\Release\TVServerXBMC.dll</LocalFileName>
-              <ZipFileName>Installer{CopyFile}\{477da3d6-72c1-4f37-af0f-3e666d9546ba}-TVServerXBMC.dll</ZipFileName>
-              <DestinationFilename>%TvServerPlugins%\TVServerXBMC.dll</DestinationFilename>
+              <LocalFileName>..\bin\Release\TVServerKodi.dll</LocalFileName>
+              <ZipFileName>Installer{CopyFile}\{477da3d6-72c1-4f37-af0f-3e666d9546ba}-TVServerKodi.dll</ZipFileName>
+              <DestinationFilename>%TvServerPlugins%\TVServerKodi.dll</DestinationFilename>
             </FileItem>
           </Items>
         </Files>
@@ -191,7 +191,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <Items />
   </PluginDependencies>
   <GeneralInfo>
-    <Name>TVServerXBMC</Name>
+    <Name>TVServerKodi</Name>
     <Id>81b6b5e8-b4e0-4d1c-a2e2-cb2db54844f1</Id>
     <Author>Marcel Groothuis, Prashant V</Author>
     <HomePage>http://www.scintilla.utwente.nl/~marcelg/xbmc/tvserverxbmc.html</HomePage>
@@ -265,15 +265,15 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <FileItem InstallType="CopyFile" SystemFile="false" Modified="true">
         <Param1 />
         <UpdateOption>AlwaysOverwrite</UpdateOption>
-        <LocalFileName>..\bin\Release\TVServerXBMC.dll</LocalFileName>
-        <ZipFileName>Installer{CopyFile}\{477da3d6-72c1-4f37-af0f-3e666d9546ba}-TVServerXBMC.dll</ZipFileName>
-        <DestinationFilename>%TvServerPlugins%\TVServerXBMC.dll</DestinationFilename>
+        <LocalFileName>..\bin\Release\TVServerKodi.dll</LocalFileName>
+        <ZipFileName>Installer{CopyFile}\{477da3d6-72c1-4f37-af0f-3e666d9546ba}-TVServerKodi.dll</ZipFileName>
+        <DestinationFilename>%TvServerPlugins%\TVServerKodi.dll</DestinationFilename>
       </FileItem>
     </Items>
   </UniqueFileList>
   <ProjectSettings>
     <FolderGroups />
-    <ProjectFilename>TVServerXBMC.xmp2</ProjectFilename>
+    <ProjectFilename>TVServerKodi.xmp2</ProjectFilename>
     <UpdatePath1>MPEI_update_1_8.xml</UpdatePath1>
     <UpdatePath2 />
     <UpdatePath3 />

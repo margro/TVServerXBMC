@@ -8,8 +8,8 @@
     <ProjectGuid>{CE292E6A-53E2-459D-8C87-673073182152}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TVServerXBMC</RootNamespace>
-    <AssemblyName>TVServerXBMC</AssemblyName>
+    <RootNamespace>TVServerKodi</RootNamespace>
+    <AssemblyName>TVServerKodi</AssemblyName>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
