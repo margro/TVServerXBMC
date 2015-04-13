@@ -55,7 +55,7 @@ namespace TVServerKodi.Commands
                                 + e.IdProgram.ToString() + "|"
                                 + e.IdChannel.ToString() + "|"
                                 + e.SeriesNum + "|"
-                                + e.EpisodeNumber + "|"
+                                + e.EpisodeNum + "|"
                                 + e.EpisodeName + "|"
                                 + e.EpisodePart + "|"
                                 + e.OriginalAirDate.ToString("u") + "|"
