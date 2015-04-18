@@ -139,7 +139,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>10</Minor>
+          <Minor>99</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
@@ -158,7 +158,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
         </MinVersion>
         <MaxVersion>
           <Major>1</Major>
-          <Minor>10</Minor>
+          <Minor>99</Minor>
           <Build>999</Build>
           <Revision>0</Revision>
         </MaxVersion>
@@ -201,7 +201,7 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Major>1</Major>
       <Minor>10</Minor>
       <Build>0</Build>
-      <Revision>127</Revision>
+      <Revision>128</Revision>
     </Version>
     <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
 
