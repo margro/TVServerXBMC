@@ -1,4 +1,5 @@
 1.10.0.128:
+- Fixed: GetRecordingDriveSpace triggers an exception when one or more cards have no recording path set
 - Fixed: EPG: episodeNumber should be episodeNum (credits: puenktchen)
 
 1.10.0.127:
