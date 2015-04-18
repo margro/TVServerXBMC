@@ -1080,77 +1080,82 @@ namespace TVServerKodi
 
                 foreach (Recording rec in recordings)
                 {
-                    string recording;
-                    string channelname;
-                    string rtspURL = GetRecordingURL(rec.IdRecording, server, resolveHostnames, ref OriginalURL);//server.GetStreamUrlForFileName(rec.IdRecording);
-
-                    //XBMC pvr side:
-                    //index, channelname, lifetime, priority, start time, duration
-                    //title, subtitle, description, stream_url, directory
-
-                    //[0] index / mediaportal recording id
-                    //[1] start time
-                    //[2] end time
-                    //[3] channel name
-                    //[4] title
-                    //[5] description
-                    //[6] stream_url (resolved hostname if resolveHostnames = True)
-                    //[7] filename (we can bypass rtsp streaming when XBMC and the TV server are on the same machine)
-                    //[8] keepUntilDate (DateTime)
-                    //[9] original unresolved stream_url if resolveHostnames = True, otherwise this field is missing
-                    //[10] keepUntil (int)
-                    //[11] episodeName (string)
-                    //[12] episodeNumber (string)
-                    //[13] episodePart (string)
-                    //[14] seriesNumber (string)
-                    //[15] scheduleID (int)
-                    //[16] Genre (string)
-                    //[17] channel id (int)
-                    //[18] isrecording (bool)
-                    //[19] timesWatched (int)
-                    //[20] stopTime (int)
-
                     try
                     {
-                        channelname = rec.ReferencedChannel().DisplayName;
-                    }
-                    catch
-                    {   // Occurs for example when a recording is pointing to a channel
-                        // that is deleted in the meantime
-                        channelname = rec.IdChannel.ToString();
-                    }
-                    recording = rec.IdRecording.ToString() + "|"  // 0
-                        + rec.StartTime.ToString("u") + "|"       // 1
-                        + rec.EndTime.ToString("u") + "|"         // 2
-                        + channelname.Replace("|", "") + "|"      // 3
-                        + rec.Title.Replace("|", "") + "|"        // 4
-                        + rec.Description.Replace("|", "") + "|"  // 5
-                        + rtspURL + "|"                           // 6
-                        + rec.FileName + "|"                      // 7
-                        + rec.KeepUntilDate.ToString("u") + "|";  // 8
+                        string recording;
+                        string channelname;
+                        string rtspURL = GetRecordingURL(rec.IdRecording, server, resolveHostnames, ref OriginalURL);//server.GetStreamUrlForFileName(rec.IdRecording);
 
-                    if (resolveHostnames)
-                    {
-                        recording += OriginalURL + "|";           // 9
-                    }
-                    else
-                    {
-                        recording += rtspURL + "|";
-                    }
+                        //XBMC pvr side:
+                        //index, channelname, lifetime, priority, start time, duration
+                        //title, subtitle, description, stream_url, directory
 
-                    recording += rec.KeepUntil.ToString() + "|"   // 10
-                        + rec.EpisodeName.Replace("|", "") + "|"  // 11
-                        + rec.EpisodeNum + "|"                    // 12
-                        + rec.EpisodePart + "|"                   // 13
-                        + rec.SeriesNum + "|"                     // 14
-                        + rec.Idschedule.ToString() + "|"         // 15
-                        + rec.Genre + "|"                         // 16
-                        + rec.IdChannel.ToString() + "|"          // 17
-                        + rec.IsRecording.ToString() + "|"        // 18
-                        + rec.TimesWatched.ToString() + "|"       // 19
-                        + rec.StopTime.ToString();                // 20
+                        //[0] index / mediaportal recording id
+                        //[1] start time
+                        //[2] end time
+                        //[3] channel name
+                        //[4] title
+                        //[5] description
+                        //[6] stream_url (resolved hostname if resolveHostnames = True)
+                        //[7] filename (we can bypass rtsp streaming when XBMC and the TV server are on the same machine)
+                        //[8] keepUntilDate (DateTime)
+                        //[9] original unresolved stream_url if resolveHostnames = True, otherwise this field is missing
+                        //[10] keepUntil (int)
+                        //[11] episodeName (string)
+                        //[12] episodeNumber (string)
+                        //[13] episodePart (string)
+                        //[14] seriesNumber (string)
+                        //[15] scheduleID (int)
+                        //[16] Genre (string)
+                        //[17] channel id (int)
+                        //[18] isrecording (bool)
+                        //[19] timesWatched (int)
+                        //[20] stopTime (int)
 
-                    reclist.Add(recording);
+                        try
+                        {
+                            channelname = rec.ReferencedChannel().DisplayName;
+                        }
+                        catch
+                        {   // Occurs for example when a recording is pointing to a channel
+                            // that is deleted in the meantime
+                            channelname = rec.IdChannel.ToString();
+                        }
+                        recording = rec.IdRecording.ToString() + "|"  // 0
+                            + rec.StartTime.ToString("u") + "|"       // 1
+                            + rec.EndTime.ToString("u") + "|"         // 2
+                            + channelname.Replace("|", "") + "|"      // 3
+                            + rec.Title.Replace("|", "") + "|"        // 4
+                            + rec.Description.Replace("|", "") + "|"  // 5
+                            + rtspURL + "|"                           // 6
+                            + rec.FileName + "|"                      // 7
+                            + rec.KeepUntilDate.ToString("u") + "|";  // 8
+
+                        if (resolveHostnames)
+                        {
+                            recording += OriginalURL + "|";           // 9
+                        }
+                        else
+                        {
+                            recording += rtspURL + "|";
+                        }
+
+                        recording += rec.KeepUntil.ToString() + "|"   // 10
+                            + rec.EpisodeName.Replace("|", "") + "|"  // 11
+                            + rec.EpisodeNum + "|"                    // 12
+                            + rec.EpisodePart + "|"                   // 13
+                            + rec.SeriesNum + "|"                     // 14
+                            + rec.Idschedule.ToString() + "|"         // 15
+                            + rec.Genre + "|"                         // 16
+                            + rec.IdChannel.ToString() + "|"          // 17
+                            + rec.IsRecording.ToString() + "|"        // 18
+                            + rec.TimesWatched.ToString() + "|"       // 19
+                            + rec.StopTime.ToString();                // 20
+
+                        reclist.Add(recording);
+                    }
+                    catch (Exception)
+                    { }
                 }
             }
             catch (Exception ex)

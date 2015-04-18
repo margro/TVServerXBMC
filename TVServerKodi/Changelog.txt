@@ -1,5 +1,8 @@
 1.10.0.128:
+- Fixed: Deleting one or more recordings gives an empty list in Kodi/XBMC due to a database exception on the missing records
 - Fixed: GetRecordingDriveSpace triggers an exception when one or more cards have no recording path set
+- Fixed: GetRecordingDriveSpace returns 0 when the last card has no recording path set
+- Changed: GetRecordingDriveSpace returns now the total disk size and free size for all cards and drives
 - Fixed: EPG: episodeNumber should be episodeNum (credits: puenktchen)
 
 1.10.0.127:
