@@ -293,9 +293,9 @@ namespace TVServerKodi
             return result;
         }
 
-        public static string getTimeshiftUrl(ref TvControl.IUser me)
+        public static TimeShiftURLs getTimeshiftURLs(ref TvControl.IUser me)
         {
-            return serverIntf.GetTimeshiftUrl(ref me);
+            return serverIntf.GetTimeshiftURLs(ref me);
         }
 
         public static ChannelInfo getTimeshiftInfo(ref TvControl.IUser me)
