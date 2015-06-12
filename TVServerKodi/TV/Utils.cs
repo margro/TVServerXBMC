@@ -22,6 +22,11 @@ namespace TVServerKodi
     public string TimeShiftFileName;
     public string userName;
   }
+  public class TimeShiftURLs
+  {
+    public string RTSPUrl;
+    public string TimeShiftFileName;
+  }
   public class ProgrammInfo
   {
     public string timeInfo;
