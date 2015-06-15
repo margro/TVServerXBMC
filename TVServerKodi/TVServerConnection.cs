@@ -311,7 +311,11 @@ namespace TVServerKodi
 
             return null;
         }
-        
+
+        public static List<String> getTimeshiftingUserNames()
+        {
+            return new List<string>(timeshiftChannel.Keys);
+        }
 
         public static bool DeleteRecordedTV(int recId)
         {
