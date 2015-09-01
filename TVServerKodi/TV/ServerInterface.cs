@@ -102,6 +102,7 @@ namespace TVServerKodi
 
                 try
                 {
+                    isTimeShifting.Remove(user.Name); // Remove user with old timeshift data (on new channel tuning, without stopping the timeshift)
                     isTimeShifting.Add(user.Name, new TimeShiftURLs { RTSPUrl = rtspURL, TimeShiftFileName = timeshiftfilename });
                 }
                 catch { }
@@ -191,6 +192,7 @@ namespace TVServerKodi
                     {   //Found one...
                         user.CardId = ss.cardId;
                         user.IdChannel = ss.channelId;
+                        isTimeShifting.Remove(user.Name); // Make sure that the user is not in the dictionary
                         isTimeShifting.Add(user.Name, new TimeShiftURLs { RTSPUrl = ss.RTSPUrl, TimeShiftFileName = ss.TimeShiftFileName });
                         TVServerController.userlist[user.Name].CardId = ss.cardId;
                         TVServerController.userlist[user.Name].IdChannel = ss.channelId;
