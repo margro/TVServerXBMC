@@ -1,5 +1,7 @@
 1.12.0.129:
 - Fixed: An early remote shutdown could cause a TV Server crash in the HandleConnection() function
+- Added: Optional parameter to "GetUserName" for fetching all timeshift users (credits Romank1)
+- Extended: "IsTimeshifting" command now also returns the UNC timeshift file (credits Romank1)
 - Updated: referenced assemblies for TVServer 1.12.0 (final)
 
 1.10.0.128:
