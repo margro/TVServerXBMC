@@ -120,87 +120,97 @@ namespace TVServerKodi
 
         public void HandleConnection()
         {
-            NetworkStream cStream = this.client.GetStream();
-            StreamReader reader = new StreamReader(cStream);
-            writer = new DataWriter(cStream);
-
-            // first we get what version of the protocol
-            // we expect "TVServerXBMC:0-2"
-            String versionInfo = reader.ReadLine();
-            if (versionInfo == null) return;
-
-            // version 2 is not backards compatible
-            versionInfo = Uri.UnescapeDataString(versionInfo);
-            if (versionInfo.ToLower().Contains("telnet"))
+            try
             {
-                // human connection
-                writer.setArgumentSeparator("|");
-                writer.setListSeparator(Environment.NewLine);
-                writer.setHumanEncoders();
+                NetworkStream cStream = this.client.GetStream();
+                StreamReader reader = new StreamReader(cStream);
+                writer = new DataWriter(cStream);
 
-                //reader side:
-                cmd_sep = ":";
-                arg_sep = "|";
+                // first we get what version of the protocol
+                // we expect "TVServerXBMC:0-2"
+                String versionInfo = reader.ReadLine();
+                if (versionInfo == null) return;
 
-                WriteLine("Protocol Accepted; TVServerKodi version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                Console.WriteLine("Correct protocol, telnet connection accepted!");
-                Log.Debug("TVServerKodi: telnet connection accepted!");
+                // version 2 is not backards compatible
+                versionInfo = Uri.UnescapeDataString(versionInfo);
+                if (versionInfo.ToLower().Contains("telnet"))
+                {
+                    // human connection
+                    writer.setArgumentSeparator("|");
+                    writer.setListSeparator(Environment.NewLine);
+                    writer.setHumanEncoders();
 
-                username = "Koditelnet";
-                clientType = ClientType.telnet;
+                    //reader side:
+                    cmd_sep = ":";
+                    arg_sep = "|";
+
+                    WriteLine("Protocol Accepted; TVServerKodi version: " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                    Console.WriteLine("Correct protocol, telnet connection accepted!");
+                    Log.Debug("TVServerKodi: telnet connection accepted!");
+
+                    username = "Koditelnet";
+                    clientType = ClientType.telnet;
+                }
+                else if (Regex.IsMatch(versionInfo, "^TVServerXBMC:0-[0-3]$", RegexOptions.IgnoreCase))
+                {
+                    WriteLine("Protocol-Accept;0-3");
+                    Console.WriteLine("Correct protocol, connection accepted!");
+                    Log.Debug("TVServerKodi: connection accepted!");
+                    username = "XBMCpython";
+                    clientType = ClientType.python;
+                }
+                else if (Regex.IsMatch(versionInfo, "^PVRclientXBMC:0-[1]$", RegexOptions.IgnoreCase))
+                {
+                    writer.setArgumentSeparator("|");
+                    //reader side:
+                    cmd_sep = ":";
+                    arg_sep = "|";
+
+                    WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                    Console.WriteLine("Correct protocol, connection accepted!");
+                    Log.Debug("TVServerKodi: connection accepted from XBMC PVR addon");
+
+                    username = "XBMCpvrclient" + clientnr;
+                    clientType = ClientType.pvrclient;
+                }
+                else if (Regex.IsMatch(versionInfo, "^PVRclientKodi:0-[1]$", RegexOptions.IgnoreCase))
+                {
+                    writer.setArgumentSeparator("|");
+                    //reader side:
+                    cmd_sep = ":";
+                    arg_sep = "|";
+
+                    WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                    Console.WriteLine("Correct protocol, connection accepted!");
+                    Log.Debug("TVServerKodi: connection accepted from Kodi PVR addon");
+
+                    username = "Kodipvrclient" + clientnr;
+                    clientType = ClientType.pvrclient;
+                }
+                else
+                {
+                    WriteLine("Unexpected Protocol");
+                    client.Close();
+                    Console.WriteLine("Unexpected protocol:" + versionInfo);
+                    Log.Debug("TVServerKodi: Unexpected protocol:" + versionInfo);
+
+                    clientType = ClientType.unknown;
+                    return;
+                }
+
+                me = TVServerConnection.RequestUser(username);
+
+                ProcessConnection(reader);
+                reader.Dispose();
+                cStream.Dispose();
             }
-            else if (Regex.IsMatch(versionInfo,"^TVServerXBMC:0-[0-3]$",RegexOptions.IgnoreCase))
+            catch (Exception e)
             {
-                WriteLine("Protocol-Accept;0-3");
-                Console.WriteLine("Correct protocol, connection accepted!");
-                Log.Debug("TVServerKodi: connection accepted!");
-                username = "XBMCpython";
-                clientType = ClientType.python;
+                WriteLine("[ERROR]: HandleConnection failed");
+                Log.Debug("TVServerKodi: HandleConnection failed");
+                Log.Debug("TVServerKodi: Exception => " + e.Message);
+                Log.Debug("TVServerKodi: Stack trace: " + e.StackTrace);
             }
-            else if (Regex.IsMatch(versionInfo, "^PVRclientXBMC:0-[1]$", RegexOptions.IgnoreCase))
-            {
-                writer.setArgumentSeparator("|");
-                //reader side:
-                cmd_sep = ":";
-                arg_sep = "|";
-
-                WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                Console.WriteLine("Correct protocol, connection accepted!");
-                Log.Debug("TVServerKodi: connection accepted from XBMC PVR addon");
-
-                username = "XBMCpvrclient" + clientnr;
-                clientType = ClientType.pvrclient;
-            }
-            else if (Regex.IsMatch(versionInfo, "^PVRclientKodi:0-[1]$", RegexOptions.IgnoreCase))
-            {
-                writer.setArgumentSeparator("|");
-                //reader side:
-                cmd_sep = ":";
-                arg_sep = "|";
-
-                WriteLine("Protocol-Accept:0|" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                Console.WriteLine("Correct protocol, connection accepted!");
-                Log.Debug("TVServerKodi: connection accepted from Kodi PVR addon");
-
-                username = "Kodipvrclient" + clientnr;
-                clientType = ClientType.pvrclient;
-            }
-            else
-            {
-                WriteLine("Unexpected Protocol");
-                client.Close();
-                Console.WriteLine("Unexpected protocol:" + versionInfo);
-                Log.Debug("TVServerKodi: Unexpected protocol:" + versionInfo);
-
-                clientType = ClientType.unknown;
-                return;
-            }
-
-            me = TVServerConnection.RequestUser(username);
-
-            ProcessConnection(reader);
-            reader.Dispose();
-            cStream.Dispose();
         }
 
         public void WriteLine(String line)
