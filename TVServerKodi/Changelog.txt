@@ -1,3 +1,7 @@
+1.12.0.129:
+- Fixed: An early remote shutdown could cause a TV Server crash in the HandleConnection() function
+- Updated: referenced assemblies for TVServer 1.12.0 (final)
+
 1.10.0.128:
 - Fixed: Deleting one or more recordings gives an empty list in Kodi/XBMC due to a database exception on the missing records
 - Fixed: GetRecordingDriveSpace triggers an exception when one or more cards have no recording path set
