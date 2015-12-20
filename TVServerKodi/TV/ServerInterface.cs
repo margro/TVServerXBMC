@@ -1304,15 +1304,18 @@ namespace TVServerKodi
             }
             return schedInfos;
         }
-        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime, string strIdChannel, string strchannelname, string strProgramName, Schedule sched, string strIsRecording, string stridProgram, DateTime Canceled) 
+        private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime,
+            string strIdChannel, string strchannelname, string strProgramName, Schedule sched,
+            string strIsRecording, string stridProgram, DateTime Canceled, int iParentSchedule,
+            string strGenre)
         {
-            string schedule; 
+            string schedule;
             schedule = strSchedId + "|"
                 + strStartTime + "|"
                 + strEndTime + "|"
                 + strIdChannel + "|"
-                + strchannelname+ "|"
-                + strProgramName+ "|"
+                + strchannelname + "|"
+                + strProgramName + "|"
                 + sched.ScheduleType.ToString() + "|"
                 + sched.Priority.ToString() + "|"
                 + sched.IsDone().ToString() + "|"
@@ -1325,11 +1328,13 @@ namespace TVServerKodi
                 + Canceled.ToString("u") + "|"
                 + sched.Series.ToString() + "|"
                 + strIsRecording + "|"
-                + stridProgram;
+                + stridProgram + "|"
+                + iParentSchedule.ToString() + "|"
+                + strGenre;
             return schedule;
         }
 
-        public List<String> GetSchedules()
+        public List<String> GetSchedules(bool kodiHasSeriesSupport = false)
         {
             List<String> schedlist = new List<String>();
             try
@@ -1347,7 +1352,7 @@ namespace TVServerKodi
                     String strProgramName;
                     int idProgram = 0;
  
-                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a serie we won't use this.
+                    if (sched.IdParentSchedule != -1) //If it has a parent it's a recording of a series we won't use this.
                         continue;
 
                     //XBMC pvr side:
@@ -1380,18 +1385,40 @@ namespace TVServerKodi
                         // that is deleted in the meantime
                         channelname = sched.IdChannel.ToString();
                     }
-                    strSchedId = sched.IdSchedule.ToString();
-                    strStartTime = sched.StartTime.ToString("u");
-                    strEndTime = sched.EndTime.ToString("u");
-                    strIdChannel = sched.IdChannel.ToString();
-                    strProgramName = sched.ProgramName;
+
                     try
                     {
+                        strSchedId = sched.IdSchedule.ToString();
+                        strStartTime = sched.StartTime.ToString("u");
+                        strEndTime = sched.EndTime.ToString("u");
+                        strIdChannel = sched.IdChannel.ToString();
+                        strProgramName = sched.ProgramName;
+
                         IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
                         IList<CanceledSchedule> canceled_progs = sched.ReferringCanceledSchedule();
+
+                        if (kodiHasSeriesSupport == true)
+                        {
+                            // return also the real schedule and not only the underlying programs
+                            schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
+                                        strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, "");
+                            schedlist.Add(schedule);
+                        }
+
                         foreach (Program pr in progs) 
                         {
                             DateTime dtCanceled = sched.Canceled;
+                            int parentSchedule;
+
+                            if (kodiHasSeriesSupport)
+                            {
+                                // add the programs for this schedule as sub-timers in Kodi
+                                parentSchedule = sched.IdSchedule;
+                            }
+                            else
+                            {
+                                parentSchedule = sched.IdParentSchedule;
+                            }
 
                             strStartTime = pr.StartTime.ToString("u");
                             strEndTime = pr.EndTime.ToString("u");
@@ -1414,8 +1441,8 @@ namespace TVServerKodi
                               }
                             }
                           
-                            schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""), 
-                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled); 
+                            schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
+                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled, parentSchedule, pr.Genre); 
                             schedlist.Add(schedule);
                         }
  
@@ -1433,9 +1460,9 @@ namespace TVServerKodi
                                     strIsRecording = "True";
                                 idProgram = -1;
                                 schedule=FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
-                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled); 
+                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, ""); 
                                 schedlist.Add(schedule);
-                            } 
+                            }
                         }
                     }
                     catch

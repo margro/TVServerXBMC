@@ -174,9 +174,9 @@ namespace TVServerKodi
             return schedules;
         }
 
-        public static List<String> GetSchedules()
+        public static List<String> GetSchedules(bool seriesSupport = false)
         {
-            return serverIntf.GetSchedules();
+            return serverIntf.GetSchedules(seriesSupport);
         }
 
         public static String GetScheduleInfo(int index)

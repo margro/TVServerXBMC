@@ -15,16 +15,27 @@ namespace TVServerKodi.Commands
 
       public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
       {
-         // we want to list all recordings
-         List<string> results = new List<string>();
-
-         results = TVServerConnection.GetSchedules();
-         writer.writeList(results);
+          try
+          {
+              bool seriesSupport = false;
+              if (arguments != null && arguments.Length >= 1)
+              {
+                  seriesSupport = Boolean.Parse(arguments[0]);
+              }
+              
+              // we want to list all scheduled recordings
+              List<string> results = new List<string>();
+              
+              results = TVServerConnection.GetSchedules(seriesSupport);
+              writer.writeList(results);
+            } catch {
+              getConnection().WriteLine("[ERROR]: Usage: " + getCommandToHandle() + ":[seriesSupport=False]" );
+         }
       }
 
       public override string getCommandToHandle()
       {
-         return "ListSchedules";
+          return "ListSchedules";
       }
    }
 }
