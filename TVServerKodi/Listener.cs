@@ -12,7 +12,8 @@ namespace TVServerKodi
     {
         private TcpListener tcpListener;
         private int port;
-        private List<TcpClient> clients;
+        private List<TcpClient> m_clients;
+        private List<Thread> m_communicationThreads;
         private Mutex cmdMutex;
         private bool stopme = false;
         private Thread m_listenThread;
@@ -77,31 +78,49 @@ namespace TVServerKodi
 
         public void Stop()
         {
-            Log.Debug("TVServerKodi: tcpListener.Stop()");
-            Console.WriteLine("TVServerKodi: tcpListener.Stop()");
-            stopme = true;
-
-            if (m_listenThread != null)
+            try
             {
-              Log.Debug("TVServerKodi: Listenthread is aborting");
-              m_listenThread.Abort();
-              m_listenThread = null;
-            }
+                Log.Debug("TVServerKodi: tcpListener.Stop()");
+                Console.WriteLine("TVServerKodi: tcpListener.Stop()");
+                stopme = true;
 
-            if (clients.Count > 0)
-            {
-              foreach (TcpClient client in clients)
-              {
-                client.Close();
-              }
+                if (m_listenThread != null)
+                {
+                    Log.Debug("TVServerKodi: Listenthread is aborting");
+                    m_listenThread.Abort();
+                    m_listenThread = null;
+                }
 
-              clients = null;
+                if (m_communicationThreads.Count > 0)
+                {
+                    Log.Debug("TVServerKodi: Stop all communication threads");
+                    foreach (Thread thread in m_communicationThreads)
+                    {
+                        thread.Abort();
+                    }
+                    m_communicationThreads.Clear();
+                    m_communicationThreads = null;
+                }
+
+                if (m_clients.Count > 0)
+                {
+                    Log.Debug("TVServerKodi: Closing all client connections");
+                    foreach (TcpClient client in m_clients)
+                    {
+                        client.Close();
+                    }
+
+                    m_clients = null;
+                }
             }
+            catch (Exception e)
+            { }
         }
 
         public void ListenForClients()
         {
-            clients = new List<TcpClient>();
+            m_clients = new List<TcpClient>();
+            m_communicationThreads =  new List<Thread>();
             cmdMutex = new Mutex();
 
             while (!stopme)
@@ -121,25 +140,16 @@ namespace TVServerKodi
                 Log.Debug("TVServerKodi: New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
                 //___________________________
                 lock(this) {
-                    clients.Add(client);
+                    m_clients.Add(client);
                 }
 
-                ConnectionHandler handler = new ConnectionHandler(client, cmdMutex, clients.Count);
+                ConnectionHandler handler = new ConnectionHandler(client, cmdMutex, m_clients.Count);
                 ThreadStart thdstHandler = new ThreadStart(handler.HandleConnection); 
-                Thread t = new Thread(thdstHandler);
-                t.Start();
-
-                // Single threaded version:
-                //___________________________
-                //
-                //Console.WriteLine("New Connection! Not listening for any new connections");
-                //tcpListener.Stop();
-                //
-                //ConnectionHandler handler = new ConnectionHandler(client);
-                //handler.HandleConnection();
-                //
-                //tcpListener.Start();
-                //Console.WriteLine("Connection complete, listening for new connections...");
+                Thread communicationThread = new Thread(thdstHandler);
+                lock(this) {
+                    m_communicationThreads.Add(communicationThread);
+                }
+                communicationThread.Start();
             }
 
             tcpListener.Stop();

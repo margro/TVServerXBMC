@@ -311,11 +311,24 @@ namespace TVServerKodi
                     }
                 }
             }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                Console.WriteLine("Could not read data.");
+                Log.Debug("TVServerKodi: Could not read data.");
+                try
+                {
+                    client.Close();
+                    reader.Close();
+                }
+                catch (Exception ex)
+                { }
+            }
             catch (Exception e)
             {
                 Console.WriteLine("Exception while processing connection : " + e.ToString());
                 Log.Debug("TVServerKodi: Exception while processing connection: " + e.ToString());
             }
+
             Console.WriteLine("Connection closed");
             Log.Debug("TVServerKodi: Connection closed");
 

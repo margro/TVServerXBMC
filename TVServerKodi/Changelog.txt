@@ -1,3 +1,9 @@
+1.12.0.130:
+- Added: timers: additional return values: parentScheduleID and program genre string
+- Modified: timers: series: return also the actual schedule and not only the underlying programs
+     The underlying programs are now shown as subtimers with a parent timer in Kodi Jarvis (v16)
+- Fixed: also stop the communication threads when the TV Server service is terminating us...
+
 1.12.0.129:
 - Fixed: An early remote shutdown could cause a TV Server crash in the HandleConnection() function
 - Added: Optional parameter to "GetUserName" for fetching all timeshift users (credits Romank1)
