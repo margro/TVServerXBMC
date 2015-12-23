@@ -20,7 +20,10 @@ namespace TVServerKodi.Commands
               bool seriesSupport = false;
               if (arguments != null && arguments.Length >= 1)
               {
-                  seriesSupport = Boolean.Parse(arguments[0]);
+                  if (arguments[0].Length > 0)
+                  {
+                      seriesSupport = Boolean.Parse(arguments[0]);
+                  }
               }
               
               // we want to list all scheduled recordings
