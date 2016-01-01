@@ -1,4 +1,5 @@
 1.12.0.130:
+- Added: Support for the MediaPortal 2 version of the TV Server (needs SQLite support)
 - Added: timers: additional return values: parentScheduleID and program genre string
 - Modified: timers: series: return also the actual schedule and not only the underlying programs
      The underlying programs are now shown as subtimers with a parent timer in Kodi Jarvis (v16)

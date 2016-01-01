@@ -146,6 +146,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Gentle.Provider.MySQL.dll</HintPath>
     </Reference>
+    <Reference Include="Gentle.Provider.SQLite">
+      <HintPath>References\Gentle.Provider.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="Gentle.Provider.SQLServer, Version=1.2.9.1289, Culture=neutral, PublicKeyToken=80b5de62e27be49b">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\Gentle.Provider.SQLServer.dll</HintPath>
