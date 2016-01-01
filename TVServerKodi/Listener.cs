@@ -113,7 +113,7 @@ namespace TVServerKodi
                     m_clients = null;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             { }
         }
 

@@ -311,7 +311,7 @@ namespace TVServerKodi
                     }
                 }
             }
-            catch (System.Net.Sockets.SocketException e)
+            catch (System.Net.Sockets.SocketException)
             {
                 Console.WriteLine("Could not read data.");
                 Log.Debug("TVServerKodi: Could not read data.");
@@ -320,7 +320,7 @@ namespace TVServerKodi
                     client.Close();
                     reader.Close();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 { }
             }
             catch (Exception e)
