@@ -1307,7 +1307,7 @@ namespace TVServerKodi
         private string FormatSchedule(string strSchedId, string strStartTime, string strEndTime,
             string strIdChannel, string strchannelname, string strProgramName, Schedule sched,
             string strIsRecording, string stridProgram, DateTime Canceled, int iParentSchedule,
-            string strGenre)
+            string strGenre, string strProgramDescription)
         {
             string schedule;
             schedule = strSchedId + "|"
@@ -1330,7 +1330,8 @@ namespace TVServerKodi
                 + strIsRecording + "|"
                 + stridProgram + "|"
                 + iParentSchedule.ToString() + "|"
-                + strGenre;
+                + strGenre + "|"
+                + strProgramDescription;
             return schedule;
         }
 
@@ -1376,6 +1377,9 @@ namespace TVServerKodi
                     //[16] series
                     //[17] isrecording (TODO)
                     //[18] idProgram
+                    //[19] parent schedule id
+                    //[20] genre of the program
+                    //[21] program description
                     try
                     {
                         channelname = sched.ReferencedChannel().DisplayName;
@@ -1397,11 +1401,11 @@ namespace TVServerKodi
                         IList<Program> progs = Schedule.GetProgramsForSchedule(sched);
                         IList<CanceledSchedule> canceled_progs = sched.ReferringCanceledSchedule();
 
-                        if (kodiHasSeriesSupport == true)
+                        if (kodiHasSeriesSupport == true && sched.ScheduleType != 0 /* Once */)
                         {
                             // return also the real schedule and not only the underlying programs
                             schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
-                                        strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, "");
+                                        strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, "", "");
                             schedlist.Add(schedule);
                         }
 
@@ -1442,7 +1446,7 @@ namespace TVServerKodi
                             }
                           
                             schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
-                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled, parentSchedule, pr.Genre); 
+                                          strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), dtCanceled, parentSchedule, pr.Genre, pr.Description);
                             schedlist.Add(schedule);
                         }
  
@@ -1459,8 +1463,8 @@ namespace TVServerKodi
                                 if (tv.IsRecordingSchedule(sched.IdSchedule, out card))
                                     strIsRecording = "True";
                                 idProgram = -1;
-                                schedule=FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
-                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, ""); 
+                                schedule = FormatSchedule(strSchedId, strStartTime, strEndTime, strIdChannel, channelname.Replace("|", ""),
+                                            strProgramName.Replace("|", ""), sched, strIsRecording, idProgram.ToString(), sched.Canceled, sched.IdParentSchedule, "", ""); 
                                 schedlist.Add(schedule);
                             }
                         }
