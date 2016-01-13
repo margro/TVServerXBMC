@@ -1643,7 +1643,8 @@ namespace TVServerKodi
                 Schedule updatedSchedule = Schedule.Retrieve(scheduleindex);
                 DateTime defaultCanceled = new DateTime(2000, 01, 01, 0, 0, 0); //Active
 
-                if ((scheduleType != (int)TvDatabase.ScheduleRecordingType.Once) && (programId != -1))
+                // Note that Kodi 16.x returns once for a program below a series schedule...
+                if ((programId != -1) && (scheduleType != (int)TvDatabase.ScheduleRecordingType.Once || updatedSchedule.ScheduleType != (int)TvDatabase.ScheduleRecordingType.Once))
                 {
                   // Series schedule, retrieve the canceled programs list
                   Program program = Program.Retrieve(programId);
