@@ -1414,7 +1414,7 @@ namespace TVServerKodi
                             DateTime dtCanceled = sched.Canceled;
                             int parentSchedule;
 
-                            if (kodiHasSeriesSupport)
+                            if (kodiHasSeriesSupport && sched.ScheduleType != 0 /* Once */)
                             {
                                 // add the programs for this schedule as sub-timers in Kodi
                                 parentSchedule = sched.IdSchedule;

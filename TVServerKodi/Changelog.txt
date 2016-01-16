@@ -1,3 +1,6 @@
+1.12.0.131:
+- Fixed: ListSchedules: don't add a parent schedule id when the schedule type = once
+
 1.12.0.130:
 - Added: Support for the MediaPortal 2 version of the TV Server (needs SQLite support)
 - Added: timers: additional return values: parentScheduleID, program genre string and program description
