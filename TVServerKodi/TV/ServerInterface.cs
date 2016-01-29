@@ -1544,7 +1544,14 @@ namespace TVServerKodi
         private string GetDateTimeString()
         {
             string provider = Gentle.Framework.ProviderFactory.GetDefaultProvider().Name.ToLower();
-            if (provider == "mysql") return "yyyy-MM-dd HH:mm:ss";
+            switch (provider)
+            {
+                case "mysql":
+                case "sqlite":
+                    return "yyyy-MM-dd HH:mm:ss";
+                default:
+                    break;
+            }
             return "yyyyMMdd HH:mm:ss";
         }
         public List<Program> GetEPGForChannel(string idChannel, DateTime startTime, DateTime endTime)
