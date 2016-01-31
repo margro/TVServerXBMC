@@ -1,5 +1,6 @@
 1.12.0.131:
 - Fixed: ListSchedules: don't add a parent schedule id when the schedule type = once
+- Extra try/catch blocks around socket connections
 
 1.12.0.130:
 - Added: Support for the MediaPortal 2 version of the TV Server (needs SQLite support)

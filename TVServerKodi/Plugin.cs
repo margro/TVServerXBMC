@@ -130,29 +130,45 @@ namespace TVServerKodi
 
       private bool StartListenThread()
       {
-        Log.Info("TVServerKodi: Start listening on port " + m_serverPort);
-        Console.WriteLine("TVServerKodi: Start listening on port " + m_serverPort);
+          try
+          {
+              Log.Info("TVServerKodi: Start listening on port " + m_serverPort);
+              Console.WriteLine("TVServerKodi: Start listening on port " + m_serverPort);
 
-        // start a thread for the listener
+              // start a thread for the listener
 
-        m_listener = new Listener(m_serverPort);
-        m_listener.StartListening();
+              m_listener = new Listener(m_serverPort);
+              m_listener.StartListening();
+          }
+          catch
+          {
+              Log.Error("TVServerKodi: StartListenThread failed!");
+              Console.WriteLine("StartListenThread failed!");
+          }
 
-        return false;
+          return false;
       }
 
       private void StopListenThread()
       {
-        if (m_listener != null)
-        {
-          if (connected)
-            TVServerConnection.CloseAll();
+          try
+          {
+              if (m_listener != null)
+              {
+                  if (connected)
+                      TVServerConnection.CloseAll();
 
-          Log.Info("TVServerKodi: Stop listening");
+                  Log.Info("TVServerKodi: Stop listening");
 
-          m_listener.Stop();
-          m_listener = null;
-        }
+                  m_listener.Stop();
+                  m_listener = null;
+              }
+          }
+          catch
+          {
+              Log.Error("TVServerKodi: StopListenThread failed!");
+              Console.WriteLine("StopListenThread failed!");
+          }
       }
 
       /// <summary>

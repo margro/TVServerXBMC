@@ -69,7 +69,7 @@ namespace TVServerKodi
             }
             catch (Exception e)
             {
-                Log.Error("TVServerKodi: Unknown error : " + e.ToString());
+                Log.Error("TVServerKodi: Unexpected error in StartListening(): " + e.ToString());
                 Console.WriteLine(e.ToString());
             }
 
@@ -119,40 +119,50 @@ namespace TVServerKodi
 
         public void ListenForClients()
         {
-            m_clients = new List<TcpClient>();
-            m_communicationThreads =  new List<Thread>();
-            cmdMutex = new Mutex();
-
-            while (!stopme)
+            try
             {
-                Console.WriteLine("Waiting for clients...");
-                Log.Debug("TVServerKodi: Waiting for clients...");
-                while (!this.tcpListener.Pending())
+                m_clients = new List<TcpClient>();
+                m_communicationThreads = new List<Thread>();
+                cmdMutex = new Mutex();
+
+                while (!stopme)
                 {
-                    Thread.Sleep(30);
+                    Console.WriteLine("Waiting for clients...");
+                    Log.Debug("TVServerKodi: Waiting for clients...");
+                    while (!this.tcpListener.Pending())
+                    {
+                        Thread.Sleep(30);
+                    }
+
+                    // blocks until a client has connected to the server
+                    TcpClient client = this.tcpListener.AcceptTcpClient();
+
+                    // Multithreaded version:
+                    Console.WriteLine("New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
+                    Log.Debug("TVServerKodi: New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
+                    //___________________________
+                    lock (this)
+                    {
+                        m_clients.Add(client);
+                    }
+
+                    ConnectionHandler handler = new ConnectionHandler(client, cmdMutex, m_clients.Count);
+                    ThreadStart thdstHandler = new ThreadStart(handler.HandleConnection);
+                    Thread communicationThread = new Thread(thdstHandler);
+                    lock (this)
+                    {
+                        m_communicationThreads.Add(communicationThread);
+                    }
+                    communicationThread.Start();
                 }
 
-                // blocks until a client has connected to the server
-                TcpClient client = this.tcpListener.AcceptTcpClient();
-
-                // Multithreaded version:
-                Console.WriteLine("New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
-                Log.Debug("TVServerKodi: New Connection! Starting handler thread for client." + client.Client.RemoteEndPoint.ToString());
-                //___________________________
-                lock(this) {
-                    m_clients.Add(client);
-                }
-
-                ConnectionHandler handler = new ConnectionHandler(client, cmdMutex, m_clients.Count);
-                ThreadStart thdstHandler = new ThreadStart(handler.HandleConnection); 
-                Thread communicationThread = new Thread(thdstHandler);
-                lock(this) {
-                    m_communicationThreads.Add(communicationThread);
-                }
-                communicationThread.Start();
+                tcpListener.Stop();
             }
-
-            tcpListener.Stop();
+            catch (Exception e)
+            {
+                Log.Error("TVServerKodi: Unexpected error in ListenForClients(): " + e.ToString());
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }
