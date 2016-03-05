@@ -158,6 +158,10 @@ namespace TVServerKodi
 
                 tcpListener.Stop();
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                //Expected on a shutdown of the TVServer
+            }
             catch (Exception e)
             {
                 Log.Error("TVServerKodi: Unexpected error in ListenForClients(): " + e.ToString());
