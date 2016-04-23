@@ -1,5 +1,5 @@
-1.14.0.133:
-- Updated: referenced assemblies for TVServer 1.14.0 (final)
+1.13.100.133:
+- Updated: referenced assemblies for Mediaportal 2 Spring '16 TVServer 1.13.100
 - Updated: solution to VS2013
 
 1.12.0.132:
