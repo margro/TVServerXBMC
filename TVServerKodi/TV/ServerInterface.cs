@@ -1842,8 +1842,8 @@ namespace TVServerKodi
         public string GetRecordingDriveSpace()
         {
             string result = "0|0";
-            Int32 disktotal = 0;
-            Int32 diskused = 0;
+            long disktotal = 0;
+            long diskused = 0;
             List<string> processedDrives = new List<string>();
 
             try
@@ -1859,7 +1859,15 @@ namespace TVServerKodi
 
                     if (card.RecordingFolder.Length > 0)
                     {
-                        string rec_drive = card.RecordingFolder.Substring(0, 3);
+                        string rec_drive = "";
+
+                        if(card.RecordingFolder.StartsWith("@\\"))
+                        {
+                            rec_drive = ShareExplorer.TryConvertUncToLocal(card.RecordingFolder);
+                            rec_drive = rec_drive.Substring(0, 3);
+                        }
+                        else
+                            rec_drive = card.RecordingFolder.Substring(0, 3);
 
                         if (!processedDrives.Exists(drive => drive == rec_drive))
                         {
@@ -1868,8 +1876,8 @@ namespace TVServerKodi
                                 if (local_Drive.Name == rec_drive)
                                 {
                                     processedDrives.Add(rec_drive);
-                                    disktotal += (Int32)(local_Drive.TotalSize / (1024)); // in kb
-                                    diskused += (Int32)((local_Drive.TotalSize - local_Drive.TotalFreeSpace) / (1024)); // in kb
+                                    disktotal += (local_Drive.TotalSize / (1024)); // in kb
+                                    diskused += ((local_Drive.TotalSize - local_Drive.TotalFreeSpace) / (1024)); // in kb
                                     break;
                                 }
                             }
