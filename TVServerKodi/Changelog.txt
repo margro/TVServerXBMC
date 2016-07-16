@@ -1,0 +1,184 @@
+1.14.0.133:
+- Updated: referenced assemblies for TVServer 1.14.0 (final)
+- Updated: solution to VS2013
+
+1.12.0.132:
+- Fixed: Don't log the ThreadAbortException on a normal TVService shutdown
+
+1.12.0.131:
+- Fixed: ListSchedules: don't add a parent schedule id when the schedule type = once
+- Extra try/catch blocks around socket connections
+
+1.12.0.130:
+- Added: Support for the MediaPortal 2 version of the TV Server (needs SQLite support)
+- Added: timers: additional return values: parentScheduleID, program genre string and program description
+- Modified: timers: series: return also the actual schedule and not only the underlying programs
+     The underlying programs are now shown as subtimers with a parent timer in Kodi Jarvis (v16)
+- Fixed: also stop the communication threads when the TV Server service is terminating us...
+
+1.12.0.129:
+- Fixed: An early remote shutdown could cause a TV Server crash in the HandleConnection() function
+- Added: Optional parameter to "GetUserName" for fetching all timeshift users (credits Romank1)
+- Extended: "IsTimeshifting" command now also returns the UNC timeshift file (credits Romank1)
+- Updated: referenced assemblies for TVServer 1.12.0 (final)
+
+1.10.0.128:
+- Fixed: Deleting one or more recordings gives an empty list in Kodi/XBMC due to a database exception on the missing records
+- Fixed: GetRecordingDriveSpace triggers an exception when one or more cards have no recording path set
+- Fixed: GetRecordingDriveSpace returns 0 when the last card has no recording path set
+- Changed: GetRecordingDriveSpace returns now the total disk size and free size for all cards and drives
+- Fixed: EPG: episodeNumber should be episodeNum (credits: puenktchen)
+
+1.10.0.127:
+- Added: PVRclientKodi connection protocol name
+- Changed: New name: TVServerKodi
+- Updated: referenced assemblies for TVServer 1.10.0 (final)
+
+
+1.8.0.126:
+- Updated: referenced assemblies for TVServer 1.8.0 (final)
+- Added: MajorChannel.MinorChannel fields to the ListTVChannel and ListRadioChannel commands
+
+1.6.0.125
+- Added: HeartBeat support (re-uses the SignalQuality calls for this purpose)
+- Changed: switched to VS2010 and .NET 4.0
+- Updated: referenced assemblies for TVServer 1.6.0 (final)
+
+1.5.0.124
+- Changed: do not cache the card list, channel lists and group lists
+- Added: Support for downloading channel thumbs from the backend
+- Updated: more exception handling to prevent TVServerXBMC plugin crashes
+- Updated: referenced assemblies for TVServer 1.5.0 (final)
+
+1.4.0.123
+- Updated: referenced assemblies for TVServer 1.4.0 (final)
+
+1.3.0.122
+- Added: support for retrieving channels from multiple specified groups (>1, < All groups)
+- Updated: referenced assemblies for TVServer 1.3.0 (final)
+- Added: MPEI configuration for creating a MPEI file
+
+1.2.200.121:
+- Added support for setting and retrieving the recording StopTime
+- Added "GetRecordingStopTime" and "SetRecordingStopTime" commands
+
+1.2.200.120:
+- Share creation improvements
+- Channels: send also the VisibleInGuide option to XBMC
+
+1.2.200.119:
+- Channel number fixes for MediaPortal TVServer 1.3.0 beta (v1.2.200).
+- Fix SignalQuality value (was before identical to the SignalLevel value)
+- Fix timeshift buffer id retrieval
+
+1.2.3.118:
+- Add support for timer enable/disable of individual programs in a Series schedule
+
+1.2.3.117:
+- Add support for retrieving and updating the recording "timesWatched" property
+- Fixed: postRecordInterval retrieval for schedules
+
+1.2.3.116:
+- Fixed: Recording title showed only episode name
+
+1.2.3.115:
+- Add configuration tab in the TV Server plugin configuration
+- Allow changing the TVServerXBMC port and store the setting in the TVServer database
+- Add the option to create shares for the Timeshift and Recordings folders when using XBMC on a different machine
+- Extend the GetCardSettings command with the sharenames (when available)
+- Remove unneeded Gentle initialization from the plugin version. Only needed for the standalone exe
+- Subscribe the plugin to TV Server events like EPG updates. TODO: forward them to XBMC
+
+1.2.3.114:
+- Each MP Scheduled Program will translate into one Timer in xbmc. (Credits jajoflo)
+- Each timer will retain it's schedule id so the behavior won't change when modifying/deleting a timer. (Credits jajoflo)
+
+1.2.3.113:
+- Update binaries for MediaPortal TVServer 1.2.3
+- When there is an episode name, skip the title as it is usually redundant with the folder name.
+- Properly handle Schedule not resolving to a program. (Occurs when the season is finished).
+- Properly handle Instant recording not having a program name that matches the one in the EPG.
+
+1.2.2.112:
+- Prefer program data for ListSchedules command when available (Thanks jajoflo)
+
+1.2.2.111:
+- Extend ListRecordings command with Genre, IdChannel and IsRecording field
+
+1.2.2.110:
+- Send timeshift buffer position to XBMC on a channel switch
+- Update binaries for MediaPortal TVServer 1.2.2
+
+1.2.1.109:
+- Send TvResult as integer to XBMC to be able to show a localized error message when timeshifting fails
+
+1.2.1.108:
+- Update to MediaPortal TVServer 1.2.1
+- Add GetSignalQuality command
+
+1.1.7.107:
+- Fix radio webstream detection when starting a timeshift fails
+
+1.1.7.106:
+- Add support for fetching TV card settings: GetCardSettings
+
+1.1.7.105:
+- Extend ListRecordings command with episode/series fields
+
+1.1.7.104:
+- Extend GetEPG command with optional start/endtime. Extended version returns also more EPG fields.
+
+1.1.7.103:
+- Update sources and binaries for MediaPortal 1.2.0 beta (=v1.1.7)
+
+1.1.3.102:
+- Use tuningdetails for retrieve the (provider) channel number
+
+1.1.3.101:
+- Recompiled against MediaPortal TV Server v1.1.3
+
+1.1.0.100:
+- Add GetDriveSpace command (for recordings)
+- [Schedule] Extend schedule API
+
+1.1.0.95:
+- Fix for empty channel lists when one or more channels are deleted but still mapped to a group in the database (Thanks matejdro)
+- Be more verbose on errors/exceptions
+- Stop when the port is already in use
+
+1.1.0.90:
+- Speedup TimeshiftChannel (no need to stop an existing timeshift, saves 2 sec)
+- New command GetRecordingInfo for MediaPortal TSReader (RTSP)
+
+1.1.0.75:
+- Fixed: Return the correct TVServerXBMC version number when running as plugin under the TV Server
+
+1.1.0.70:
+- Better handling of multiple timeshifts from different users
+- Give the Python TVServer plugin always the same user name to be able to stop the timeshifts
+  (Watching different channels from multiple python clients, is therefore not yet supported)
+- Stop active timeshifts at client connection close for telnet and PVR clients
+- Add new commands: GetUserName, SetUserName
+
+1.0.9.58:
+- Add more TVServer log calls for DLL debugging purposes
+
+1.0.7.44:
+- Use different usernames for different connections to prevent stopping timeshifts when 2 clients are watching the same stream
+
+1.0.7.24:
+- Allow multiple connections
+- GetVersion now return the TVServer version
+- resolve hostnames for recording stream URLs
+- Fix date/time formatting for schedules
+- more status info during startup
+
+1.0.7.0:
+- Added new commands: IsRecording/StopRecording
+- Return more info about schedules
+
+1.0.6.0:
+- Different date/time formatting to make the date/time fields locale/culture independent.
+
+1.0.5.0: 
+- Fix IPv6 name resolving. Should be always IPv4 now.
