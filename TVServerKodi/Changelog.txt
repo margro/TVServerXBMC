@@ -1,5 +1,6 @@
 1.15.0.134:
 - Updated: referenced assemblies for TVServer 1.15.0 (final)
+- Fixed: GetDriveSpace function for network shares and large disks (credits: Timothy Massing)
 
 1.14.0.133:
 - Updated: referenced assemblies for TVServer 1.14.0 (final)
