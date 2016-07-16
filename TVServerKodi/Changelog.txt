@@ -1,3 +1,6 @@
+1.13.100.134:
+- Fixed: GetDriveSpace function for network shares and large disks (credits: Timothy Massing)
+
 1.13.100.133:
 - Updated: referenced assemblies for Mediaportal 2 Spring '16 TVServer 1.13.100
 - Updated: solution to VS2013
