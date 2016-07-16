@@ -19,9 +19,9 @@ namespace TVServerKodi.Commands
         {
           string strThumbName = strName;
 
-          strThumbName.Replace(":", "_");
-          strThumbName.Replace("/", "_");
-          strThumbName.Replace("\\", "_");
+          strThumbName = strThumbName.Replace(":", "_");
+          strThumbName = strThumbName.Replace("/", "_");
+          strThumbName = strThumbName.Replace("\\", "_");
 
           return strThumbName;
         }
