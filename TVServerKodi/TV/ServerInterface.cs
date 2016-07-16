@@ -861,8 +861,7 @@ namespace TVServerKodi
                                 }
                                 radioChannels.Add(channelInfo);
                             }
-                            if (groupName != "")
-                                break;
+                            break;
                         }
                     }
                 }
