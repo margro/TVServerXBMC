@@ -199,33 +199,33 @@ Click Next to continue or Cancel to exit Setup.</Value>
     <UpdateUrl>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/MPEI_Update_1_10.xml</UpdateUrl>
     <Version>
       <Major>1</Major>
-      <Minor>12</Minor>
+      <Minor>15</Minor>
       <Build>0</Build>
-      <Revision>131</Revision>
+      <Revision>134</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
-
-
-
-
-
-. The TVServerKodi plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
-
-
-
-
-
-
-
-
-
-
-
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
+
+
+
+
+
+. The TVServerKodi plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
+
+
+
+
+
+
+
+
+
+
+
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
     <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.12.0.130.mpe1</OnlineLocation>
-    <ReleaseDate>2014-08-18T19:29:03</ReleaseDate>
+    <ReleaseDate>2016-07-16T19:29:03</ReleaseDate>
     <Tags>xbmc, kodi, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>
