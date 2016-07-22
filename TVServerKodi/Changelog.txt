@@ -1,3 +1,6 @@
+1.15.0.135:
+- Added: IPv6 support
+
 1.15.0.134:
 - Updated: referenced assemblies for TVServer 1.15.0 (final)
 - Fixed: GetDriveSpace function for network shares and large disks (credits: Timothy Massing)
