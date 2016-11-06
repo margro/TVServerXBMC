@@ -1085,6 +1085,8 @@ namespace TVServerKodi
                     {
                         string recording;
                         string channelname;
+                        ChannelType channelType = TvDatabase.ChannelType.Tv;
+
                         string rtspURL = GetRecordingURL(rec.IdRecording, server, resolveHostnames, ref OriginalURL);//server.GetStreamUrlForFileName(rec.IdRecording);
 
                         //XBMC pvr side:
@@ -1112,10 +1114,26 @@ namespace TVServerKodi
                         //[18] isrecording (bool)
                         //[19] timesWatched (int)
                         //[20] stopTime (int)
+                        //[21] channelType (int)
 
                         try
                         {
-                            channelname = rec.ReferencedChannel().DisplayName;
+                            Channel recChannel = rec.ReferencedChannel();
+                            channelname = recChannel.DisplayName;
+                            if (recChannel.IsRadio)
+                            {
+                                channelType = TvDatabase.ChannelType.Radio;
+                            }
+                            else if (recChannel.IsWebstream())
+                            {
+                                channelType = TvDatabase.ChannelType.Web;
+                            }
+                            else
+                            {
+                                // Assume Tv for all other cases
+                                channelType = TvDatabase.ChannelType.Tv;
+                            }
+
                         }
                         catch
                         {   // Occurs for example when a recording is pointing to a channel
@@ -1151,7 +1169,8 @@ namespace TVServerKodi
                             + rec.IdChannel.ToString() + "|"          // 17
                             + rec.IsRecording.ToString() + "|"        // 18
                             + rec.TimesWatched.ToString() + "|"       // 19
-                            + rec.StopTime.ToString();                // 20
+                            + rec.StopTime.ToString() +"|"            // 20
+                            + (int)channelType;
 
                         reclist.Add(recording);
                     }

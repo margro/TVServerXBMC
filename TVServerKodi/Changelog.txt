@@ -1,5 +1,8 @@
+1.15.0.136:
+- Added: Support for detecting the recording type (TV, Radio, webstream)
+
 1.15.0.135:
-- Added: IPv6 support
+- Added: IPv6 support (Vista and above)
 
 1.15.0.134:
 - Updated: referenced assemblies for TVServer 1.15.0 (final)
