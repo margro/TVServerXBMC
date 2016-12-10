@@ -201,9 +201,15 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Major>1</Major>
       <Minor>15</Minor>
       <Build>0</Build>
-      <Revision>134</Revision>
+      <Revision>136</Revision>
     </Version>
     <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
+
+
+
+
+
+
 
 
 
@@ -221,11 +227,23 @@ Click Next to continue or Cancel to exit Setup.</Value>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 </ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerXBMC-1.12.0.130.mpe1</OnlineLocation>
-    <ReleaseDate>2016-07-16T19:29:03</ReleaseDate>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerKodi-1.15.0.136.mpe1</OnlineLocation>
+    <ReleaseDate>2016-12-10T19:29:03</ReleaseDate>
     <Tags>xbmc, kodi, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>

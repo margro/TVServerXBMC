@@ -233,69 +233,75 @@ namespace TVServerKodi
 
         public string GetRecordingURL(int idRecording, TvServer server, bool resolveHostnames, ref string OriginalURL)
         {
-            //TvServer server = new TvServer();
+            string rtspURL;
+
             if (server == null)
                 server = new TvServer();
 
-            string rtspURL = server.GetStreamUrlForFileName(idRecording);
-
-            // we resolve any host names, as xbox can't do NETBIOS resolution..
             try
             {
+                rtspURL = server.GetStreamUrlForFileName(idRecording);
+
+                // we resolve any host names, as xbox can't do NETBIOS resolution..
                 // XBMC/Kodi's ffmpeg rtsp code does not like port numbers in the url
                 rtspURL = rtspURL.Replace(":554", "");
                 // Workaround for MP TVserver bug when using default port for rtsp => returns rtsp://ip:0
                 rtspURL = rtspURL.Replace(":0", "");
 
                 OriginalURL = rtspURL;
-                if (resolveHostnames)
+                try
                 {
-                    Uri u = new Uri(rtspURL);
-                    System.Net.IPAddress ipaddr = null;
-                    try
+                    if (resolveHostnames)
                     {
-                        ipaddr = System.Net.IPAddress.Parse(u.DnsSafeHost); //Fails on a hostname
-                    }
-                    catch { }
-
-                    if ((ipaddr == null) || (ipaddr.IsIPv6LinkLocal || ipaddr.IsIPv6Multicast || ipaddr.IsIPv6SiteLocal))
-                    {
+                        System.Net.IPAddress ipaddr = null;
+                        Uri u = new Uri(rtspURL);
                         try
                         {
-                            System.Net.IPHostEntry hostEntry = System.Net.Dns.GetHostEntry(u.DnsSafeHost);
+                            ipaddr = System.Net.IPAddress.Parse(u.DnsSafeHost); //Fails on a hostname
+                        }
+                        catch { }
 
-                            string newHost = "";
-                            foreach (System.Net.IPAddress ipaddr2 in hostEntry.AddressList)
+                        if ((ipaddr == null) || (ipaddr.IsIPv6LinkLocal || ipaddr.IsIPv6Multicast || ipaddr.IsIPv6SiteLocal))
+                        {
+                            try
                             {
-                                // we only want ipv4.. this is just the xbox after all
-                                if (ipaddr2.AddressFamily != System.Net.Sockets.AddressFamily.InterNetworkV6)
+                                System.Net.IPHostEntry hostEntry = System.Net.Dns.GetHostEntry(u.DnsSafeHost);
+
+                                string newHost = "";
+                                foreach (System.Net.IPAddress ipaddr2 in hostEntry.AddressList)
                                 {
-                                    newHost = ipaddr2.ToString();
-                                    break;
+                                    // we only want ipv4.. this is just the xbox after all
+                                    if (ipaddr2.AddressFamily != System.Net.Sockets.AddressFamily.InterNetworkV6)
+                                    {
+                                        newHost = ipaddr2.ToString();
+                                        break;
+                                    }
+                                }
+
+                                rtspURL = u.AbsoluteUri.Replace(u.Scheme + "://" + u.Host + "/", u.Scheme + "://" + newHost + "/");
+
+                                if (newHost.Length == 0)
+                                {
+                                    Console.WriteLine("No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
+                                    Log.Error("TVServerKodi: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
                                 }
                             }
-
-                            rtspURL = u.AbsoluteUri.Replace(u.Scheme + "://" + u.Host + "/", u.Scheme + "://" + newHost + "/");
-
-                            if (newHost.Length == 0)
+                            catch (Exception ex)
                             {
-                                Console.WriteLine("No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
-                                Log.Debug("TVServerKodi: No IPv4 adress found for '" + u.DnsSafeHost + "' failed. Returning original URL.");
+                                Console.WriteLine("IP resolve for '" + u.DnsSafeHost + "' failed.");
+                                Console.WriteLine("Error: " + ex.ToString());
+                                Log.Error("TVServerKodi: IP resolve for '" + u.DnsSafeHost + "' failed.");
+                                Log.Error("TVServerKodi: Error: " + ex.ToString());
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("IP resolve for '" + u.DnsSafeHost + "' failed.");
-                            Console.WriteLine("Error: " + ex.ToString());
-                            Log.Debug("TVServerKodi: IP resolve for '" + u.DnsSafeHost + "' failed.");
-                            Log.Debug("TVServerKodi: Error: " + ex.ToString());
                         }
                     }
                 }
+                catch { }
             }
-            catch
+            catch (Exception ex)
             {
-                //Console.WriteLine("IP resolve failed");
+                Log.Error("TVServerKodi: GetStreamUrlForFileName(" + idRecording + ") failed.");
+                Log.Error("TVServerKodi: Error: " + ex.ToString());
                 return "";
             }
 
