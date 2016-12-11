@@ -17,12 +17,13 @@ namespace TVServerKodi.Commands
          */
         public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
         {
-            string rtspUrl = TVServerConnection.getTimeshiftUrl(ref me);
+            TimeShiftURLs timeShiftURLs = TVServerConnection.getTimeshiftURLs(ref me);
             bool result = true;
-            if (String.IsNullOrEmpty(rtspUrl))
+
+            if (timeShiftURLs == null || String.IsNullOrEmpty(timeShiftURLs.RTSPUrl) || String.IsNullOrEmpty(timeShiftURLs.TimeShiftFileName))
             {
+                timeShiftURLs = new TimeShiftURLs { RTSPUrl = "", TimeShiftFileName = "" };
                 result = false;
-                rtspUrl = "";
             }
 
             // results = isShifting;url;chanInfo as in ListChannels
@@ -33,8 +34,8 @@ namespace TVServerKodi.Commands
                 c = TVServerConnection.getTimeshiftInfo(ref me);
             }
 
-            writer.write(writer.makeItemSmart(result.ToString(), rtspUrl, c));
-            
+            writer.write(writer.makeItemSmart(result.ToString(), timeShiftURLs.RTSPUrl, timeShiftURLs.TimeShiftFileName, c));
+
         }
 
         public override string getCommandToHandle()
