@@ -1,5 +1,8 @@
+1.13.100.136:
+- Added: Support for detecting the recording type (TV, Radio, webstream)
+
 1.13.100.135:
-- Added: IPv6 support
+- Added: IPv6 support (Vista and above)
 
 1.13.100.134:
 - Fixed: GetDriveSpace function for network shares and large disks (credits: Timothy Massing)
