@@ -21,20 +21,36 @@ namespace TVServerKodi
         public Listener()
         {
             this.port = 9596;
-            this.tcpListener = new TcpListener(IPAddress.Any, port);
+            CreateTCPListener();
         }
 
-        public Listener(int listenport)
+        private void CreateTCPListener()
         {
-            this.port = listenport;
             try
             {
-                this.tcpListener = new TcpListener(IPAddress.Any, port);
+                if (System.Environment.OSVersion.Version.Major < 6)
+                {
+                    // ipv4 only (older than Vista):
+                    this.tcpListener = new TcpListener(IPAddress.Any, port);
+
+                }
+                else
+                {
+                    // Dual stack: accept ipv6 and ipv4 connections
+                    this.tcpListener = new TcpListener(IPAddress.IPv6Any, port);
+                    tcpListener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
+        }
+
+        public Listener(int listenport)
+        {
+            this.port = listenport;
+            CreateTCPListener();
         }
 
 
