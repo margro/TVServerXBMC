@@ -1,5 +1,6 @@
 1.13.100.136:
 - Added: Support for detecting the recording type (TV, Radio, webstream)
+- Fixed: Add additional exception handling around the GetRecordingURL() function
 
 1.13.100.135:
 - Added: IPv6 support (Vista and above)
