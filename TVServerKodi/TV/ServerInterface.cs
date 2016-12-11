@@ -18,7 +18,7 @@ namespace TVServerKodi
         IController controller = null;
 
         IUser me = null;
-        Dictionary<String, String> isTimeShifting = null;
+        Dictionary<String, TimeShiftURLs> isTimeShifting = null;
         public static Dictionary<String, TvControl.User> userlist = null;
         public Exception lastException = null;
 
@@ -27,7 +27,7 @@ namespace TVServerKodi
         public TVServerController(IController controller)
         {
             this.controller = controller;
-            this.isTimeShifting = new Dictionary<String,String>();
+            this.isTimeShifting = new Dictionary<String, TimeShiftURLs>();
             TVServerController.userlist = new Dictionary<String, TvControl.User>();
         }
 
@@ -102,7 +102,8 @@ namespace TVServerKodi
 
                 try
                 {
-                    isTimeShifting.Add(user.Name, rtspURL);
+                    isTimeShifting.Remove(user.Name); // Remove user with old timeshift data (on new channel tuning, without stopping the timeshift)
+                    isTimeShifting.Add(user.Name, new TimeShiftURLs { RTSPUrl = rtspURL, TimeShiftFileName = timeshiftfilename });
                 }
                 catch { }
 
@@ -165,16 +166,16 @@ namespace TVServerKodi
             return result;
         }
 
-        public string GetTimeshiftUrl(ref TvControl.IUser me)
+        public TimeShiftURLs GetTimeshiftURLs(ref TvControl.IUser me)
         {
             if (IsTimeShifting(ref me))
             {
-                string url;
-                if ( isTimeShifting.TryGetValue(me.Name, out url) )
-                    return url;
+                TimeShiftURLs timeShiftURLs = new TimeShiftURLs();
+                if (isTimeShifting.TryGetValue(me.Name, out timeShiftURLs))
+                    return timeShiftURLs;
             }
 
-            return "";
+            return null;
         }
 
         public bool IsTimeShifting(ref IUser user)
@@ -191,7 +192,8 @@ namespace TVServerKodi
                     {   //Found one...
                         user.CardId = ss.cardId;
                         user.IdChannel = ss.channelId;
-                        isTimeShifting.Add(user.Name, ss.RTSPUrl);
+                        isTimeShifting.Remove(user.Name); // Make sure that the user is not in the dictionary
+                        isTimeShifting.Add(user.Name, new TimeShiftURLs { RTSPUrl = ss.RTSPUrl, TimeShiftFileName = ss.TimeShiftFileName });
                         TVServerController.userlist[user.Name].CardId = ss.cardId;
                         TVServerController.userlist[user.Name].IdChannel = ss.channelId;
                         return true;

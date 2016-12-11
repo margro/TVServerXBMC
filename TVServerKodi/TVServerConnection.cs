@@ -293,9 +293,9 @@ namespace TVServerKodi
             return result;
         }
 
-        public static string getTimeshiftUrl(ref TvControl.IUser me)
+        public static TimeShiftURLs getTimeshiftURLs(ref TvControl.IUser me)
         {
-            return serverIntf.GetTimeshiftUrl(ref me);
+            return serverIntf.GetTimeshiftURLs(ref me);
         }
 
         public static ChannelInfo getTimeshiftInfo(ref TvControl.IUser me)
@@ -311,7 +311,11 @@ namespace TVServerKodi
 
             return null;
         }
-        
+
+        public static List<String> getTimeshiftingUserNames()
+        {
+            return new List<string>(timeshiftChannel.Keys);
+        }
 
         public static bool DeleteRecordedTV(int recId)
         {
