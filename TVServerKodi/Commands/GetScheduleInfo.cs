@@ -15,7 +15,6 @@ namespace TVServerKodi.Commands
 
        public override void handleCommand(string command, string[] arguments, ref TvControl.IUser me)
       {
-        // we want to list all recordings
         String result;
 
         if (arguments != null)
@@ -23,11 +22,17 @@ namespace TVServerKodi.Commands
             try
             {
                 int index = Int32.Parse(arguments[0]);
+                bool useUriEncoding = false;
+
+                if (arguments.Length >= 2)
+                {
+                    useUriEncoding = bool.Parse(arguments[1]);
+                }
 
                 result = TVServerConnection.GetScheduleInfo(index);
                 Console.WriteLine("GetScheduleInfo:" + index + " " + result);
 
-                writer.write(result);
+                writer.write(result, useUriEncoding);
             }
             catch
             {

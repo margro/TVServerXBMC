@@ -201,49 +201,13 @@ Click Next to continue or Cancel to exit Setup.</Value>
       <Major>1</Major>
       <Minor>15</Minor>
       <Build>0</Build>
-      <Revision>136</Revision>
+      <Revision>137</Revision>
     </Version>
-    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi
-
-
-
-
-
-
-
-
-
-
-
-. The TVServerKodi plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</ExtensionDescription>
+    <ExtensionDescription>With this plugin you can watch Live TV, recordings, EPG and schedules in XBMC (v12.0 or above) and Kodi. The TVServerKodi plugin extends the MediaPortal TVServer with a dedicated RPC gateway to allow XBMC/Kodi  to access and control the TVServer.</ExtensionDescription>
     <VersionDescription />
     <DevelopmentStatus>Stable</DevelopmentStatus>
-    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerKodi-1.15.0.136.mpe1</OnlineLocation>
-    <ReleaseDate>2016-12-10T19:29:03</ReleaseDate>
+    <OnlineLocation>https://dl.dropbox.com/u/7249985/xbmc/tvserverxbmc/TVServerKodi-1.15.0.137.mpe1</OnlineLocation>
+    <ReleaseDate>2017-01-04T19:29:03</ReleaseDate>
     <Tags>xbmc, kodi, tv server plugins</Tags>
     <Location>..\bin\[Name]-[Version].mpe1</Location>
     <Params>

@@ -1,3 +1,7 @@
+1.15.0.137:
+- Fixed: Use URL escaping for the GetRecordingInfo and GetScheduleInfo commands to accept fields with enters inside
+  This fixes recording playback for in progress recordings when the description fields contains a multi-line string
+
 1.15.0.136:
 - Added: Support for detecting the recording type (TV, Radio, webstream)
 - Fixed: Add additional exception handling around the GetRecordingURL() function
