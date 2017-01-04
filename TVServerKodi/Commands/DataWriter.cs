@@ -18,6 +18,7 @@ namespace TVServerKodi.Commands
         private String listSeparator = ",";
         private Converter<string, string> argumentEncoder = new Converter<string, string>(Uri.EscapeDataString);
         private Converter<string, string> listEncoder = new Converter<string, string>(Uri.EscapeDataString);
+        private bool escapeData = true;
 
         public DataWriter(NetworkStream stream)
         {
@@ -37,6 +38,7 @@ namespace TVServerKodi.Commands
             //listSeparator = Environment.NewLine;
             argumentEncoder = new Converter<string, string>(getSameString);
             listEncoder = new Converter<string, string>(getSameString);
+            escapeData = false;
         }
 
         public void setArgumentSeparator(String argSep)
@@ -111,6 +113,14 @@ namespace TVServerKodi.Commands
             Console.WriteLine("Socket write: " + line + commandSeparator);
             writer.Flush();
         }
+        public void write(String line, bool escapeMe)
+        {
+            if (escapeData && escapeMe)
+                write(Uri.EscapeDataString(line));
+            else
+                write(line);
+        }
+
 
         public void writeBytes(Byte[] bytes)
         {

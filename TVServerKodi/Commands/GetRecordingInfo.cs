@@ -24,16 +24,21 @@ namespace TVServerKodi.Commands
             {
                 int index = Int32.Parse(arguments[0]);
                 bool withRTSPurl = false;
+                bool useUriEncoding = false;
 
                 if (arguments.Length >= 2)
                 {
                     withRTSPurl = bool.Parse(arguments[1]);
                 }
+                if (arguments.Length >= 3)
+                {
+                    useUriEncoding = bool.Parse(arguments[2]);
+                }
 
                 result = TVServerConnection.getRecordingInfo(index, withRTSPurl);
                 Console.WriteLine(getCommandToHandle() + ":" + index + " " + result);
 
-                writer.write(result);
+                writer.write(result, useUriEncoding);
             }
             catch
             {
