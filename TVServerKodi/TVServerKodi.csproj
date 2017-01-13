@@ -124,7 +124,9 @@
     <Compile Include="TV\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Gentle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
