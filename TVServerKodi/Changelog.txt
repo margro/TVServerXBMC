@@ -1,3 +1,6 @@
+1.16.0.137:
+- Updated: reference assemblies for MediaPortal 2.1 final TVServer 1.16.0
+
 1.15.100.137:
 - Updated: references assemblies for MediaPortal 2.1-pre release TVServer 1.15.100
 
