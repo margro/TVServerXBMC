@@ -1,3 +1,7 @@
+1.20.0.139:
+- Use .NET framework v4.7 (matches MediaPortal 2.2)
+- Updated: reference assemblies for MediaPortal 2.2 pre TVServer 1.20.0
+
 1.18.0.138:
 - Updated: reference assemblies for MediaPortal 2.1.2 TVServer 1.18.0
 
