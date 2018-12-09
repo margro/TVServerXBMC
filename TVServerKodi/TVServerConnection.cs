@@ -141,9 +141,9 @@ namespace TVServerKodi
             return serverIntf.StopRecording(schedId);
         }
 
-        public static string getRecordingInfo(int recordingId, bool withRTSPurl)
+        public static string getRecordingInfo(int recordingId, bool withRTSPurl, bool resolveRTSPurlToIP)
         {
-            return serverIntf.GetRecordingInfo(recordingId, withRTSPurl);
+            return serverIntf.GetRecordingInfo(recordingId, withRTSPurl, resolveRTSPurlToIP);
         }
 
         public static bool SetRecordingTimesWatched(int recordingId, int timesWatched)
