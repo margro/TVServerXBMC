@@ -1,3 +1,5 @@
 /TVServerKodi/*.suo
 /TVServerKodi/bin
 /TVServerKodi/obj
+/TVServerKodi/.vs
+/TVServerKodi/MediaPortal_v*
