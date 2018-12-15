@@ -25,6 +25,7 @@ namespace TVServerKodi.Commands
                 int index = Int32.Parse(arguments[0]);
                 bool withRTSPurl = false;
                 bool useUriEncoding = false;
+                bool resolveRTSPurlToIP = false;
 
                 if (arguments.Length >= 2)
                 {
@@ -34,8 +35,12 @@ namespace TVServerKodi.Commands
                 {
                     useUriEncoding = bool.Parse(arguments[2]);
                 }
+                if (arguments.Length >= 4)
+                {
+                    resolveRTSPurlToIP = bool.Parse(arguments[3]);
+                }
 
-                result = TVServerConnection.getRecordingInfo(index, withRTSPurl);
+                result = TVServerConnection.getRecordingInfo(index, withRTSPurl, resolveRTSPurlToIP);
                 Console.WriteLine(getCommandToHandle() + ":" + index + " " + result);
 
                 writer.write(result, useUriEncoding);

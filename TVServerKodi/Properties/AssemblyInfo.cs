@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using MediaPortal.Common.Utils;
 
@@ -11,7 +10,7 @@ using MediaPortal.Common.Utils;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TVServerKodi")]
-[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2017")]
+[assembly: AssemblyCopyright("Copyright © Marcel Groothuis 2010-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,8 +29,8 @@ using MediaPortal.Common.Utils;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.20.0.139")]
-[assembly: AssemblyFileVersion("1.20.0.139")]
+[assembly: AssemblyVersion("1.20.0.140")]
+[assembly: AssemblyFileVersion("1.20.0.140")]
 
 // Set usage and compatibility information to for TVServer 1.20 and above
 [assembly: CompatibleVersion("1.20.0.0", "1.5.0.0")]

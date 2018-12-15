@@ -128,7 +128,8 @@ namespace TVServerKodi
                 catch { }
 
                 controller.TimeShiftGetCurrentFilePosition(ref user, ref timeShiftBufPos, ref timeShiftBufNr);
-                Console.WriteLine("TimeShift file pos=" + timeShiftBufPos.ToString() + " buffer id=" + timeShiftBufNr.ToString());
+                DateTime timeShiftStartTime = controller.TimeShiftStarted(user);
+                Console.WriteLine("TimeShift file pos=" + timeShiftBufPos.ToString() + " buffer id=" + timeShiftBufNr.ToString() + " start time=" + timeShiftStartTime.ToString());
             }
             else if ((result == TvResult.NoTuningDetails) || (result== TvResult.UnknownError))
             {   //Hmmz, maybe a webstream?
@@ -714,6 +715,19 @@ namespace TVServerKodi
                     }
                 }
 
+                if (uniqueChannels.Count == 0)
+                {
+                    Console.WriteLine("TVServerKodi: Found no TV channels.");
+                    Log.Error("TVServerKodi: Found no TV channels.");
+                    foreach (string group in groupNames)
+                    {
+                        Console.WriteLine("TVServerKodi: TV channels requested for group " + group);
+                        Log.Error("TVServerKodi: TV channels requested for group " + group);
+                    }
+                    return null;
+                }
+
+
                 foreach (Channel chan in uniqueChannels)
                 {
                     string tvchannel;
@@ -1227,9 +1241,9 @@ namespace TVServerKodi
             return recInfos;
         }
 
-        public String GetRecordingInfo(int recId, bool withRTSPurl)
+        public String GetRecordingInfo(int recId, bool withRTSPurl, bool resolveRTSPurlToIP)
         {
-            String result = "";
+            string recording = "";
 
             try
             {
@@ -1238,11 +1252,12 @@ namespace TVServerKodi
 
                 string channelname;
                 string rtspURL = "";
-                string dummy = "";
+                string OriginalURL = "";
+                ChannelType channelType = TvDatabase.ChannelType.Tv;
 
                 if (withRTSPurl)
                 {
-                    rtspURL = GetRecordingURL(rec.IdRecording, server, false, ref dummy);//server.GetStreamUrlForFileName(rec.IdRecording);
+                    rtspURL = GetRecordingURL(rec.IdRecording, server, resolveRTSPurlToIP, ref OriginalURL);
                 }
                 //XBMC pvr side:
                 //index, channelname, lifetime, priority, start time, duration
@@ -1256,12 +1271,38 @@ namespace TVServerKodi
                 //[5] description
                 //[6] stream_url (resolved hostname if resolveHostnames = True)
                 //[7] filename (we can bypass rtsp streaming when XBMC and the TV server are on the same machine)
-                //[8] lifetime (mediaportal keep until?)
+                //[8] keepUntilDate (DateTime)
                 //[9] original unresolved stream_url if resolveHostnames = True, otherwise this field is missing
+                //[10] keepUntil (int)
+                //[11] episodeName (string)
+                //[12] episodeNumber (string)
+                //[13] episodePart (string)
+                //[14] seriesNumber (string)
+                //[15] scheduleID (int)
+                //[16] Genre (string)
+                //[17] channel id (int)
+                //[18] isrecording (bool)
+                //[19] timesWatched (int)
+                //[20] stopTime (int)
+                //[21] channelType (int)
 
                 try
                 {
-                    channelname = rec.ReferencedChannel().DisplayName;
+                    Channel recChannel = rec.ReferencedChannel();
+                    channelname = recChannel.DisplayName;
+                    if (recChannel.IsRadio)
+                    {
+                        channelType = TvDatabase.ChannelType.Radio;
+                    }
+                    else if (recChannel.IsWebstream())
+                    {
+                        channelType = TvDatabase.ChannelType.Web;
+                    }
+                    else
+                    {
+                        // Assume Tv for all other cases
+                        channelType = TvDatabase.ChannelType.Tv;
+                    }
                 }
                 catch
                 {   // Occurs for example when a recording is pointing to a channel
@@ -1269,24 +1310,46 @@ namespace TVServerKodi
                     channelname = rec.IdChannel.ToString();
                 }
 
-                result = rec.IdRecording.ToString() + "|"
-                    + rec.StartTime.ToString("u") + "|"
-                    + rec.EndTime.ToString("u") + "|"
-                    + channelname.Replace("|", "") + "|"
-                    + rec.Title.Replace("|", "") + "|"
-                    + rec.Description.Replace("|", "") + "|"
-                    + rtspURL + "|"
-                    + rec.FileName + "|"
-                    + rec.KeepUntilDate.ToString("u");
+                recording = rec.IdRecording.ToString() + "|"  // 0
+                    + rec.StartTime.ToString("u") + "|"       // 1
+                    + rec.EndTime.ToString("u") + "|"         // 2
+                    + channelname.Replace("|", "") + "|"      // 3
+                    + rec.Title.Replace("|", "") + "|"        // 4
+                    + rec.Description.Replace("|", "") + "|"  // 5
+                    + rtspURL + "|"                           // 6
+                    + rec.FileName + "|"                      // 7
+                    + rec.KeepUntilDate.ToString("u") + "|";  // 8
+
+                if (resolveRTSPurlToIP)
+                {
+                    recording += OriginalURL + "|";           // 9
+                }
+                else
+                {
+                    recording += rtspURL + "|";
+                }
+
+                recording += rec.KeepUntil.ToString() + "|"   // 10
+                    + rec.EpisodeName.Replace("|", "") + "|"  // 11
+                    + rec.EpisodeNum + "|"                    // 12
+                    + rec.EpisodePart + "|"                   // 13
+                    + rec.SeriesNum + "|"                     // 14
+                    + rec.Idschedule.ToString() + "|"         // 15
+                    + rec.Genre + "|"                         // 16
+                    + rec.IdChannel.ToString() + "|"          // 17
+                    + rec.IsRecording.ToString() + "|"        // 18
+                    + rec.TimesWatched.ToString() + "|"       // 19
+                    + rec.StopTime.ToString() + "|"            // 20
+                    + (int)channelType;
             }
             catch (Exception ex)
             {
                 lastException = ex;
                 Console.WriteLine(ex.ToString());
                 Log.Error("TVServerKodi: " + ex.ToString());
-                return result;
+                return recording;
             }
-            return result;
+            return recording;
         }
 
 
@@ -1660,8 +1723,10 @@ namespace TVServerKodi
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("Error while adding a schedule for channel " + channelId + " and program " + programName + ": " + e.Message);
+                Log.Debug("TVServerKodi: Error while adding a schedule for channel " + channelId + " and program " + programName + ": " + e.Message);
                 return false;
             }
         }
@@ -1773,8 +1838,10 @@ namespace TVServerKodi
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine("Error while updating schedule " + scheduleindex + " on channel " + channelId + " and program " + programName + ": " + e.Message);
+                Log.Debug("TVServerKodi: Error while updating schedule " + scheduleindex + " on channel " + channelId + " and program " + programName + ": " + e.Message);
                 return false;
             }
         }

@@ -1,3 +1,8 @@
+1.20.0.140:
+- Added: GetRecordingInfo: Allow resolving the hostname in an RTSP url to an IP-address
+- Fixed: GetRecordingInfo should return the same fields as getrecordings
+- Extended debug logging for adding schedules
+
 1.20.0.139:
 - Use .NET framework v4.7 (matches MediaPortal 2.2)
 - Updated: reference assemblies for MediaPortal 2.2 pre TVServer 1.20.0
