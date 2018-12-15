@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Net.Sockets;
 using System.IO;
-using TVServerKodi;
 
 namespace TVServerKodi.Commands
 {
@@ -97,21 +95,33 @@ namespace TVServerKodi.Commands
 
         public String makeItem(params String[] arguments)
         {
-            ensureNoNull(arguments, "");
+            try
+            {
+                ensureNoNull(arguments, "");
 
-            // escape all the arguments
-            String[] escaped = Array.ConvertAll<string,string>(arguments,argumentEncoder);
+                // escape all the arguments
+                String[] escaped = Array.ConvertAll<string, string>(arguments, argumentEncoder);
 
-            // join them up
-            return string.Join(argumentSeparator, arguments);
+                // join them up
+                return string.Join(argumentSeparator, arguments);
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         // writes a command out, ensure that it is written out
         public void write(String line)
         {
-            writer.Write(line + commandSeparator);
-            Console.WriteLine("Socket write: " + line + commandSeparator);
-            writer.Flush();
+            try
+            {
+                writer.Write(line + commandSeparator);
+                Console.WriteLine("Socket write: " + line + commandSeparator);
+                writer.Flush();
+            }
+            catch
+            { }
         }
         public void write(String line, bool escapeMe)
         {
@@ -124,19 +134,29 @@ namespace TVServerKodi.Commands
 
         public void writeBytes(Byte[] bytes)
         {
-          binWriter.Write(bytes);
-          binWriter.Flush();
+            try
+            {
+                binWriter.Write(bytes);
+                binWriter.Flush();
+            }
+            catch
+            { }
         }
         
         public void writeList(List<string> list)
         {
-            ensureNoNull(list, "");
+            try
+            {
+                ensureNoNull(list, "");
 
-            // escape every value
-            List<string> escaped = list.ConvertAll<string>(listEncoder);
+                // escape every value
+                List<string> escaped = list.ConvertAll<string>(listEncoder);
 
-            // send it as one line
-            write(String.Join(listSeparator , escaped.ToArray()));
+                // send it as one line
+                write(String.Join(listSeparator, escaped.ToArray()));
+            }
+            catch
+            { }
         }
 
 

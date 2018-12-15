@@ -2,6 +2,7 @@
 - Added: GetRecordingInfo: Allow resolving the hostname in an RTSP url to an IP-address
 - Fixed: GetRecordingInfo should return the same fields as getrecordings
 - Extended debug logging for adding schedules
+- Fixed: DataWriter could throw an unhandled exception during TVService shutdown
 
 1.18.0.138:
 - Updated: reference assemblies for MediaPortal 2.1.2 TVServer 1.18.0
