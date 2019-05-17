@@ -682,9 +682,15 @@ namespace TVServerKodi
                     {
                         foreach (ChannelGroup group in tvGroups)
                         {
+                            if (group == null)
+                                continue;
                             if (groupNames.Contains(group.GroupName))
                             {
                                 IList<GroupMap> maps = group.ReferringGroupMap();
+
+                                if (maps == null)
+                                    continue;
+
                                 foreach (GroupMap map in maps)
                                 {
                                     Channel chan = map.ReferencedChannel();
@@ -708,10 +714,15 @@ namespace TVServerKodi
                 {
                     IList<TvDatabase.Channel> channels = Channel.ListAll();
 
-                    foreach (Channel chan in channels)
+                    if (channels != null)
                     {
-                        if (chan.IsTv)
-                            uniqueChannels.Add(chan);
+                        foreach (Channel chan in channels)
+                        {
+                            if (chan == null)
+                                continue;
+                            if (chan.IsTv)
+                                uniqueChannels.Add(chan);
+                        }
                     }
                 }
 
@@ -735,6 +746,7 @@ namespace TVServerKodi
                     bool freetoair = false;
                     int majorChannel = -1;
                     int minorChannel = -1;
+                    string weburl = "";
 
                     try
                     {
@@ -758,6 +770,16 @@ namespace TVServerKodi
                                     majorChannel = tuningdetail.MajorChannel;
                                 if (tuningdetail.MinorChannel != -1)
                                     minorChannel = tuningdetail.MinorChannel;
+                            }
+                            else if (tuningdetail.ChannelType == 7) // DVB-IP
+                            {
+                                // If network id, transport id, service id and pmt pid are all 0
+                                // accept this channel as a real webstream
+                                // Note that MediaPortal itself will not be able to play this
+                                if ((tuningdetail.NetworkId <= 0) && (tuningdetail.TransportId <= 0) && (tuningdetail.ServiceId <= 0) && (tuningdetail.PmtPid <= 0))
+                                {
+                                    weburl = tuningdetail.Url;
+                                }
                             }
                             if ((channelNumber == 10000) && (tuningdetail.ChannelNumber > 0))
                             {
@@ -788,6 +810,11 @@ namespace TVServerKodi
                         tvchannel += "|1|";
                         Channel webChannel = chan;
                         tvchannel += GetWebStreamURL(ref webChannel) + "|";
+                    }
+                    else if (weburl.Length > 0)
+                    {
+                        tvchannel += "|1|";
+                        tvchannel += weburl + "|";
                     }
                     else
                     {
