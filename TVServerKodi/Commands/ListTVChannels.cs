@@ -28,12 +28,18 @@ namespace TVServerKodi.Commands
             
             List<string> tvchannels = TVServerConnection.GetTVChannels(groups);
 
-            foreach (string channel in tvchannels)
+            if (tvchannels != null)
             {
-                Console.WriteLine(channel);
+                foreach (string channel in tvchannels)
+                {
+                    Console.WriteLine(channel);
+                }
+                writer.writeList(tvchannels);
             }
-
-            writer.writeList(tvchannels);
+            else
+            {
+                getConnection().WriteLine("[ERROR]: No TV channels found");
+            }
         }
 
         public override string getCommandToHandle()
