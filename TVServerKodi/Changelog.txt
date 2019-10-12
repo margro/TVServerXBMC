@@ -1,3 +1,6 @@
+1.23.0.143:
+- Updated: reference assemblies for MediaPortal 2.2.2 TVServer 1.23.0
+
 1.22.0.142:
 - Fixed: report an error when no TV channels are found (e.g. when group names do not exist)
 - Added: allow addition of TV webstreams. Choose DVB-IP, add the URL and set network id, transport id, service id and pmt pid all to 0
