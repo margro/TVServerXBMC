@@ -1,3 +1,6 @@
+1.23.0.144:
+- Updated: reference assemblies for MediaPortal 2.3 TVServer 1.23.100
+
 1.23.0.143:
 - Updated: reference assemblies for MediaPortal 2.2.2 TVServer 1.23.0
 
